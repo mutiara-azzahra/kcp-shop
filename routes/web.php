@@ -54,6 +54,7 @@ use App\Http\Controllers\PembayaranTokoController;
 use App\Http\Controllers\MasterProvinsiController;
 use App\Http\Controllers\MasterPerkiraanController;
 use App\Http\Controllers\MasterAreaOutletController;
+use App\Http\Controllers\MasterOutletController;
 
 /*
 |--------------------------------------------------------------------------
@@ -303,6 +304,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/stok-gudang/list-barang-masuk', [StokGudangController::class, 'list'])->name('stok-gudang.list');
     Route::get('/stok-gudang/list-details-barang-masuk/{id}', [StokGudangController::class, 'list_details'])->name('stok-gudang.list-details');
     Route::post('/stok-gudang/store-details-barang-masuk', [StokGudangController::class, 'store_list_details'])->name('stok-gudang.store_list_details');
+
+    //ROUTE MASTER TOKO
+    Route::get('/master-toko', [MasterTokoController::class, 'index'])->name('master-toko.index');
 
     //ROUTE MASTER SALES
     Route::get('/master-sales', [MasterSalesController::class, 'index'])->name('master-sales.index');
