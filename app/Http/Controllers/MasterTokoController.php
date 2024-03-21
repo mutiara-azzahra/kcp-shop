@@ -20,4 +20,24 @@ class MasterTokoController extends Controller
 
         return view('master-toko.edit', compact('outlet'));
     }
+
+    public function update(Request $request){
+
+        $update = MasterOutlet::where('kd_outlet', $kd_outlet)
+                ->update([
+                'kode_prp'      => $request->qty,
+                'kode_kab'      => $request->disc,
+                'kd_outlet'     => $request->qty * $het,
+                'nominal_disc'  => $request->qty * $het * $request->disc/100,
+                'nominal_total' => ($request->qty * $het) - ($request->qty * $het * $request->disc/100),
+                'modi_date'     => NOW(),
+                'modi_by'       => Auth::user()->nama_user
+            ]);
+
+        if ($update){
+            return redirect()->route('sales-order.details', $cari_sp->nosp)->with('success','Data SP berhasil diubah!');
+        } else{
+            return redirect()->route('sales-order.details', $cari_sp->nosp)->with('danger','Data SP gagal diubah');
+        }
+    }
 }

@@ -46,55 +46,55 @@
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>Kode Outlet</strong>
-                            <input type="text" name="kode_kab" class="form-control" value= "{{ $outlet->kd_outlet }}" readonly>
+                            <input type="text" name="kd_outlet" class="form-control" value= "{{ $outlet->kd_outlet }}" readonly>
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>Nama Pemilik</strong>
-                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->nm_pemilik }}">
+                            <input type="text" name="nm_pemilik" class="form-control" value= "{{ $outlet->nm_pemilik }}">
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>Nama Outlet</strong>
-                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->nm_outlet }}">
+                            <input type="text" name="nm_outlet" class="form-control" value= "{{ $outlet->nm_outlet }}">
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>Alamat Outlet</strong>
-                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->almt_outlet }}">
+                            <input type="text" name="almt_outlet" class="form-control" value= "{{ $outlet->almt_outlet }}">
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>Alamat Pengiriman</strong>
-                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->almt_pengiriman }}">
+                            <input type="text" name="almt_pengiriman" class="form-control" value= "{{ $outlet->almt_pengiriman }}">
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>Telpon</strong>
-                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->tlpn }}">
+                            <input type="text" name="tlpn" class="form-control" value= "{{ $outlet->tlpn }}">
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>Jatuh Tempo / TOP</strong>
-                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->jth_tempo }}">
+                            <input type="text" name="jth_tempo" class="form-control" value= "{{ $outlet->jth_tempo }}">
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>Ekspedisi</strong>
-                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->expedisi }}">
+                            <input type="text" name="expedisi" class="form-control" value= "{{ $outlet->expedisi }}">
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>NIK</strong>
-                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->nik }}">
+                            <input type="text" name="nik" class="form-control" value= "{{ $outlet->nik }}">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
