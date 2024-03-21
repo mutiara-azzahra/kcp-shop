@@ -309,6 +309,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/master-toko', [MasterTokoController::class, 'index'])->name('master-toko.index');
     Route::get('/master-toko/create', [MasterTokoController::class, 'create'])->name('master-toko.create');
     Route::get('/master-toko/list-pengajuan', [MasterTokoController::class, 'list_pengajuan'])->name('master-toko.list-pengajuan');
+    Route::get('/master-toko/edit/{kd_outlet}', [MasterTokoController::class, 'edit'])->name('master-toko.edit');
+    Route::get('/master-toko/details/{kd_outlet}', [MasterTokoController::class, 'details'])->name('master-toko.details');
+    Route::get('/master-toko/nonaktif/{kd_outlet}', [MasterTokoController::class, 'nonaktif'])->name('master-toko.nonaktif');
 
     //ROUTE MASTER SALES
     Route::get('/master-sales', [MasterSalesController::class, 'index'])->name('master-sales.index');

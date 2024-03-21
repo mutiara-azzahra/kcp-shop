@@ -58,7 +58,18 @@
 
                             <td class="text-left">{{ $p->tlpn }}</td>
                             <td class="text-left">{{ $p->jth_tempo }}</td>
-                            <td class="text-left"></td>
+                            <td class="text-center">
+                                <form action="{{ route('master-toko.nonaktif', $p->kd_outlet) }}" method="POST" id="form_nonaktif_{{ $p->kd_outlet }}" data-id="{{ $p->kd_outlet }}">
+                                    
+                                    <a class="btn btn-info btn-sm" href="{{ route('master-toko.details', $p->kd_outlet) }}" target="_blank"><i class="fas fa-eye"></i></a>
+                                    <a class="btn btn-warning btn-sm" href="{{ route('master-toko.edit', $p->kd_outlet) }}" target="_blank"><i class="fas fa-edit"></i></a>
+
+                                    @csrf
+                                    @method('POST')
+                                    
+                                    <a class="btn btn-danger btn-sm" onclick="Nonaktif('{{ $p->kd_outlet }}')"><i class="fas fa-times"></i></a>
+                                </form>
+                            </td>
                             
                         </tr>
                         @endforeach
@@ -73,7 +84,7 @@
 @section('script')
 
 <script>
-    Hapus = (id)=>{
+    Nonaktif = (id)=>{
         Swal.fire({
             title: 'Apa anda yakin menghapus data area outlet ini?',
             text:  "Data tidak dapat kembali" ,
@@ -85,7 +96,7 @@
             reverseButtons: false
             }).then((result) => {
                 if (result.value) {
-                    document.getElementById('form_delete_' + id).submit();
+                    document.getElementById('form_nonaktif_' + id).submit();
                 }
         })
     }
