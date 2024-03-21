@@ -23,21 +23,29 @@ class MasterTokoController extends Controller
 
     public function update(Request $request){
 
-        $update = MasterOutlet::where('kd_outlet', $kd_outlet)
+        $update = MasterOutlet::where('kd_outlet', $request->kd_outlet)
                 ->update([
-                'kode_prp'      => $request->qty,
-                'kode_kab'      => $request->disc,
-                'kd_outlet'     => $request->qty * $het,
-                'nominal_disc'  => $request->qty * $het * $request->disc/100,
-                'nominal_total' => ($request->qty * $het) - ($request->qty * $het * $request->disc/100),
-                'modi_date'     => NOW(),
-                'modi_by'       => Auth::user()->nama_user
+                'kode_prp'          => $request->kode_prp,
+                'kode_kab'          => $request->kode_kab,
+                'nm_pemilik'        => $request->nm_pemilik,
+                'nm_outlet'         => $request->nm_outlet,
+                'almt_outlet'       => $request->almt_outlet,
+                'almt_pengiriman'   => $request->almt_pengiriman,
+                'tlpn'              => $request->tlpn,
+                'jth_tempo'         => $request->jth_tempo,
+                'expedisi'          => $request->expedisi,
+                'nik'               => $request->nik,
+                'modi_date'         => NOW(),
+                'modi_by'           => Auth::user()->nama_user
             ]);
 
         if ($update){
-            return redirect()->route('sales-order.details', $cari_sp->nosp)->with('success','Data SP berhasil diubah!');
+            return redirect()->route('master-toko.index')->with('success','Data Master Toko berhasil diubah!');
         } else{
-            return redirect()->route('sales-order.details', $cari_sp->nosp)->with('danger','Data SP gagal diubah');
+            return redirect()->route('master-toko.index')->with('danger','Data Master Toko gagal diubah');
         }
     }
+
+
+    
 }

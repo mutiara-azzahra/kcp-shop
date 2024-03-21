@@ -5,7 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
              <div class="float-left">
-                <h4>Ubah Master Area Outlet</h4>
+                <h4>Ubah Master Outlet</h4>
             </div>
             <div class="float-right">
                     <a class="btn btn-success" href="{{ route('master-toko.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
@@ -27,7 +27,7 @@
     <div class="card" style="padding: 10px;">
         <div class="card-body">
             <div class="col-lg-12">
-                <form action="{{ route('master-toko.update', $outlet->kd_outlet) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('master-toko.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="row">
