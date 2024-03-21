@@ -57,7 +57,7 @@
                             @endif
 
                             <td class="text-left">{{ $p->tlpn }}</td>
-                            <td class="text-left">{{ $p->jth_tempo }}</td>
+                            <td class="text-center">{{ $p->jth_tempo }}</td>
                             <td class="text-center">
                                 <form action="{{ route('master-toko.nonaktif', $p->kd_outlet) }}" method="POST" id="form_nonaktif_{{ $p->kd_outlet }}" data-id="{{ $p->kd_outlet }}">
                                     
@@ -86,7 +86,7 @@
 <script>
     Nonaktif = (id)=>{
         Swal.fire({
-            title: 'Apa anda yakin menghapus data area outlet ini?',
+            title: 'Apa anda yakin menghapus data outlet ini?',
             text:  "Data tidak dapat kembali" ,
             showCancelButton: true,
             confirmButtonColor: '#3085d6' ,

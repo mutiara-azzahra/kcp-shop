@@ -9,7 +9,8 @@ class MasterOutlet extends Model
 {
     use HasFactory;
 
-    protected $table = 'master_outlet';
+    protected $table    = 'master_outlet';
+    public $timestamps  = false;
 
     protected $fillable = [
         'kd_outlet', 'nm_pemilik', 'nm_outlet', 'almt_outlet', 'almt_pengiriman', 'kode_prp', 'kode_kab', 'flag_2w', 'area_group_2w', 'flag_4w', 
