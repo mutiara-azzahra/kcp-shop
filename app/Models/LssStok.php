@@ -27,4 +27,10 @@ class LssStok extends Model
         'created_by', 
         'updated_by'
     ];
+
+
+    public function level_4()
+    {
+        return $this->hasOne(MasterLevel4::class, 'level_4', 'sub_kelompok_part');
+    }
 }

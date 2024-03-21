@@ -20,4 +20,5 @@ class MasterLevel4 extends Model
         'created_by', 
         'updated_by'
     ];
+
 }

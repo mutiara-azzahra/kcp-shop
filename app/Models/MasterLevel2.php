@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MasterLevel2 extends Model
 {
     use HasFactory;
+    protected $table = 'master_level_2';
+    protected $primaryKey = 'id';
+
 }
