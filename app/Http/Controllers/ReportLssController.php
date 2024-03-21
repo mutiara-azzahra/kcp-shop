@@ -216,7 +216,7 @@ class ReportLssController extends Controller
                                 ->where('tahun', $previousYear)
                                 ->where('sub_kelompok_part', $i->level_4)
                                 ->where('produk_part', $i->id_level_2)
-                                ->value('akhir_stok');
+                                ->value('akhir_amount');
                         } else{
 
                             $awal_amount = 0;
@@ -251,7 +251,7 @@ class ReportLssController extends Controller
                                 ->where('tahun', $tahun)
                                 ->where('sub_kelompok_part', $i->level_4)
                                 ->where('produk_part', $i->id_level_2)
-                                ->value('akhir_stok');
+                                ->value('akhir_amount');
                         } else{
 
                             $awal_amount = 0;

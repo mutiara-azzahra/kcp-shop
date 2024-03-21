@@ -32,7 +32,7 @@
     <div class="card" style="padding: 2px;">
         <div class="card-body p-2">
             <div class="col-lg-12">  
-                <table class="table table-hover table-bordered table-sm bg-light">
+                <table class="table table-hover table-bordered table-sm bg-light" id="example1">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
                             <th class="text-center">Kode</th>
@@ -63,11 +63,11 @@
                             <td class="text-left">LIQUID</td>
 
                             @endif
-                            <td class="text-right">{{ number_format($p->awal_amount, 0, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($p->beli, 0, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($p->jual_rbp, 0, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($p->jual_dbp, 0, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($p->akhir_amount, 0, ',', '.') }}</td>
+                            <td class="text-right">{{ number_format($p->awal_amount, 0, ',', ',') }}</td>
+                            <td class="text-right">{{ number_format($p->beli, 0, ',', ',') }}</td>
+                            <td class="text-right">{{ number_format($p->jual_rbp, 0, ',', ',') }}</td>
+                            <td class="text-right">{{ number_format($p->jual_dbp, 0, ',', ',') }}</td>
+                            <td class="text-right">{{ number_format($p->akhir_amount, 0, ',', ',') }}</td>
                         </tr>
                     @endforeach
                     </tbody>
