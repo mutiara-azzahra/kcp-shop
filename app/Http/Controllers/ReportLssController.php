@@ -168,10 +168,12 @@ class ReportLssController extends Controller
             $date               = Carbon::create(null, $bulan, 1, 0, 0, 0);
             $previousMonth      = $date->subMonth()->month;
 
+            $previousYear       = $tahun - 1;
 
             $lss = LSS::where('bulan', $bulan)->where('tahun', $tahun)->first();
 
             if($lss == null){
+
                 if($previousMonth = 10 && $tahun = 2023 ){
                     $awal_amount = 0;
                 }
@@ -203,24 +205,76 @@ class ReportLssController extends Controller
         
                     $hpp     = $getHpp->whereIn('part_no', $flattened)->sum('nominal_total')/1.11;
                     $jual    = $getModalTerjual->whereIn('part_no', $flattened)->sum('nominal_modal')/1.11;
-        
-                    //INSERT LSS TO DB
-                    $value = [
-                        'bulan'                 => $bulan,
-                        'tahun'                 => $tahun,
-                        'sub_kelompok_part'     => $i->level_4,
-                        'produk_part'           => $i->id_level_2,
-                        'awal_amount'           => $awal_amount,
-                        'beli'                  => $beli,
-                        'jual_rbp'              => $hpp,
-                        'jual_dbp'              => $jual,
-                        'akhir_amount'          => ($awal_amount + $beli) - $jual,
-                        'status'                => 'A',
-                        'created_at'            => NOW(),
-                        'created_by'            => Auth::user()->nama_user,
-                    ];
-        
-                    $created = LSS::create($value);
+
+                    if($bulan == 01){
+
+                        $amount_last_month = LSS::where('bulan', $previousMonth)->where('tahun', $previousYear)->first();
+
+                        if(isset($amount_last_month)){
+
+                            $awal_amount = LSS::where('bulan', $previousMonth)
+                                ->where('tahun', $previousYear)
+                                ->where('sub_kelompok_part', $i->level_4)
+                                ->where('produk_part', $i->id_level_2)
+                                ->value('akhir_stok');
+                        } else{
+
+                            $awal_amount = 0;
+                        }
+            
+                        //INSERT LSS TO DB
+                        $value = [
+                            'bulan'                 => $bulan,
+                            'tahun'                 => $tahun,
+                            'sub_kelompok_part'     => $i->level_4,
+                            'produk_part'           => $i->id_level_2,
+                            'awal_amount'           => $awal_amount,
+                            'beli'                  => $beli,
+                            'jual_rbp'              => $hpp,
+                            'jual_dbp'              => $jual,
+                            'akhir_amount'          => ($awal_amount + $beli) - $jual,
+                            'status'                => 'A',
+                            'created_at'            => NOW(),
+                            'created_by'            => Auth::user()->nama_user,
+                        ];
+            
+                        $created = LSS::create($value);
+
+
+                    } else {
+
+                        $amount_last_month = LSS::where('bulan', $previousMonth)->where('tahun', $tahun)->first();
+
+                        if(isset($amount_last_month)){
+
+                            $awal_amount = LSS::where('bulan', $previousMonth)
+                                ->where('tahun', $tahun)
+                                ->where('sub_kelompok_part', $i->level_4)
+                                ->where('produk_part', $i->id_level_2)
+                                ->value('akhir_stok');
+                        } else{
+
+                            $awal_amount = 0;
+                        }
+            
+                        //INSERT LSS TO DB
+                        $value = [
+                            'bulan'                 => $bulan,
+                            'tahun'                 => $tahun,
+                            'sub_kelompok_part'     => $i->level_4,
+                            'produk_part'           => $i->id_level_2,
+                            'awal_amount'           => $awal_amount,
+                            'beli'                  => $beli,
+                            'jual_rbp'              => $hpp,
+                            'jual_dbp'              => $jual,
+                            'akhir_amount'          => ($awal_amount + $beli) - $jual,
+                            'status'                => 'A',
+                            'created_at'            => NOW(),
+                            'created_by'            => Auth::user()->nama_user,
+                        ];
+            
+                        $created = LSS::create($value);
+                    }
         
                 }
             }
