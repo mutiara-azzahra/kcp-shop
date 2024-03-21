@@ -180,7 +180,7 @@ class ReportLssController extends Controller
         
                 $getProduk = MasterLevel4::where('status', 'A')->get();
         
-                foreach($getLevel4 as $i){
+                foreach($getProduk as $i){
         
                     $getBeli = InvoiceNonHeader::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
                     ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
@@ -232,11 +232,11 @@ class ReportLssController extends Controller
                             'beli'                  => $beli,
                             'jual_rbp'              => $hpp,
                             'jual_dbp'              => $jual,
-                            'akhir_amount'          => ($awal_amount + $beli) - $jual,
+                            'akhir_amount'          => $awal_amount + $beli - $jual,
                             'status'                => 'A',
                             'created_at'            => NOW(),
                             'created_by'            => Auth::user()->nama_user,
-                        ];
+                        ]; 
             
                         $created = LSS::create($value);
 

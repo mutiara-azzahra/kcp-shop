@@ -35,8 +35,10 @@
                 <table class="table table-hover table-bordered table-sm bg-light">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
-                            <th class="text-center">Sub. Kel. Part</th>
-                            <th class="text-center">Produk Part</th>
+                            <th class="text-center">Kode</th>
+                            <th class="text-center">Sub Kelompok Part</th>
+                            <th class="text-center">Kode</th>
+                            <th class="text-center">Kode Produk</th>
                             <th class="text-center">Awal Amount</th>
                             <th class="text-center">Beli</th>
                             <th class="text-center">Jual RBP</th>
@@ -47,8 +49,20 @@
                     <tbody>
                     @foreach($data as $p)
                         <tr>
-                            <td class="text-left">{{ $p->sub_kelompok_part }}</td>
-                            <td class="text-left">{{ $p->produk_part }}</td>
+                            <td class="text-center">{{ $p->level_4->level_4 }}</td>
+                            <td class="text-left">{{ $p->level_4->keterangan }}</td>
+                            <td class="text-center">{{ $p->produk_part }}</td>
+
+                            @if($p->produk_part == 'IC2')
+                            <td class="text-left">ICHIDAI</td>
+
+                            @elseif($p->produk_part == 'BP2')
+                            <td class="text-left">BRIO</td>
+
+                            @elseif($p->produk_part == 'LQ2')
+                            <td class="text-left">LIQUID</td>
+
+                            @endif
                             <td class="text-right">{{ number_format($p->awal_amount, 0, ',', '.') }}</td>
                             <td class="text-right">{{ number_format($p->beli, 0, ',', '.') }}</td>
                             <td class="text-right">{{ number_format($p->jual_rbp, 0, ',', '.') }}</td>
