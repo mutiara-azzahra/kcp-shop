@@ -8,7 +8,7 @@
                 <h4>Ubah Master Area Outlet</h4>
             </div>
             <div class="float-right">
-                    <a class="btn btn-success" href="{{ route('master-area-outlet.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
+                    <a class="btn btn-success" href="{{ route('master-toko.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
             </div>
         </div>
     </div>
@@ -27,26 +27,74 @@
     <div class="card" style="padding: 10px;">
         <div class="card-body">
             <div class="col-lg-12">
-                <form action="{{ route('master-area-outlet.update', $area_outlet->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('master-toko.update', $outlet->kd_outlet) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="row">
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>Kode Provinsi</strong>
-                            <input type="text" name="kode_prp" class="form-control" value= "{{ $area_outlet->kode_prp }}" readonly>
+                            <input type="text" name="kode_prp" class="form-control" value= "{{ $outlet->kode_prp }}" readonly>
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>Kode Kabupaten/Kota</strong>
-                            <input type="text" name="kode_kab" class="form-control" value= "{{ $area_outlet->kode_kab }}" readonly>
+                            <input type="text" name="kode_kab" class="form-control" value= "{{ $outlet->kode_kab }}" readonly>
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
-                            <strong>Kabupaten/Kota</strong>
-                            <input type="text" name="nm_area" class="form-control" value= "{{ $area_outlet->nm_area }}">
+                            <strong>Kode Outlet</strong>
+                            <input type="text" name="kode_kab" class="form-control" value= "{{ $outlet->kd_outlet }}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Nama Pemilik</strong>
+                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->nm_pemilik }}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Nama Outlet</strong>
+                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->nm_outlet }}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Alamat Outlet</strong>
+                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->almt_outlet }}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Alamat Pengiriman</strong>
+                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->almt_pengiriman }}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Telpon</strong>
+                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->tlpn }}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Jatuh Tempo / TOP</strong>
+                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->jth_tempo }}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Ekspedisi</strong>
+                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->expedisi }}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>NIK</strong>
+                            <input type="text" name="nm_area" class="form-control" value= "{{ $outlet->nik }}">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
