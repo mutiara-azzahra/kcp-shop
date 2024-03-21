@@ -22,4 +22,5 @@ class MasterAreaOutlet extends Model
         'crea_by', 
         'modi_by'
     ];
+
 }

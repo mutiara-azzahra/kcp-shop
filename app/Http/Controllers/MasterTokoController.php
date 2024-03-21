@@ -9,7 +9,7 @@ class MasterTokoController extends Controller
 {
     public function index(){
 
-        $list_toko = MasterOutlet::all();
+        $list_toko = MasterOutlet::where('status', 'Y')->get();
 
         return view('master-toko.index', compact('list_toko'));
     }

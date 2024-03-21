@@ -22,6 +22,11 @@ class MasterOutlet extends Model
         return $this->hasOne(MasterArea::class, 'kode_kab', 'kode_kab');
     }
 
+    public function area_outlet()
+    {
+        return $this->hasOne(MasterAreaOutlet::class, 'kode_kab', 'kode_kab');
+    }
+
     public function kode_area()
     {
         return $this->belongsTo(MasterKodeArea::class, 'kode_kab', 'kode_kab');

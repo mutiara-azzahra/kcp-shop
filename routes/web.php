@@ -54,7 +54,7 @@ use App\Http\Controllers\PembayaranTokoController;
 use App\Http\Controllers\MasterProvinsiController;
 use App\Http\Controllers\MasterPerkiraanController;
 use App\Http\Controllers\MasterAreaOutletController;
-use App\Http\Controllers\MasterOutletController;
+use App\Http\Controllers\MasterTokoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -307,6 +307,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     //ROUTE MASTER TOKO
     Route::get('/master-toko', [MasterTokoController::class, 'index'])->name('master-toko.index');
+    Route::get('/master-toko/create', [MasterTokoController::class, 'create'])->name('master-toko.create');
+    Route::get('/master-toko/list-pengajuan', [MasterTokoController::class, 'list_pengajuan'])->name('master-toko.list-pengajuan');
 
     //ROUTE MASTER SALES
     Route::get('/master-sales', [MasterSalesController::class, 'index'])->name('master-sales.index');

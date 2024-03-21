@@ -40,15 +40,26 @@
                     </thead>
                     <tbody>
                         
-                        @foreach($list_area as $p)
+                        @foreach($list_toko as $p)
                         <tr>
-                            <td class="text-center">[]</td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
+                            <td class="text-left">[{{ $p->kd_outlet }}] {{ $p->nm_outlet }}</td>
+
+                            @if( $p->kode_prp == 6300)
+                            <td class="text-left">Kalimantan Selatan</td>
+                            @elseif( $p->kode_prp == 6200)
+                            <td class="text-left">Kalimantan Tengah</td>
+                            @endif
+
+                            @if(isset($p->area_outlet->nm_area))
+                            <td class="text-left">{{ $p->area_outlet->nm_area }}</td>
+                            @else
                             <td class="text-left"></td>
-                            <td class="text-center">
-                                
-                            </td>
+                            @endif
+
+                            <td class="text-left">{{ $p->tlpn }}</td>
+                            <td class="text-left">{{ $p->jth_tempo }}</td>
+                            <td class="text-left"></td>
+                            
                         </tr>
                         @endforeach
                     </tbody>
