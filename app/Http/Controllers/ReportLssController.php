@@ -40,6 +40,9 @@ class ReportLssController extends Controller
 
             $date               = Carbon::create(null, $bulan, 1, 0, 0, 0);
             $previousMonth      = $date->subMonth()->month;
+            
+            $previousYearDate   = $date->copy()->subYear();
+            $previousYear       = $previousYearDate->year;
 
             $lss = LssStok::where('bulan', $bulan)->where('tahun', $tahun)->first();
 
@@ -81,36 +84,39 @@ class ReportLssController extends Controller
 
                     $jual = array_sum($jualByPart);
 
-                    $stok_last_month = LssStok::where('bulan', $previousMonth)->where('tahun', $tahun)->first();
+                    if($bulan == 1){
 
-                    if(isset($stok_last_month)){
-                        $awal_amount = LssStok::where('bulan', $previousMonth)
-                            ->where('tahun', $tahun)
-                            ->where('sub_kelompok_part', $i->level_4)
-                            ->where('produk_part', $i->id_level_2)
-                            ->value('akhir_stok');
-                    } else{
+                        $stok_last_month = LssStok::where('bulan', $previousMonth)->where('tahun', $previousYear)->first();
 
-                        $awal_amount = 0;
+                        if(isset($stok_last_month)){
+                            $awal_amount = LssStok::where('bulan', $previousMonth)
+                                ->where('tahun', $tahun)
+                                ->where('sub_kelompok_part', $i->level_4)
+                                ->where('produk_part', $i->id_level_2)
+                                ->value('akhir_stok');
+                        } else{
+
+                            $awal_amount = 0;
+                        }
+            
+                        //INSERT LSS TO DB
+                        $value = [
+                            'bulan'                 => $bulan,
+                            'tahun'                 => $tahun,
+                            'sub_kelompok_part'     => $i->level_4,
+                            'produk_part'           => $i->id_level_2,
+                            'awal_stok'             => $awal_amount,
+                            'beli'                  => $beli,
+                            'jual'                  => $jual,
+                            'akhir_stok'            => $awal_amount + $beli - $jual,
+                            'status'                => 'A',
+                            'created_at'            => NOW(),
+                            'created_by'            => Auth::user()->nama_user,
+                        ];
+            
+                        $created = LssStok::create($value);
+        
                     }
-        
-                    //INSERT LSS TO DB
-                    $value = [
-                        'bulan'                 => $bulan,
-                        'tahun'                 => $tahun,
-                        'sub_kelompok_part'     => $i->level_4,
-                        'produk_part'           => $i->id_level_2,
-                        'awal_stok'             => $awal_amount,
-                        'beli'                  => $beli,
-                        'jual'                  => $jual,
-                        'akhir_stok'            => $awal_amount + $beli - $jual,
-                        'status'                => 'A',
-                        'created_at'            => NOW(),
-                        'created_by'            => Auth::user()->nama_user,
-                    ];
-        
-                    $created = LssStok::create($value);
-        
                 }
             }
 
