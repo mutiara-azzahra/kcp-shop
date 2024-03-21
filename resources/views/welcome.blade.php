@@ -156,6 +156,11 @@
                       </a>
                   </li>
                   <li class="nav-item">
+                      <a href="{{ route('master-toko.index')}}" class="nav-link">
+                        <p>Master Toko</p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
                       <a href="{{ route('master-perkiraan.index')}}" class="nav-link">
                         <p>Master Perkiraan</p>
                       </a>

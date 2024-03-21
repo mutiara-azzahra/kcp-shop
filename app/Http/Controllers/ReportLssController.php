@@ -41,8 +41,8 @@ class ReportLssController extends Controller
             $date               = Carbon::create(null, $bulan, 1, 0, 0, 0);
             $previousMonth      = $date->subMonth()->month;
 
-
             $lss = LssStok::where('bulan', $bulan)->where('tahun', $tahun)->first();
+
 
             if($lss == null){
         
@@ -81,11 +81,17 @@ class ReportLssController extends Controller
 
                     $jual = array_sum($jualByPart);
 
+                    $stok_last_month = LssStok::where('bulan', $previousMonth)->where('tahun', $tahun)->first();
 
-                    if($previousMonth == 10 && $tahun == 2023 ){
-                        $awal_amount = 0;
+                    if(isset($stok_last_month)){
+                        $awal_amount = LssStok::where('bulan', $previousMonth)
+                            ->where('tahun', $tahun)
+                            ->where('sub_kelompok_part', $i->level_4)
+                            ->where('produk_part', $i->id_level_2)
+                            ->value('akhir_stok');
                     } else{
-                        $awal_amount = LssStok::where('bulan', $previousMonth)->value('awal_stok');
+
+                        $awal_amount = 0;
                     }
         
                     //INSERT LSS TO DB
