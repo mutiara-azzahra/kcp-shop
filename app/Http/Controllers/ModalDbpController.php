@@ -48,24 +48,24 @@ class ModalDbpController extends Controller
                     $stok_persediaan = $getPersediaan->qty - $i->qty;
             
                     $value = [
-                        'noinv' => $i->noinv,
-                        'part_no' => $i->part_no,
-                        'qty_awal' => $getPersediaan->qty,
-                        'qty_terjual' => $i->qty,
-                        'qty_akhir' => $stok_persediaan,
-                        'modal' => $getPersediaan->modal,
+                        'noinv'         => $i->noinv,
+                        'part_no'       => $i->part_no,
+                        'qty_awal'      => $getPersediaan->qty,
+                        'qty_terjual'   => $i->qty,
+                        'qty_akhir'     => $stok_persediaan,
+                        'modal'         => $getPersediaan->modal,
                         'nominal_modal' => $nominalJualDbp,
-                        'status' => 'A',
-                        'created_at' => now(),
-                        'created_by' => Auth::user()->nama_user,
+                        'status'        => 'A',
+                        'created_at'    => now(),
+                        'created_by'    => Auth::user()->nama_user,
                     ];
             
                     $created = ModalPartTerjual::create($value);
             
                     if ($created) {
                         $updated = $getPersediaan->update([
-                            'qty' => $stok_persediaan,
-                            'updated_at' => now(),
+                            'qty'           => $stok_persediaan,
+                            'updated_at'    => now(),
                         ]);
             
                         if ($updated) {
