@@ -98,7 +98,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6' ,
             cancelButtonColor: 'red' ,
-            confirmButtonText: 'hapus data' ,
+            confirmButtonText: 'nonaktifkan data' ,
             cancelButtonText: 'batal' ,
             reverseButtons: false
             }).then((result) => {
