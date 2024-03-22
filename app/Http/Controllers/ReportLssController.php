@@ -65,6 +65,8 @@ class ReportLssController extends Controller
                     $part       = MasterPart::where('level_2', $i->id_level_2)->where('level_4', $i->level_4)->pluck('part_no')->toArray();
                     $flattened  = collect($part)->flatten()->toArray();
 
+                    $beli = 0;
+
                     foreach($getBeli as $b){
                         $beli += $b->details_pembelian->whereIn('part_no', $flattened)->sum('qty');
                     }
@@ -191,12 +193,12 @@ class ReportLssController extends Controller
                         ->get();
         
                     $part       = MasterPart::where('level_2', $i->id_level_2)->where('level_4', $i->level_4)->pluck('part_no')->toArray();
-                    $flattened   = collect($part)->flatten()->toArray();
+                    $flattened  = collect($part)->flatten()->toArray();
         
                     $beli = 0;
         
                     foreach($getBeli as $s){
-                        $beli = $s->details_pembelian->whereIn('part_no', $flattened)->sum('total_amount');
+                        $beli += $s->details_pembelian->whereIn('part_no', $flattened)->sum('total_amount');
                     }
         
                     $hpp     = $getHpp->whereIn('part_no', $flattened)->sum('nominal_total')/1.11;
