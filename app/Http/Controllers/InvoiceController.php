@@ -71,30 +71,6 @@ class InvoiceController extends Controller
  
                 MasterStokGudang::where('part_no', $s->part_no)->update(['stok' => $stok_akhir]);
 
-                // $stok_awal_rak = StokGudang::where('part_no', $s->part_no)->first();
-                
-                // if($s->qty <= $stok_awal_rak->stok){
-                //     StokGudang::where('id_rak', $s->id_rak)->where('part_no', $s->part_no)->first()->update([
-                //         'stok'      => $stok_awal_rak->stok - $s->qty,
-                //         'updated_at'=> now(),
-                //         'updated_by'=> Auth::user()->nama_user,
-                //     ]);
-                // } elseif($s->qty > $stok_awal_rak->stok) {
-                //     StokGudang::where('id_rak', $s->id_rak)->where('part_no', $s->part_no)->first()->update([
-                //         'stok'      => $stok_awal_rak->stok - $stok_awal_rak->stok,
-                //         'updated_at'=> now(),
-                //         'updated_by'=> Auth::user()->nama_user,
-                //     ]);
-
-                //     $next_stok = StokGudang::where('id_rak', $s->id_rak)->where('part_no', $s->part_no)->data(1)->value('stok');
-
-                //     StokGudang::where('id_rak', $s->id_rak)->where('part_no', $s->part_no)->data(1)->update([
-                //         'stok'      => ($s->qty - $stok_awal_rak->stok) - $next_stok,
-                //         'updated_at'=> now(),
-                //         'updated_by'=> Auth::user()->nama_user,
-                //     ]);
-                // }
-
                 if(($stok_ready != 0) && ($stok_ready > 0)){
                     
                     $details['noinv']              = $header->noinv;
@@ -111,29 +87,6 @@ class InvoiceController extends Controller
                     $details['nominal_total']      = $s->nominal_total;
 
                     TransaksiInvoiceDetails::create($details);
-
-                    // //FLOW STOK GUDANG
-                    // $stok_akhir     = FlowStokGudang::where('part_no', $s->part_no)->first();
-
-                    // if(isset($stok_akhir)){
-                    //     $stok_awal = $stok_akhir->stok_akhir;
-                    // } else{
-                    //     $stok_awal = 0;
-                    // }
-
-                    // $flow_stok                          = new FlowStokGudang();
-                    // $flow_stok->tanggal_barang_masuk    = null;
-                    // $flow_stok->tanggal_barang_keluar   = now();
-                    // $flow_stok->id_rak                  = $s->id_rak;
-                    // $flow_stok->keterangan              = $s->kd_toko;
-                    // $flow_stok->referensi               = $header->noinv;
-                    // $flow_stok->part_no                 = $s->part_no;
-                    // $flow_stok->stok_awal               = $stok_awal;
-                    // $flow_stok->stok_masuk              = 0;
-                    // $flow_stok->stok_keluar             = $s->qty;
-                    // $flow_stok->stok_akhir              = $flow_stok->stok_awal + $flow_stok->stok_masuk - $flow_stok->stok_keluar;
-                    // $flow_stok->created_by              = Auth::user()->nama_user;
-                    // $flow_stok->save();
 
                 }
             }
