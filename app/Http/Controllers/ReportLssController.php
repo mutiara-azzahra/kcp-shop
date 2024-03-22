@@ -173,10 +173,6 @@ class ReportLssController extends Controller
             $lss = LSS::where('bulan', $bulan)->where('tahun', $tahun)->first();
 
             if($lss == null){
-
-                if($previousMonth = 10 && $tahun = 2023 ){
-                    $awal_amount = 0;
-                }
         
                 $getProduk = MasterLevel4::where('status', 'A')->get();
         
@@ -245,6 +241,7 @@ class ReportLssController extends Controller
 
                         $amount_last_month = LSS::where('bulan', $previousMonth)->where('tahun', $tahun)->first();
 
+
                         if(isset($amount_last_month)){
 
                             $awal_amount = LSS::where('bulan', $previousMonth)
@@ -252,6 +249,7 @@ class ReportLssController extends Controller
                                 ->where('sub_kelompok_part', $i->level_4)
                                 ->where('produk_part', $i->id_level_2)
                                 ->value('akhir_amount');
+
                         } else{
 
                             $awal_amount = 0;
