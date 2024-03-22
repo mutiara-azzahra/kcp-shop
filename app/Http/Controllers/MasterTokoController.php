@@ -47,6 +47,24 @@ class MasterTokoController extends Controller
         }
     }
 
+    public function nonaktif($kd_outlet)
+    {
+        try {
 
-    
+            $outlet = MasterOutlet::findOrFail($kd_outlet);
+
+            $outlet->update([
+                'status'        => 'Y',
+                'modi_date'     => now(),
+                'modi_by'       => Auth::user()->nama_user
+            ]);
+
+            return redirect()->route('master-toko.index')->with('success', 'Data master toko berhasil dinonaktifkan!');
+
+        } catch (\Exception $e) {
+
+            return redirect()->route('master-toko.index')->with('danger', 'Data master toko gagal dinonaktifkan');
+        }
+    }
+
 }
