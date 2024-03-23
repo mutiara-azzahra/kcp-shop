@@ -65,7 +65,7 @@
                                     <a class="btn btn-warning btn-sm" href="{{ route('master-toko.edit', $p->kd_outlet) }}" target="_blank"><i class="fas fa-edit"></i></a>
 
                                     @csrf
-                                    @method('POST')
+                                    @method('GET')
                                     
                                     <a class="btn btn-danger btn-sm" onclick="Nonaktif('{{ $p->kd_outlet }}')"><i class="fas fa-times"></i></a>
                                 </form>

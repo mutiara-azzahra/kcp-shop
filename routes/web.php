@@ -93,7 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/master-provinsi', [MasterProvinsiController::class, 'index'])->name('master-provinsi.index');
     Route::get('/master-provinsi/create', [MasterProvinsiController::class, 'create'])->name('master-provinsi.create');
     Route::post('/master-provinsi/store', [MasterProvinsiController::class, 'store'])->name('master-provinsi.store');
-     Route::get('/master-provinsi/edit/{kode_prp}', [MasterProvinsiController::class, 'edit'])->name('master-provinsi.edit');
+    Route::get('/master-provinsi/edit/{kode_prp}', [MasterProvinsiController::class, 'edit'])->name('master-provinsi.edit');
     Route::get('/master-provinsi/nonaktif/{kode_prp}', [MasterProvinsiController::class, 'nonaktif'])->name('master-provinsi.nonaktif');
     Route::post('/master-provinsi/store', [MasterProvinsiController::class, 'store'])->name('master-provinsi.store');
     Route::delete('/master-provinsi/delete/{kode_prp}', [MasterProvinsiController::class, 'delete'])->name('master-provinsi.delete');
@@ -311,7 +311,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/master-toko/list-pengajuan', [MasterTokoController::class, 'list_pengajuan'])->name('master-toko.list-pengajuan');
     Route::get('/master-toko/edit/{kd_outlet}', [MasterTokoController::class, 'edit'])->name('master-toko.edit');
     Route::get('/master-toko/details/{kd_outlet}', [MasterTokoController::class, 'details'])->name('master-toko.details');
-    Route::get('/master-toko/nonaktif/{kd_outlet}', [MasterTokoController::class, 'nonaktif'])->name('master-toko.nonaktif');
+    Route::post('/master-toko/nonaktif/{kd_outlet}', [MasterTokoController::class, 'nonaktif'])->name('master-toko.nonaktif');
     Route::put('/master-toko/update', [MasterTokoController::class, 'update'])->name('master-toko.update');
 
     //ROUTE MASTER SALES

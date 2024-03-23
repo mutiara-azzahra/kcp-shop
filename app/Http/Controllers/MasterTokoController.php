@@ -51,7 +51,7 @@ class MasterTokoController extends Controller
     {
         try {
 
-            $outlet = MasterOutlet::findOrFail($kd_outlet);
+            $outlet = MasterOutlet::where('kd_outlet', $kd_outlet)->first();
 
             $outlet->update([
                 'status'        => 'Y',
