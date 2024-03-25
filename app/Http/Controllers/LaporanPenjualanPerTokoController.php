@@ -35,8 +35,6 @@ class LaporanPenjualanPerTokoController extends Controller
             });
         });
 
-
-
-        return view('laporan-penjualan-toko.view', compact('map_invoice', 'invoices'));
+        return view('laporan-penjualan-toko.view', compact('map_invoice', 'invoices', 'nominal_perbulan'));
     }
 }
