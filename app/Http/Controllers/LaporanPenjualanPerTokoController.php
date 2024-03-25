@@ -24,28 +24,19 @@ class LaporanPenjualanPerTokoController extends Controller
         $date               = Carbon::parse($tanggal_akhir_req);
         $tanggal_akhir      = $date->addDay()->toDateString();
 
-        // $invoices = TransaksiInvoiceHeader::where('kd_outlet', $request->kd_outlet)->whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
-        //     ->get()
-        //     ->groupBy(function($invoice) {
-        //         return Carbon::parse($invoice->created_at)->format('Y-m');
-        //     });
+        $invoices = TransaksiInvoiceHeader::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
+        ->get();
 
+        $map_invoice = $invoices->groupBy('kd_outlet');
 
-        $invoices = TransaksiInvoiceHeader::where('kd_outlet', $request->kd_outlet)
-            ->whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
-            ->get()
-            ->groupBy(function($invoice) {
+        $nominal_perbulan = $map_invoice->map(function ($outletInvoices) {
+            return $outletInvoices->groupBy(function($invoice) {
                 return Carbon::parse($invoice->created_at)->format('Y-m');
-            })
-            ->map(function ($invoicesInMonth) {
-                return $invoicesInMonth->sum(function ($invoice) {
-                    return $invoice->details_invoice->sum('nominal_total');
-                });
             });
+        });
 
-            // dd($invoices);
 
 
-        return view('laporan-penjualan-toko.view', compact('invoices'));
+        return view('laporan-penjualan-toko.view', compact('map_invoice', 'invoices'));
     }
 }

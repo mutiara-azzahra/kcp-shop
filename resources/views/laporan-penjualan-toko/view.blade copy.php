@@ -33,20 +33,20 @@
                 <table class="table table-hover table-bordered table-sm bg-light" id="example1">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
-                            <th class="text-center">Kode/Nama Outlet </th>
-                            <th class="text-center">Bulan </th>
+                            <th class="text-center">Kode / Nama Outlet</th> 
+                            @foreach ($invoices as $monthYear => $invoicesInMonth)
+                                <th class="text-center">{{ \Carbon\Carbon::parse($monthYear)->format('M Y') }}</th>
+                            @endforeach
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($map_invoice as $i )
                         <tr>
-                            <td class="text-left">[ {{ $i->first()->kd_outlet }} ] / {{ $i->first()->nm_outlet }}</td>
-                            <td class="text-left">{{ $i }}</td>
+                            @foreach ($invoices as $monthYear => $invoicesInMonth )
+                            <td class="text-right">{{ $invoices }}</td>
+                            @endforeach
                         </tr>
-                        @endforeach
                     </tbody>
-
                 </table>
             </div>
         </div>
