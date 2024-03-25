@@ -402,6 +402,22 @@
                       <p>Retur</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon"></i>
+                      <p>
+                        Laporan Marketing
+                        <i class="right fas fa-angle-right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                          <a href="{{ route('laporan-penjualan-toko.index')}}" class="nav-link">
+                            <p>Laporan Penjualan Per Toko</p>
+                          </a>
+                      </li>
+                    </ul>
+                </li>
               </ul>
             </li>
             @endif

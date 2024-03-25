@@ -55,6 +55,7 @@ use App\Http\Controllers\MasterProvinsiController;
 use App\Http\Controllers\MasterPerkiraanController;
 use App\Http\Controllers\MasterAreaOutletController;
 use App\Http\Controllers\MasterTokoController;
+use App\Http\Controllers\LaporanPenjualanPerTokoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -513,6 +514,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     //HISTORY PESANAN
     Route::get('/history-pesanan', [HistoryPesananController::class, 'index'])->name('history-pesanan.index');
+
+    //LAPORAN MARKETING - PENJUALAN PER TOKO
+    Route::get('/laporan-penjualan-toko', [LaporanPenjualanPerTokoController::class, 'index'])->name('laporan-penjualan-toko.index');
+    Route::post('/laporan-penjualan-toko/view', [LaporanPenjualanPerTokoController::class, 'view'])->name('laporan-penjualan-toko.view');
 
     //RETUR
     Route::get('/retur', [ReturController::class, 'index'])->name('retur.index');
