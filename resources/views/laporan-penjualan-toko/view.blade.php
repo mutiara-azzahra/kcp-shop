@@ -5,10 +5,10 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
             <div class="float-left">
-                <h4>EXPORT PAJAK OF</h4>
+                <h4>Laporan Penjualan Toko</h4>
             </div>
             <div class="float-right">
-                <a class="btn btn-success" href="{{ route('export-pajak.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
+                <a class="btn btn-success" href="{{ route('laporan-penjualan-toko.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
             </div>
         </div>
         <div class="col-lg-12 pb-3">
@@ -33,40 +33,18 @@
                 <table class="table table-hover table-bordered table-sm bg-light" id="example1">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
-                            <th class="text-center">OF</th>
-                            <th class="text-center">KODE_OBJEK</th>
-                            <th class="text-center">NAMA</th>
-                            <th class="text-center">HARGA_SATUAN</th>
-                            <th class="text-center">JUMLAH_BARANG</th>
-                            <th class="text-center">HARGA_TOTAL</th>
-                            <th class="text-center">DISKON</th>
-                            <th class="text-center">DPP</th>
-                            <th class="text-center">PPN</th>
-                            <th class="text-center">TARIF_PPNBM</th>
-                            <th class="text-center">PPNBM</th>
-                            <th class="text-center">Reff</th>
+                            @foreach ($invoices as $monthYear => $invoicesInMonth)
+                                <th class="text-center">{{ \Carbon\Carbon::parse($monthYear)->format('M Y') }}</th>
+                            @endforeach
                         </tr>
                     </thead>
+
                     <tbody>
-
-
-                    
-                    @foreach($details as $p)
                         <tr>
-                            <td class="text-left">OF</td>
-                            <td class="text-left">{{ $p->part_no }}</td>
-                            <td class="text-left">{{ $p->nama_part->part_nama }}</td>
-                            <td class="text-left">{{ $p->hrg_pcs }}</td>
-                            <td class="text-left">{{ $p->qty }}</td>
-                            <td class="text-right">{{ number_format((($p->qty * $p->hrg_pcs)/1.11), 0, ',', '') }}</td>
-                            <td class="text-right">{{ number_format((($p->qty * $p->hrg_pcs * $p->disc)/100 /1.11), 0, ',', '') }}</td>
-                            <td class="text-right">{{ number_format(($p->nominal_total)/1.11, 0, ',', '') }}</td>  
-                            <td class="text-right">{{ number_format(($p->nominal_total)/1.11 *0.11, 0, ',', '') }}</td>
-                            <td class="text-right">0</td>
-                            <td class="text-right">0</td>
-                            <td class="text-left">{{ $p->noinv }}</td>
+                            @foreach ($invoices as $monthYear => $invoicesInMonth )
+                            <td class="text-left">{{ $invoices }}</td>
+                            @endforeach
                         </tr>
-                    @endforeach
                     </tbody>
                 </table>
             </div>
