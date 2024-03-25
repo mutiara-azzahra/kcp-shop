@@ -11,6 +11,7 @@ use App\Models\TransaksiSOHeader;
 use App\Models\TransaksiInvoiceHeader;
 use App\Models\TransaksiInvoiceDetails;
 use App\Models\FlowStokGudang;
+use App\Models\ModalPartTerjual;
 
 class InvoiceController extends Controller
 {
@@ -87,6 +88,19 @@ class InvoiceController extends Controller
                     $details['nominal_total']      = $s->nominal_total;
 
                     TransaksiInvoiceDetails::create($details);
+
+
+                    // ModalPartTerjual
+                    $modal['noinv']              = $header->noinv;
+                    $modal['part_no']            = $s->part_no;
+                    $modal['qty_terjual']        = $s->qty;
+                    $modal['modal']              = $s->hrg_pcs;
+                    $modal['nominal_modal']      = $s->qty * $s->hrg_pcs;
+                    $modal['status']             = 'A';
+                    $modal['created_at']         = now();
+                    $modal['created_by']         = Auth::user()->nama_user;
+
+                    ModalPartTerjual::create($modal);
 
                 }
             }
