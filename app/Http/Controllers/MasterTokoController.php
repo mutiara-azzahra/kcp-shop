@@ -15,6 +15,11 @@ class MasterTokoController extends Controller
         return view('master-toko.index', compact('list_toko'));
     }
 
+    public function create(){
+
+        return view('master-toko.create');
+    }
+
     public function edit($kd_outlet){
 
         $outlet = MasterOutlet::where('kd_outlet', $kd_outlet)->first();
