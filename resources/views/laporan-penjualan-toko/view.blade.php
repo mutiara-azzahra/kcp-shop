@@ -55,9 +55,9 @@
                                 <td class="text-left">[{{ $kd_outlet }}] / {{ $invoicesByMonth->first()->first()->nm_outlet }}</td>
                                 @foreach ($uniqueMonths as $month => $monthLabel)
                                     <td class="text-right">
-                                        {{ $invoicesByMonth->has($month) ? $invoicesByMonth[$month]->sum(function ($invoice) {
+                                        {{ $invoicesByMonth->has($month) ? number_format($invoicesByMonth[$month]->sum(function ($invoice) {
                                             return $invoice->details_invoice->sum('nominal_total');
-                                        }) : 0 }}
+                                        }) , 0, ',', ',') : 0 }}
                                     </td>
                                 @endforeach
                             </tr>
