@@ -93,6 +93,12 @@
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
+                            <strong>NPWP</strong>
+                            <input type="text" name="npwp" class="form-control" value= "{{ $outlet->npwp }}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
                             <strong>NIK</strong>
                             <input type="text" name="nik" class="form-control" value= "{{ $outlet->nik }}">
                         </div>

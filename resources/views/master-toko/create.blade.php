@@ -43,42 +43,6 @@
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>Kode Outlet</strong>
-                            <input type="text" name="kd_outlet" class="form-control" placeholder="Isi kode provinsi">
-                        </div>
-                    </div>
-                    <div class="form-group mb-2 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <strong>Nama Outlet</strong>
-                            <input type="text" name="nm_outlet" class="form-control" placeholder="Isi kode kabupaten/kota">
-                        </div>
-                    </div>
-                    <div class="form-group mb-2 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <strong>Nama Pemilik</strong>
-                            <input type="text" name="nm_pemilik" class="form-control" placeholder="Isi nama kabupaten/kota">
-                        </div>
-                    </div>
-                    <div class="form-group mb-2 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <strong>Alamat Toko</strong>
-                            <input type="text" name="almt_outlet" class="form-control" value= "{{ $outlet->kode_prp }}" readonly>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <strong>Alamat Pengiriman</strong>
-                            <input type="text" name="almt_pengiriman" class="form-control" value= "{{ $outlet->kode_prp }}" readonly>
-                        </div>
-                    </div>
-                    <div class="form-group mb-2 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <strong>Nama Pemilik</strong>
-                            <input type="text" name="nm_pemilik" class="form-control" placeholder="Nama Pemilik">
-                        </div>
-                    </div>
-                    <div class="form-group mb-2 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <strong>Kode Outlet</strong>
                             <input type="text" name="kd_outlet" class="form-control" placeholder="Kode Outlet">
                         </div>
                     </div>
@@ -90,8 +54,44 @@
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
+                            <strong>Nama Pemilik</strong>
+                            <input type="text" name="nm_pemilik" class="form-control" placeholder="Nama Pemilik">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
                             <strong>Alamat Outlet</strong>
                             <input type="text" name="almt_outlet" class="form-control" placeholder="Alamat Outlet">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Alamat Pengiriman</strong>
+                            <input type="text" name="almt_pengiriman" class="form-control" placeholder="Alamat Pengiriman">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Telpon</strong>
+                            <input type="text" name="tlpn" class="form-control" placeholder="Nomor Telpon">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Jatuh Tempo / TOP</strong>
+                            <input type="text" name="jth_tempo" class="form-control" placeholder="Tanggal Jatuh Tempo">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Ekspedisi</strong>
+                            <input type="text" name="expedisi" class="form-control" placeholder="Ekspedisi">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>NIK</strong>
+                            <input type="text" name="nik" class="form-control" placeholder="NIK">
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
@@ -120,8 +120,8 @@
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
-                            <strong>NIK</strong>
-                            <input type="text" name="nik" class="form-control" placeholder="NIK">
+                            <strong>NPWP</strong>
+                            <input type="text" name="npwp" class="form-control" placeholder="NPWP">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">

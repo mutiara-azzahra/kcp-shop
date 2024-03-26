@@ -315,6 +315,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/master-toko/view/{kd_outlet}', [MasterTokoController::class, 'view'])->name('master-toko.view');
     Route::get('/master-toko/details/{kd_outlet}', [MasterTokoController::class, 'details'])->name('master-toko.details');
     Route::post('/master-toko/nonaktif/{kd_outlet}', [MasterTokoController::class, 'nonaktif'])->name('master-toko.nonaktif');
+    Route::post('/master-toko/store', [MasterTokoController::class, 'store'])->name('master-toko.store');
     Route::put('/master-toko/update', [MasterTokoController::class, 'update'])->name('master-toko.update');
 
     //ROUTE MASTER SALES
