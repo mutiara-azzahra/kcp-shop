@@ -416,6 +416,11 @@
                             <p>Laporan Penjualan Per Toko</p>
                           </a>
                       </li>
+                      <li class="nav-item">
+                          <a href="{{ route('laporan-penjualan-produk.index')}}" class="nav-link">
+                            <p>Laporan Penjualan Per Produk</p>
+                          </a>
+                      </li>
                     </ul>
                 </li>
               </ul>
