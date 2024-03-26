@@ -312,6 +312,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/master-toko/create', [MasterTokoController::class, 'create'])->name('master-toko.create');
     Route::get('/master-toko/list-pengajuan', [MasterTokoController::class, 'list_pengajuan'])->name('master-toko.list-pengajuan');
     Route::get('/master-toko/edit/{kd_outlet}', [MasterTokoController::class, 'edit'])->name('master-toko.edit');
+    Route::get('/master-toko/view/{kd_outlet}', [MasterTokoController::class, 'view'])->name('master-toko.view');
     Route::get('/master-toko/details/{kd_outlet}', [MasterTokoController::class, 'details'])->name('master-toko.details');
     Route::post('/master-toko/nonaktif/{kd_outlet}', [MasterTokoController::class, 'nonaktif'])->name('master-toko.nonaktif');
     Route::put('/master-toko/update', [MasterTokoController::class, 'update'])->name('master-toko.update');
