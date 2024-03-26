@@ -8,7 +8,7 @@
                 <h4>Tambah Area Outlet</h4>
             </div>
             <div class="float-right">
-                <a class="btn btn-success" href="{{ route('master-area-outlet.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
+                <a class="btn btn-success" href="{{ route('master-toko.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
             </div>
         </div>
     </div>
@@ -26,57 +26,48 @@
     <div class="card" style="padding: 10px;">
         <div class="card-body">
             <div class="col-lg-12">
-                <form action="{{ route('master-area-outlet.store') }}" method="POST">
+                <form action="{{ route('master-toko.store') }}" method="POST">
                 @csrf
                 <div class="row">
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
-                            <strong>Kode Provinsi</strong>
-                            <input type="text" name="kode_prp" class="form-control" placeholder="Isi kode provinsi">
-                        </div>
-                    </div>
-                    <div class="form-group mb-2 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <strong>Kode Kabupaten/Kota</strong>
-                            <input type="text" name="kode_kab" class="form-control" placeholder="Isi kode kabupaten/kota">
-                        </div>
-                    </div>
-                    <div class="form-group mb-2 col-md-12 col-lg-12">
-                        <div class="form-group">
                             <strong>Kabupaten/Kota</strong>
-                            <input type="text" name="nm_area" class="form-control" placeholder="Isi nama kabupaten/kota">
+                            <select name="kode_kab" class="form-control mb-2 my-select">     
+                                <option value="">-- Pilih Kabupaten/Kota --</option>
+                                @foreach($kota as $k)
+                                    <option value="{{ $k->kode_kab }}">{{ $s->nm_area }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-
-
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
-                            <strong>Kode Provinsi</strong>
-                            <input type="text" name="kode_prp" class="form-control" value= "{{ $outlet->kode_prp }}" readonly>
+                            <strong>Kode Outlet</strong>
+                            <input type="text" name="kd_outlet" class="form-control" placeholder="Isi kode provinsi">
                         </div>
                     </div>
-
-
-                    <div class="col-lg-6">
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
-                            <strong>Provinsi</strong><br>
-                            <select name="kode_prp" class="form-control mb-2 my-select" onchange="updateData()">     
-                                <option value="">-- Pilih Provinsi --</option>
-                                @foreach($provinsi as $s)
-                                    <option value="{{ $s->kode_prp }}" data-id="{{ $s->kode_sales }}">{{ $s->sales }}</option>
-                                @endforeach
-                            </select>
+                            <strong>Nama Outlet</strong>
+                            <input type="text" name="nm_outlet" class="form-control" placeholder="Isi kode kabupaten/kota">
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
-                            <strong>Kabupaten/Kota</strong><br>
-                            <select name="kode_kab" class="form-control mb-2 my-select" onchange="updateData()">     
-                                <option value="">-- Pilih Kabupaten/Kota --</option>
-                                @foreach($kota as $s)
-                                    <option value="{{ $s->sales }}" data-id="{{ $s->kode_sales }}">{{ $s->sales }}</option>
-                                @endforeach
-                            </select>
+                            <strong>Nama Pemilik</strong>
+                            <input type="text" name="nm_pemilik" class="form-control" placeholder="Isi nama kabupaten/kota">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Alamat Toko</strong>
+                            <input type="text" name="almt_outlet" class="form-control" value= "{{ $outlet->kode_prp }}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group mb-2 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <strong>Alamat Pengiriman</strong>
+                            <input type="text" name="almt_pengiriman" class="form-control" value= "{{ $outlet->kode_prp }}" readonly>
                         </div>
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">

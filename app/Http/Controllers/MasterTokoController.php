@@ -5,6 +5,7 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\MasterOutlet;
+use App\Models\MasterProvinsi;
 
 class MasterTokoController extends Controller
 {
@@ -17,7 +18,9 @@ class MasterTokoController extends Controller
 
     public function create(){
 
-        return view('master-toko.create');
+        $kota = MasterAreaOutlet::where('status','A')->get();
+
+        return view('master-toko.create', compact('kota'));
     }
 
     public function edit($kd_outlet){
