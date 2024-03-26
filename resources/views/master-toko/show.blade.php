@@ -17,14 +17,14 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <strong>Nama kecamatan</strong><br>
-                    {{ $kecamatan->nama_kecamatan }}<br>
+                    <strong>Kode Outlet</strong><br>
+                    {{ $outlet->kd_outlet }}<br>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Kota</strong><br>
-                    {{ $kecamatan->kota->nama_kota }}<br>
+                   <br>
                 </div>
             </div>
         </div>

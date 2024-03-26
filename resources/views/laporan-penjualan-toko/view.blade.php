@@ -33,7 +33,8 @@
                 <table class="table table-hover table-bordered table-sm bg-light" id="example1">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
-                            <th class="text-center">Kode/Nama Outlet</th>
+                            <th class="text-center">Kode Outlet</th>
+                            <th class="text-center">Nama Outlet</th>
                             @php
                                 $uniqueMonths = [];
 
@@ -52,7 +53,8 @@
                     <tbody>
                         @foreach ($nominal_perbulan as $kd_outlet => $invoicesByMonth)
                             <tr>
-                                <td class="text-left">[{{ $kd_outlet }}] / {{ $invoicesByMonth->first()->first()->nm_outlet }}</td>
+                                <td class="text-left">{{ $kd_outlet }}</td>
+                                <td class="text-left">{{ $invoicesByMonth->first()->first()->nm_outlet }}</td>
                                 @foreach ($uniqueMonths as $month => $monthLabel)
                                     <td class="text-right">
                                         {{ $invoicesByMonth->has($month) ? number_format($invoicesByMonth[$month]->sum(function ($invoice) {

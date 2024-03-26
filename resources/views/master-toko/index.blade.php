@@ -61,7 +61,7 @@
                             <td class="text-center">
                                 <form action="{{ route('master-toko.nonaktif', $p->kd_outlet) }}" method="POST" id="form_nonaktif_{{ $p->kd_outlet }}" data-id="{{ $p->kd_outlet }}">
                                     
-                                    <a class="btn btn-info btn-sm" href="{{ route('master-toko.details', $p->kd_outlet) }}" target="_blank"><i class="fas fa-eye"></i></a>
+                                    <a class="btn btn-info btn-sm" href="{{ route('master-toko.view', $p->kd_outlet) }}" target="_blank"><i class="fas fa-eye"></i></a>
                                     <a class="btn btn-warning btn-sm" href="{{ route('master-toko.edit', $p->kd_outlet) }}" target="_blank"><i class="fas fa-edit"></i></a>
 
                                     @csrf
