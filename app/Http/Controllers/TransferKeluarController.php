@@ -194,6 +194,5 @@ class TransferKeluarController extends Controller
             return redirect()->route('transfer-keluar.details', ['id_transfer' => $transfer->id_transfer])->with('danger', 'Terjadi kesalahan saat menghapus data transfer keluar.');
         }
     }
-
     
 }
