@@ -176,6 +176,11 @@
                       </a>
                   </li>
                   <li class="nav-item">
+                      <a href="{{ route('master-diskon-dbp.index')}}" class="nav-link">
+                        <p>Part Dbp</p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
                       <a href="{{ route('master-sales.index')}}" class="nav-link">
                         <p>Toko Sales</p>
                       </a>

@@ -14,6 +14,7 @@ use App\Http\Controllers\MasterPartProdukController;
 use App\Http\Controllers\MasterPartGroupController;
 use App\Http\Controllers\MasterSalesController;
 use App\Http\Controllers\MasterDiskonPartController;
+use App\Http\Controllers\MasterDiskonDbpController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\SuratPesananController;
@@ -133,6 +134,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/master-diskon/show/{id}', [MasterDiskonPartController::class, 'show'])->name('master-diskon.show');
     Route::post('/master-diskon/store', [MasterDiskonPartController::class, 'store'])->name('master-diskon.store');
     Route::post('/master-diskon/update/{id}', [MasterDiskonPartController::class, 'update'])->name('master-diskon.update');
+
+    //MASTER PART DISKON
+    Route::get('/master-diskon-dbp', [MasterDiskonDbpController::class, 'index'])->name('master-diskon-dbp.index');
+    Route::get('/master-diskon-dbp/create', [MasterDiskonDbpController::class, 'create'])->name('master-diskon-dbp.create');
+    Route::get('/master-diskon-dbp/edit/{id}', [MasterDiskonDbpController::class, 'edit'])->name('master-diskon-dbp.edit');
+    Route::delete('/master-diskon-dbp/delete/{id}', [MasterDiskonDbpController::class, 'delete'])->name('master-diskon-dbp.delete');
+    Route::get('/master-diskon-dbp/show/{id}', [MasterDiskonDbpController::class, 'show'])->name('master-diskon-dbp.show');
+    Route::post('/master-diskon-dbp/store', [MasterDiskonDbpController::class, 'store'])->name('master-diskon-dbp.store');
+    Route::post('/master-diskon-dbp/update/{id}', [MasterDiskonDbpController::class, 'update'])->name('master-diskon-dbp.update');
 
     //MASTER ROLE
     Route::get('/master-role', [MasterRoleController::class, 'index'])->name('master-role.index');
