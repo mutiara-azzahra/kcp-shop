@@ -125,10 +125,26 @@ class SuratPesananController extends Controller
 
             if($diskon_maks != null){
 
-                if($value['disc'] > $diskon_maks){
+                if($value['disc'] > $diskon_maks && $value['disc'] == 100){
+
+                    $value['hrg_pcs'] = $harga_het;
+
+                    if($value['disc'] == null){
+                        $value['disc'] = 0;
+                    }
+
+                    $value['disc']          = $value['disc'];
+                    $value['nominal']       = $harga_het * $value['qty'];
+                    $value['nominal_disc']  = ($harga_het * $value['qty'] * $value['disc'])/100;
+                    $value['nominal_total'] = $value['nominal'] - $value['nominal_disc'];
+                    $value['crea_date']     = NOW();
+
+                    TransaksiSpDetails::create($value);
+
+                } elseif ($value['disc'] > $diskon_maks && $value['disc'] != 100){
 
                     return redirect()->route('surat-pesanan.index')->with('danger','Nilai diskon part melebihi diskon maskimal! Silahkan input kembali');
-                
+
                 } else{
 
                     $value['hrg_pcs'] = $harga_het;
