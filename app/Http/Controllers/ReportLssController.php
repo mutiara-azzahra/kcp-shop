@@ -187,9 +187,9 @@ class ReportLssController extends Controller
                     $getHpp = TransaksiInvoiceDetails::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
                         ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
                         ->get();
-        
-                    $getModalTerjual = ModalPartTerjual::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
-                        ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
+
+                    $getModalTerjual = ModalPartTerjual::where('tanggal_invoice', '>=', $tahun.'-'.$bulan.'-01')
+                        ->where('tanggal_invoice', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->day)
                         ->get();
         
                     $part       = MasterPart::where('level_2', $i->id_level_2)->where('level_4', $i->level_4)->pluck('part_no')->toArray();

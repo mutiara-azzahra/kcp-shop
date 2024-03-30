@@ -41,7 +41,7 @@ class ModalDbpController extends Controller
 
             $value = [
                 'noinv'         => $i->noinv,
-                'noinv'         => $i->created_at,
+                'tanggal_invoice' => $i->created_at,
                 'part_no'       => $i->part_no,
                 'qty_terjual'   => $i->qty,
                 'modal'         => $i->hrg_pcs,

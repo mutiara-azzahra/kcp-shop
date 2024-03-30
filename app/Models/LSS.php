@@ -16,7 +16,7 @@ class LSS extends Model
         'bulan',
         'tahun',
         'sub_kelompok_part',
-        'produk_part',
+        'produk_part',  
         'awal_amount',
         'beli',
         'jual_rbp',
