@@ -70,10 +70,11 @@
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
                             <th class="text-center">No.</th>
+                            <th class="text-center">No Invoice</th>
                             <th class="text-center">Part No</th>
                             <th class="text-center">Qty Pembelian</th>
                             <th class="text-center">Modal per item</th>
-                            <th class="text-center">Nilai Persediaan</th>
+                            <th class="text-center">Modal DBP</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -81,13 +82,14 @@
                         $no=1;
                         @endphp
                         
-                        @foreach($getModal as $p)
+                        @foreach($getModalDbp as $p)
                         <tr>
                             <td class="text-center">{{ $no++ }}.</td>
+                            <td class="text-left">{{ $p->noinv }}</td>
                             <td class="text-left">{{ $p->part_no }}</td>
-                            <td class="text-right">{{ number_format($p->qty, 0, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($p->modal, 0, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format(($p->qty * $p->modal), 0, ',', '.') }}</td>
+                            <td class="text-right">{{ number_format($p->qty_terjual, 0, ',', ',') }}</td>
+                            <td class="text-right">{{ number_format($p->modal, 0, ',', ',') }}</td>
+                            <td class="text-right">{{ number_format(($p->nominal_modal), 0, ',', ',') }}</td>
                         </tr>
                         @endforeach
                     </tbody>
