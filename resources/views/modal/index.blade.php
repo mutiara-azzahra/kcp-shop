@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="form-group col-lg-6 col-md-6">
                         <label for="">Bulan</label>
-                        <select name="bulan" class="form-control mr-2">
+                        <select name="bulan" class="form-control mr-2 my-select">
                             <option value="">-- Pilih Bulan --</option>
                             <option value="01">Januari</option>
                             <option value="02">Februari</option>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="form-group col-lg-6 col-md-6">
                         <label for="">Tahun</label>
-                        <select class="form-control mr-2" id="date-dropdown" name="tahun">
+                        <select class="form-control mr-2 my-select" id="date-dropdown" name="tahun">
                             <option value="">-- Pilih Tahun --</option>
                         </select>
                     </div>
@@ -108,7 +108,7 @@
   let dateDropdown = document.getElementById('date-dropdown'); 
        
   let currentYear = new Date().getFullYear();    
-  let earliestYear = 2022;     
+  let earliestYear = 2023;     
   while (currentYear >= earliestYear) {      
     let dateOption = document.createElement('option');          
     dateOption.text = currentYear;      

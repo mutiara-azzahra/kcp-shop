@@ -37,7 +37,7 @@ class ModalDbpController extends Controller
 
         foreach($getTerjual as $i){
 
-        $getDiskonDbp = MasterDiskonDbp::where('part_no', $i->part_no)->value('diskon_dbp');
+            $getDiskonDbp = MasterDiskonDbp::where('part_no', $i->part_no)->value('diskon_dbp');
 
             $value = [
                 'noinv'         => $i->noinv,
@@ -48,10 +48,12 @@ class ModalDbpController extends Controller
                 'nominal_modal' => $i->qty * $i->hrg_pcs * $getDiskonDbp / 100,
                 'status'        => 'A',
             ];
-    
+
             $created = ModalPartTerjual::create($value);
 
-            }
         }
+
+        return redirect()->route('modal.index')->with('success','Data Modal baru berhasil ditambahkan!');
+    }
 
 }
