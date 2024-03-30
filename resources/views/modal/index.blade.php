@@ -71,6 +71,7 @@
                         <tr style="background-color: #6082B6; color:white">
                             <th class="text-center">No.</th>
                             <th class="text-center">No Invoice</th>
+                            <th class="text-center">Tanggal Invoice</th>
                             <th class="text-center">Part No</th>
                             <th class="text-center">Qty Pembelian</th>
                             <th class="text-center">Modal per item</th>
