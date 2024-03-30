@@ -41,13 +41,12 @@ class ModalDbpController extends Controller
 
             $value = [
                 'noinv'         => $i->noinv,
+                'noinv'         => $i->created_at,
                 'part_no'       => $i->part_no,
                 'qty_terjual'   => $i->qty,
                 'modal'         => $i->hrg_pcs,
                 'nominal_modal' => $i->qty * $i->hrg_pcs * $getDiskonDbp / 100,
                 'status'        => 'A',
-                'created_at'    => $i->created_at,
-                'updated_at'    => $i->updated_at,
             ];
     
             $created = ModalPartTerjual::create($value);

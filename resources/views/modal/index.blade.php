@@ -87,6 +87,7 @@
                         <tr>
                             <td class="text-center">{{ $no++ }}.</td>
                             <td class="text-left">{{ $p->noinv }}</td>
+                            <td class="text-center">{{ Carbon\Carbon::parse($p->created_at)->format('d-m-Y') }}</td>
                             <td class="text-left">{{ $p->part_no }}</td>
                             <td class="text-right">{{ number_format($p->qty_terjual, 0, ',', ',') }}</td>
                             <td class="text-right">{{ number_format($p->modal, 0, ',', ',') }}</td>

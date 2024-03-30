@@ -16,6 +16,7 @@ class ModalPartTerjual extends Model
     protected $fillable = [
         'noinv', 
         'part_no',
+        'tanggal_invoice',
         'qty_awal',
         'qty_terjual',
         'qty_akhir',
