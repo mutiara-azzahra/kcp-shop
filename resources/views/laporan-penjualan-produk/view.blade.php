@@ -35,15 +35,19 @@
                         <tr style="background-color: #6082B6; color:white">
                             <th class="text-center">Kode Outlet</th>
                             <th class="text-center">Nama Outlet</th>
-                            <th class="text-center">Amount</th>
+                            <th class="text-center">{{ Carbon\Carbon::parse($tanggal_awal)->format('d/m/Y') }}
+                                - {{ Carbon\Carbon::parse($tanggal_akhir)->format('d/m/Y') }} </th>
                         </tr>
                     </thead>
 
                     <tbody>
+
+                        @foreach($amount_toko as $kd_outlet => $test)
                         <tr>
-                            
-                            <td class="text-left">{{ $getAmount }}</td>
+                            <td class="text-center">{{ $kd_outlet }}</td>
+                            <td class="text-right">{{ $test }}</td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

@@ -21,7 +21,7 @@ class LaporanPenjualanPerTokoController extends Controller
         $tanggal_awal       = $request->tanggal_awal;
         $tanggal_akhir_req  = $request->tanggal_akhir;
 
-        $date               = Carbon::parse($tanggal_akhir_req);
+        $date               = Carbon::parse($tanggal_akhir_req);    
         $tanggal_akhir      = $date->addDay()->toDateString();
 
         $invoices = TransaksiInvoiceHeader::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])

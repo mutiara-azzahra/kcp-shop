@@ -34,7 +34,7 @@ class LaporanPenjualanPerProdukController extends Controller
                         $query->select('part_no')
                             ->from('master_part')
                             ->where('level_2', 'IC2');
-                    })->sum('nominal_total');
+                    })->value('nominal_total');
                 });
             });
 
@@ -46,7 +46,7 @@ class LaporanPenjualanPerProdukController extends Controller
                         $query->select('part_no')
                             ->from('master_part')
                             ->where('level_2', 'BP2');
-                    })->sum('nominal_total');
+                    })->value('nominal_total');
                 });
             });
 
@@ -58,7 +58,7 @@ class LaporanPenjualanPerProdukController extends Controller
                         $query->select('part_no')
                             ->from('master_part')
                             ->where('level_2', 'LQ2');
-                    })->sum('nominal_total');
+                    })->value('nominal_total');
                 });
             });
 
@@ -66,7 +66,7 @@ class LaporanPenjualanPerProdukController extends Controller
 
             $amount_toko = $map_invoice->map(function ($outletInvoices) {
                 return $outletInvoices->sum(function ($invoice) {
-                    return $invoice->details_invoice()->sum('nominal_total');
+                    return $invoice->details_invoice()->value('nominal_total');
                 });
             });
 
