@@ -373,15 +373,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     //ROUTE PENERIMAAN PIUTANG TOKO
     Route::get('/penerimaan-piutang-toko', [PenerimaanPiutangTokoController::class, 'index'])->name('penerimaan-piutang-toko.index');
-    Route::get('/penerimaan-piutang-toko/create', [PenerimaanPiutangTokoController::class, 'create'])->name('penerimaan-piutang-toko.create');
-    Route::post('/penerimaan-piutang-toko/store', [PenerimaanPiutangTokoController::class, 'store'])->name('penerimaan-piutang-toko.store');
-    Route::get('/penerimaan-piutang-toko/details/{no_piutang}', [PenerimaanPiutangTokoController::class, 'details'])->name('penerimaan-piutang-toko.details');
-    Route::get('/penerimaan-piutang-toko/edit/{no_piutang}', [PenerimaanPiutangTokoController::class, 'edit'])->name('penerimaan-piutang-toko.edit');
-    Route::post('/penerimaan-piutang-toko/store-details', [PenerimaanPiutangTokoController::class, 'store_details'])->name('penerimaan-piutang-toko.store-details');
-    Route::post('/penerimaan-piutang-toko/store-kas', [PenerimaanPiutangTokoController::class, 'store_kas'])->name('penerimaan-piutang-toko.store-kas');
     Route::get('/penerimaan-piutang-toko/cetak/{no_piutang}', [PenerimaanPiutangTokoController::class, 'cetak'])->name('penerimaan-piutang-toko.cetak');
-    Route::get('/penerimaan-piutang-toko/tanda-terima/{no_kas_masuk}', [PenerimaanPiutangTokoController::class, 'tanda_terima'])->name('penerimaan-piutang-toko.tanda-terima');
-    Route::post('/penerimaan-piutang-toko/store-tanda-terima', [PenerimaanPiutangTokoController::class, 'store_tanda_terima'])->name('penerimaan-piutang-toko.store-tanda-terima');
+    Route::delete('/penerimaan-piutang-toko/store-tanda-terima', [PenerimaanPiutangTokoController::class, 'batal'])->name('penerimaan-piutang-toko.batal');
 
     //ROUTE PEMBAYARAN PIUTANG TOKO
     Route::get('/pembayaran-toko', [PembayaranTokoController::class, 'index'])->name('pembayaran-toko.index');

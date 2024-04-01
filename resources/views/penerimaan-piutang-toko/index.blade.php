@@ -5,7 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
              <div class="float-left">
-                <h4>Penerrimaan Piutang Toko</h4>
+                <h4>Penerimaan Piutang Toko</h4>
             </div>
         </div>
     </div>
@@ -49,64 +49,31 @@
 
                         @foreach($piutang_header as $p)
                         <tr>
-                            <td class="text-left">{{ $no++ }}</td>
-                            <td class="text-left">{{ $p }}</td>
-                        </tr>
-                        @endforeach
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" style="padding: 10px;">
-        <div class="card-header">
-            List Pemotongan Belum Selesai
-        </div>
-        <div class="card-body">
-            <div class="col-lg-12">
-                <table class="table table-hover table-bordered table-sm bg-light table-striped" id="example3">
-                    <thead>
-                        <tr style="background-color: #6082B6; color:white">
-                            <th class="text-center">No.</th>
-                            <th class="text-center">No. Piutang</th>
-                            <th class="text-center">Kode Toko</th>
-                            <th class="text-center">Nama Toko</th>
-                            <th class="text-center">Pembayaran Via</th>
-                            <th class="text-center">Nominal Potong</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                        $no=1;
-                        @endphp
-                        
-                        @foreach($piutang_header as $p)
-                        <tr>
-                            <td class="text-center">{{ $no++ }}</td>
-                            <td class="text-left">{{ $p->no_piutang }}</td>
+                            <td class="text-left">KCP/{{ $p->no_piutang }}</td>
+                            <td class="text-center">{{ Carbon\Carbon::parse($p->tanggal_piutang)->format('d-m-Y') }}</td>
                             <td class="text-center">{{ $p->kd_outlet }}</td>
                             <td class="text-left">{{ $p->nm_outlet }}</td>
-                            <td class="text-center">{{ $p->pembayaran_via }}</td>
-                            <td class="text-right">{{ number_format($p->nominal_potong, 0, '.', ',') }}</td>
+                            <td class="text-left">{{ $p->pembayaran_via }}</td>
+                            <td class="text-left">{{ $p->id_bank }}</td>
+                            <td class="text-left">{{ $p->no_bg }}</td>
+                            <td class="text-left">{{ $p->pembayaran_via }}</td>
+                            <td class="text-left">{{ $p->flag_cetak_penerimaan_date }}</td>
+                            <td class="text-left"></td>
                             <td class="text-center">
-                                <a class="btn btn-info btn-sm" href="{{ route('piutang-toko.details', $p->no_piutang ) }}">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a class="btn btn-primary btn-sm" href="{{ route('piutang-toko.edit', $p->no_piutang ) }}">
-                                    <i class="fas fa-edit"></i>
-                                </a>
+                                <a class="btn btn-warning btn-sm m-1" href="{{ route('penerimaan-piutang-toko.cetak', $p->no_piutang) }}"><i class="fas fa-print"></i></a>
+                                <a class="btn btn-danger btn-sm m-1" href="{{ route('penerimaan-piutang-toko.batal', $p->no_piutang) }}"><i class="fas fa-times"></i> </a>
                             </td>
+                            
+                            
                         </tr>
                         @endforeach
-                        
+
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
 </div>
 @endsection
 
