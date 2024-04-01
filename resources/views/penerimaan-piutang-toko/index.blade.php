@@ -63,11 +63,8 @@
                                 <a class="btn btn-warning btn-sm m-1" href="{{ route('penerimaan-piutang-toko.cetak', $p->no_piutang) }}"><i class="fas fa-print"></i></a>
                                 <a class="btn btn-danger btn-sm m-1" href="{{ route('penerimaan-piutang-toko.batal', $p->no_piutang) }}"><i class="fas fa-times"></i> </a>
                             </td>
-                            
-                            
                         </tr>
                         @endforeach
-
                     </tbody>
                 </table>
             </div>
