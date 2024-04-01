@@ -41,13 +41,14 @@
                     </thead>
 
                     <tbody>
-
-                        @foreach($amount_toko as $kd_outlet => $test)
+                    @foreach($amount_toko as $kd_outlet => $amount)
                         <tr>
                             <td class="text-center">{{ $kd_outlet }}</td>
-                            <td class="text-right">{{ $test }}</td>
+                            <td class="text-left">{{ $map_invoice[$kd_outlet]->first()->nm_outlet }}</td>
+                            <td class="text-left">{{ $amount }}</td>
                         </tr>
-                        @endforeach
+                    @endforeach
+
                     </tbody>
                 </table>
             </div>

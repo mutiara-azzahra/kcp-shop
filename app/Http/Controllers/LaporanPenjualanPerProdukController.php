@@ -34,7 +34,7 @@ class LaporanPenjualanPerProdukController extends Controller
                         $query->select('part_no')
                             ->from('master_part')
                             ->where('level_2', 'IC2');
-                    })->value('nominal_total');
+                    })->sum('nominal_total');
                 });
             });
 
@@ -72,6 +72,6 @@ class LaporanPenjualanPerProdukController extends Controller
 
         }
 
-        return view('laporan-penjualan-produk.view', compact('amount_toko', 'tanggal_awal', 'tanggal_akhir'));
+        return view('laporan-penjualan-produk.view', compact('amount_toko', 'map_invoice','tanggal_awal', 'tanggal_akhir'));
     }
 }
