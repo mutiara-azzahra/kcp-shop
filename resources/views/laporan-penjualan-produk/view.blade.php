@@ -48,10 +48,9 @@
                             <td class="text-center">{{ $nama_produk }}</td>
                             <td class="text-center">{{ $kd_outlet }}</td>
                             <td class="text-left">{{ $map_invoice[$kd_outlet]->first()->nm_outlet }}</td>
-                            <td class="text-right">{{ $amount }}</td>
+                            <td class="text-right">{{ number_format($amount, 0, ',', ',') }}</td>
                         </tr>
                     @endforeach
-
                     </tbody>
                 </table>
             </div>
