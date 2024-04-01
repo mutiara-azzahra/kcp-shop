@@ -426,6 +426,11 @@
                             <p>Laporan Penjualan Per Produk</p>
                           </a>
                       </li>
+                      <li class="nav-item">
+                          <a href="{{ route('laporan-kelompok-produk.index')}}" class="nav-link">
+                            <p>Laporan Penjualan Kelompok Produk</p>
+                          </a>
+                      </li>
                     </ul>
                 </li>
               </ul>
