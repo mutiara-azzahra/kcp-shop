@@ -22,7 +22,16 @@ class LaporanPenjualanPerProdukController extends Controller
         $tanggal_akhir      = $date->addDay()->toDateString();
 
         $invoices = TransaksiInvoiceHeader::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
-        ->get();
+            ->get();
+
+        $produkNames = [
+            1 => 'ICHIDAI',
+            2 => 'BRIO',
+            3 => 'LIQUID',
+            4 => 'ALL PRODUK',
+        ];
+        
+        $nama_produk = $produkNames[$produk] ?? 'Unknown';
 
         $map_invoice = $invoices->groupBy('kd_outlet');
 
@@ -72,6 +81,6 @@ class LaporanPenjualanPerProdukController extends Controller
 
         }
 
-        return view('laporan-penjualan-produk.view', compact('amount_toko', 'map_invoice','tanggal_awal', 'tanggal_akhir'));
+        return view('laporan-penjualan-produk.view', compact('amount_toko', 'map_invoice', 'nama_produk' ,'tanggal_awal', 'tanggal_akhir'));
     }
 }
