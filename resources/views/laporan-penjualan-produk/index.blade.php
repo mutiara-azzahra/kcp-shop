@@ -25,12 +25,12 @@
             Pilih Periode
         </div>
         <div class="card-body">
-            <form action="{{ route('laporan-penjualan-toko.view') }}"  method="POST">
+            <form action="{{ route('laporan-penjualan-produk.view') }}"  method="POST">
                 @csrf
                 <div class="row">
                     <div class="form-group col-12">
                         <strong>Produk</strong><br>
-                        <select name="kd_outlet" class="form-control mb-2 my-select" id="toko-selection">     
+                        <select name="produk" class="form-control mb-2 my-select" id="toko-selection">     
                             <option value="">-- Pilih Produk --</option>
                             <option value="1">ICHIDAI</option>
                             <option value="2">BRIO</option>

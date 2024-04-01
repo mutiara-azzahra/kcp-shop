@@ -24,54 +24,54 @@ class LaporanPenjualanPerProdukController extends Controller
         $invoices = TransaksiInvoiceHeader::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
         ->get();
 
+        $map_invoice = $invoices->groupBy('kd_outlet');
+
         if($produk == 1){
 
-            $getAmount = 0;
-
-            //ICHIDAI
-            foreach ($invoices as $i) {
-                $getAmount += $i->details_invoice()->whereIn('part_no', function ($query) {
-                    $query->select('part_no')
-                        ->from('master_part')
-                        ->where('level_2', 'IC2');
+            $amount_toko = $map_invoice->map(function ($outletInvoices) {
+                return $outletInvoices->sum(function ($invoice) {
+                    return $invoice->details_invoice()->whereIn('part_no', function ($query) {
+                        $query->select('part_no')
+                            ->from('master_part')
+                            ->where('level_2', 'IC2');
                     })->sum('nominal_total');
-            }
+                });
+            });
 
         } elseif($produk == 2) {
 
-            $getAmount    = 0;
-        
-            //BRIO
-            foreach ($invoices as $i) {
-                $getAmount += $i->details_invoice()->whereIn('part_no', function ($query) {
-                    $query->select('part_no')
-                        ->from('master_part')
-                        ->where('level_2', 'BP2');
+            $amount_toko = $map_invoice->map(function ($outletInvoices) {
+                return $outletInvoices->sum(function ($invoice) {
+                    return $invoice->details_invoice()->whereIn('part_no', function ($query) {
+                        $query->select('part_no')
+                            ->from('master_part')
+                            ->where('level_2', 'BP2');
                     })->sum('nominal_total');
-            }
+                });
+            });
+
         } elseif($produk == 3){
 
-            $getAmount  = 0;
-        
-            //LIQUID
-            foreach ($invoices as $i) {
-                $getAmount += $i->details_invoice()->whereIn('part_no', function ($query) {
-                    $query->select('part_no')
-                        ->from('master_part')
-                        ->where('level_2', 'LQ2');
+            $amount_toko = $map_invoice->map(function ($outletInvoices) {
+                return $outletInvoices->sum(function ($invoice) {
+                    return $invoice->details_invoice()->whereIn('part_no', function ($query) {
+                        $query->select('part_no')
+                            ->from('master_part')
+                            ->where('level_2', 'LQ2');
                     })->sum('nominal_total');
-            }
+                });
+            });
+
         } elseif($produk == 4){
 
-            $getAmount  = 0;
-        
-            //LIQUID
-            foreach ($invoices as $i) {
-                $getAmount += $i->details_invoice()->sum('nominal_total');
-            }
+            $amount_toko = $map_invoice->map(function ($outletInvoices) {
+                return $outletInvoices->sum(function ($invoice) {
+                    return $invoice->details_invoice()->sum('nominal_total');
+                });
+            });
 
         }
 
-        return view('laporan-penjualan-produk.view', compact('getAmount', 'tanggal_awal', 'tanggal_akhir'));
+        return view('laporan-penjualan-produk.view', compact('amount_toko', 'tanggal_awal', 'tanggal_akhir'));
     }
 }

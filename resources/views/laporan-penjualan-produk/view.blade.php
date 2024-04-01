@@ -33,17 +33,16 @@
                 <table class="table table-hover table-bordered table-sm bg-light" id="example1">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
-                            <th class="text-center">ICHIDAI</th>
-                            <th class="text-center">BRIO</th>
-                            <th class="text-center">LIQUID</th>
+                            <th class="text-center">Kode Outlet</th>
+                            <th class="text-center">Nama Outlet</th>
+                            <th class="text-center">Amount</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr>
-                            <td class="text-left">{{ $getAmountIchidai }}</td>
-                            <td class="text-left">{{ $getAmountBrio }}</td>
-                            <td class="text-left">{{ $getAmountLiquid }}</td>
+                            
+                            <td class="text-left">{{ $getAmount }}</td>
                         </tr>
                     </tbody>
                 </table>
