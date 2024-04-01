@@ -28,13 +28,13 @@
             <form action="{{ route('laporan-penjualan-toko.view') }}"  method="POST">
                 @csrf
                 <div class="row">
-                    <div class="form-group">
+                    <div class="form-group col-12">
                         <strong>Produk</strong><br>
                         <select name="kd_outlet" class="form-control mb-2 my-select" id="toko-selection">     
                             <option value="">-- Pilih Produk --</option>
-                            @foreach($all_toko as $s)
-                                <option value="{{ $s->kd_outlet }}">{{ $s->kd_outlet }} / {{ $s->nm_outlet }}</option>
-                            @endforeach
+                            <option value="1">ICHIDAI</option>
+                            <option value="2">BRIO</option>
+                            <option value="3">LIQUID</option>
                         </select>
                     </div>
                     <div class="form-group col-6">
