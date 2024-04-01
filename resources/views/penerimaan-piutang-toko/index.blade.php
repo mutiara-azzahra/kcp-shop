@@ -47,23 +47,10 @@
                         $no=1;
                         @endphp
 
-                        @foreach($kas_masuk as $p)
+                        @foreach($piutang_header as $p)
                         <tr>
                             <td class="text-left">{{ $no++ }}</td>
-                            <td class="text-left">{{ $p->no_kas_masuk }}</td>
-                            <td class="text-center">{{ $p->kd_outlet }}</td>
-                            <td class="text-left">{{ $p->outlet->nm_outlet }}</td>
-                            <td class="text-center">{{ $p->pembayaran_via }}</td>
-                            <td class="text-center">-</td>
-                            <td class="text-right">{{ number_format($p->nominal, 0, '.', ',') }}</td>
-                            @if($p->flag_potong_bonus == 'Y')
-                            <td class="text-center">Ya</td>
-                            <td class="text-center">{{ number_format($p->nominal_bonus, 0, '.', ',') }}</td>
-                            @else
-                            <td class="text-center">Tidak</td>
-                            <td class="text-center">-</td>
-                            @endif
-                            <td class="text-center"><a class="btn btn-warning btn-sm m-1" href="{{ route('piutang-toko.tanda-terima', $p->no_kas_masuk )}}" target="_blank"><i class="fas fa-folder-open"></i></a></td>
+                            <td class="text-left">{{ $p }}</td>
                         </tr>
                         @endforeach
 

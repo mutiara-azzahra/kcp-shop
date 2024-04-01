@@ -366,7 +366,7 @@
                           </a>
                       </li>
                       <li class="nav-item">
-                          <a href="{{ route('pembayaran-toko.index')}}" class="nav-link">
+                          <a href="{{ route('penerimaan-piutang-toko.index')}}" class="nav-link">
                             <p>Pembayaran Toko</p>
                           </a>
                       </li>
