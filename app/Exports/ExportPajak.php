@@ -26,7 +26,7 @@ class ExportPajak implements FromCollection, WithCustomCsvSettings
 
     public function collection()
     {
-        $headers = TransaksiInvoiceHeader::whereBetween('created_at', [$this->tanggal_awal, $this->tanggal_akhir])->get();
+        $headers = TransaksiInvoiceHeader::whereBetween('created_at', [$this->tanggal_awal, $this->tanggal_akhir])->where('flag_batal', 'N')->get();
         $data = [];
 
         $data = [
