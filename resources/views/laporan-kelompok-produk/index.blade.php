@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="form-group col-12">
                         <strong>Produk</strong><br>
-                        <select name="produk" class="form-control mb-2 my-select" id="toko-selection">     
+                        <select name="produk" class="form-control mb-2" id="toko-selection">     
                             <option value="">-- Pilih Produk --</option>
                             <option value="1">ICHIDAI</option>
                             <option value="2">BRIO</option>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="form-group col-12">
                         <strong>Kelompok Produk</strong><br>
-                        <select name="kelompok_produk" class="form-control mb-2 my-select" id="toko-selection">     
+                        <select name="kelompok_produk" class="form-control mb-2" id="toko-selection">     
                             <option value="">-- Pilih Kelompok Produk --</option>
                             <option value="1">ICHIDAI</option>
                             <option value="2">BRIO</option>
@@ -71,5 +71,49 @@
 @endsection
 
 @section('script')
+
+<script>
+    $('.my-select-1').select2({
+        width: '100%'
+    });
+</script>
+
+
+<script>
+    let getKecamatan = async () => {
+        const id_kota =  $('#id_kota').val();
+        const endpoint = '/api/kecamatan/'+id_kota
+
+        const response = await axios.get('/api/kecamatan/'+ id_kota).catch(error => console.log(error));
+        console.log(response.data)
+        const data_kecamatan = response.data
+        const kecamatanEl = $('#id_kecamatan')
+
+        kecamatanEl.children('option:not(:first)').remove();
+        
+        data_kecamatan.map((data) => {
+            kecamatanEl.append(
+                '<option value="'+data.id_kecamatan+'">'+data.nama_kecamatan+'</option>'
+            )
+        })
+    }
+
+    let getKelurahan = async () => {
+    const id_kecamatan =  $('#id_kecamatan').val();
+    const endpoint = '/api/kelurahan/'+id_kecamatan
+
+        const response = await axios.get('/api/kelurahan/'+id_kecamatan).catch(error => console.log(error));
+        const data_kelurahan = response.data
+        const kelurahanEl = $('#id_kelurahan')
+
+        kelurahanEl.children('option:not(:first)').remove();
+
+        data_kelurahan.map((data) => {
+            kelurahanEl.append(
+                '<option value="'+data.id_kelurahan+'">'+data.nama_kelurahan+'</option>'
+            )
+        })
+    }
+</script>
 
 @endsection
