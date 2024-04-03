@@ -22,5 +22,9 @@ class MasterSubProduk extends Model
         'created_by', 
         'updated_by'
     ];
-    
+
+    public function produk(){
+        return $this->hasOne(MasterProduk::class, 'kode_produk', 'kode_produk');
+    }
+
 }

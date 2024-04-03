@@ -38,7 +38,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Nama Sub Produk</strong>
-                            <input type="text" name="nama_produk" class="form-control" placeholder="Isi Nama Sub Produk">
+                            <input type="text" name="keterangan" class="form-control" placeholder="Isi Nama Sub Produk">
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -47,7 +47,7 @@
                             <select name="kode_produk" class="form-control mr-2 my-select">
                                 <option value="">-- Pilih --</option>
                                 @foreach($master_produk as $k)
-                                <option value="{{ $k->kode_produk }}">{{ $k->kode_produk }} - {{ $k->produk->where('status', 'A')->first()->keterangan }}</option>
+                                <option value="{{ $k->kode_produk }}">{{ $k->kode_produk }} - {{ $k->keterangan }}</option>
                                 @endforeach
                             </select>
                         </div>

@@ -44,10 +44,12 @@
                     <div class="col-md-12">
                         <div class="form-group mb-2">
                             <strong>Kode Produk</strong>
-                            <select name="kode_produk" class="form-control my-select" value="{{ $master_sub_produk_id->kode_produk }}">
+                            <select name="kode_produk" class="form-control my-select">
                                 <option value="">---Pilih Kode Produk--</option>
                                 @foreach($master_produk as $k)
-                                    <option value="{{ $k->kode_produk }}" {{ $k->kode_produk == $k->kode_produk ? 'selected' : '' }}>{{ $k->kode_produk }} - {{ $k->produk->keterangan }}</option>
+                                    <option value="{{ $k->kode_produk }}" {{ $master_sub_produk_id->kode_produk == $k->kode_produk ? 'selected' : '' }}>
+                                        {{ $k->kode_produk }} - {{ $k->keterangan }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>

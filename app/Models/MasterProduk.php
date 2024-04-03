@@ -23,7 +23,7 @@ class MasterProduk extends Model
     ];
 
     public function produk(){
-        return $this->hasMany(MasterProduk::class, 'kode_produk', 'kode_produk');
+        return $this->hasMany(MasterSubProduk::class, 'kode_produk', 'kode_produk');
     }
 
 }
