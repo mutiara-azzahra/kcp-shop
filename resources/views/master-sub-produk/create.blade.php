@@ -5,7 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
              <div class="float-left">
-                <h4>Tambah Master Part</h4>
+                <h4>Tambah Master Sub Produk</h4>
             </div>
             <div class="float-right">
                     <a class="btn btn-success" href="{{ route('master-sub-produk.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
@@ -47,7 +47,7 @@
                             <select name="kode_produk" class="form-control mr-2 my-select">
                                 <option value="">-- Pilih --</option>
                                 @foreach($master_produk as $k)
-                                <option value="{{ $k->kode_produk }}">{{ $k->kode_produk }} - {{ $k->produk->keterangan }}</option>
+                                <option value="{{ $k->kode_produk }}">{{ $k->kode_produk }} - {{ $k->produk->where('status', 'A')->first()->keterangan }}</option>
                                 @endforeach
                             </select>
                         </div>

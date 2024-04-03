@@ -5,7 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
              <div class="float-left">
-                <h4>Ubah Master Part</h4>
+                <h4>Ubah Master Sub Produk</h4>
             </div>
             <div class="float-right">
                     <a class="btn btn-success" href="{{ route('master-sub-produk.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>

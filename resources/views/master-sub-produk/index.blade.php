@@ -5,7 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
              <div class="float-left">
-                <h4>Master Produk</h4>
+                <h4>Master Sub Produk</h4>
             </div>
             <div class="float-right">
                 <a class="btn btn-success" href="{{ route('master-sub-produk.create') }}"><i class="fas fa-plus"></i> Tambah Produk</a>
@@ -42,7 +42,7 @@
                         $no=1;
                         @endphp
 
-                        @foreach($master_produk as $p)
+                        @foreach($master_sub_produk as $p)
                         <tr>
                             <td class="text-center">{{ $no++ }}.</td>
                             <td class="text-center">{{ $p->sub_produk }}</td>

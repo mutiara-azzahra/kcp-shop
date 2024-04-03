@@ -21,4 +21,9 @@ class MasterProduk extends Model
         'created_by', 
         'updated_by'
     ];
+
+    public function produk(){
+        return $this->hasMany(MasterProduk::class, 'kode_produk', 'kode_produk');
+    }
+
 }
