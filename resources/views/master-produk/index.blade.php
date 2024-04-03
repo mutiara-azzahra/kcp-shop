@@ -8,7 +8,7 @@
                 <h4>Master Produk</h4>
             </div>
             <div class="float-right">
-                <a class="btn btn-success" href="{{ route('master-produk.create') }}"><i class="fas fa-plus"></i> Tambah Part</a>
+                <a class="btn btn-success" href="{{ route('master-produk.create') }}"><i class="fas fa-plus"></i> Tambah Produk</a>
             </div>
         </div>
     </div>
@@ -31,6 +31,7 @@
                         <tr style="background-color: #6082B6; color:white">
                             <th class="text-center">No</th>
                             <th class="text-center">Nama Produk</th>
+                            <th class="text-center">Keterangan</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -39,10 +40,11 @@
                         $no=1;
                         @endphp
 
-                        @foreach($master_part as $p)
+                        @foreach($master_produk as $p)
                         <tr>
                             <td class="text-center">{{ $no++ }}.</td>
-                            <td class="text-left">{{ $p->nama_produk }}</td>
+                            <td class="text-center">{{ $p->kode_produk }}</td>
+                            <td class="text-left">{{ $p->keterangan }}</td>
                             <td class="text-center"> 
                                 <form action="{{ route('master-produk.delete', $p->id) }}" method="POST" id="form_delete_{{ $p->id }}" data-id="{{ $p->id }}">                                       
                                     <a class="btn btn-info btn-sm" href="{{ route('master-produk.edit',$p->id) }}"><i class="fas fa-edit"></i></a>
@@ -55,7 +57,6 @@
                             </td>
                         </tr>
                         @endforeach
-                        
                     </tbody>
                 </table>
             </div>

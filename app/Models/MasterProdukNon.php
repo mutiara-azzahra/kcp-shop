@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MasterProduk extends Model
+class MasterProdukNon extends Model
 {
     use HasFactory;
 
-    protected $table = 'master_produk_part';
+    protected $table = 'master_produk';
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'kode_produk',
-        'keterangan',
+        'nama_part',
         'status',
         'create_at',
         'update_at',

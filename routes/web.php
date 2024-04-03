@@ -8,6 +8,7 @@ use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\InventarisController;
 use App\Http\Controllers\MasterRoleController;
 use App\Http\Controllers\MasterPartController;
+use App\Http\Controllers\MasterProdukController;
 use App\Http\Controllers\MasterPartKelompokController;
 use App\Http\Controllers\MasterPartKategoriController;
 use App\Http\Controllers\MasterPartProdukController;
@@ -127,6 +128,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/master-part/show/{id}', [MasterPartController::class, 'show'])->name('master-part.show');
     Route::post('/master-part/store', [MasterPartController::class, 'store'])->name('master-part.store');
     Route::post('/master-part/update/{id}', [MasterPartController::class, 'update'])->name('master-part.update');
+    
+    //MASTER PART
+    Route::get('/master-produk', [MasterProdukController::class, 'index'])->name('master-produk.index');
+    Route::get('/master-produk/create', [MasterProdukController::class, 'create'])->name('master-produk.create');
+    Route::get('/master-produk/edit/{id}', [MasterProdukController::class, 'edit'])->name('master-produk.edit');
+    Route::delete('/master-produk/delete/{id}', [MasterProdukController::class, 'delete'])->name('master-produk.delete');
+    Route::get('/master-produk/show/{id}', [MasterProdukController::class, 'show'])->name('master-produk.show');
+    Route::post('/master-produk/store', [MasterProdukController::class, 'store'])->name('master-produk.store');
+    Route::post('/master-produk/update/{id}', [MasterProdukController::class, 'update'])->name('master-produk.update');
 
     //MASTER PART DISKON
     Route::get('/master-diskon', [MasterDiskonPartController::class, 'index'])->name('master-diskon.index');

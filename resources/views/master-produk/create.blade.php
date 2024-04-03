@@ -30,8 +30,14 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
+                                <strong>Kode Produk</strong>
+                                <input type="text" name="nama_produk" class="form-control" placeholder="Isi Kode Produk">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
                                 <strong>Nama Produk</strong>
-                                <input type="text" name="nama_produk" class="form-control" placeholder="contoh: 12-ABCD-XD">
+                                <input type="text" name="keterangan" class="form-control" placeholder="Isi Nama Produk">
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">

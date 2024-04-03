@@ -31,8 +31,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <strong>Part No</strong>
-                            <input type="text" name="nama_produk" class="form-control" value="{{ $master_produk_id->nama_produk }}" readonly>
+                            <strong>Kode Produk</strong>
+                            <input type="text" name="kode_produk" class="form-control" value="{{ $master_produk_id->nama_produk }}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <strong>Nama Produk</strong>
+                            <input type="text" name="keterangan" class="form-control" value="{{ $master_produk_id->keterangan }}" readonly>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
