@@ -18,9 +18,7 @@ class MasterProdukController extends Controller
 
     public function create(){
 
-        $kode_rak = MasterKodeRak::where('status', 'A')->get();
-
-        return view('master-produk.create', compact('kode_rak'));
+        return view('master-produk.create');
     }
 
     public function show($id){
@@ -50,7 +48,6 @@ class MasterProdukController extends Controller
     public function edit($id)
     {
         $master_produk_id  = MasterProduk::findOrFail($id);
-        $kode_rak          = MasterKodeRak::where('status', 'A')->get();
 
         return view('master-produk.update',compact('master_produk_id', 'kode_rak'));
     }
