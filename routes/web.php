@@ -9,6 +9,7 @@ use App\Http\Controllers\InventarisController;
 use App\Http\Controllers\MasterRoleController;
 use App\Http\Controllers\MasterPartController;
 use App\Http\Controllers\MasterProdukController;
+use App\Http\Controllers\MasterSubProdukController;
 use App\Http\Controllers\MasterPartKelompokController;
 use App\Http\Controllers\MasterPartKategoriController;
 use App\Http\Controllers\MasterPartProdukController;
@@ -129,7 +130,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/master-part/store', [MasterPartController::class, 'store'])->name('master-part.store');
     Route::post('/master-part/update/{id}', [MasterPartController::class, 'update'])->name('master-part.update');
     
-    //MASTER PART
+    //MASTER PRODUK
     Route::get('/master-produk', [MasterProdukController::class, 'index'])->name('master-produk.index');
     Route::get('/master-produk/create', [MasterProdukController::class, 'create'])->name('master-produk.create');
     Route::get('/master-produk/edit/{id}', [MasterProdukController::class, 'edit'])->name('master-produk.edit');
@@ -137,6 +138,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/master-produk/show/{id}', [MasterProdukController::class, 'show'])->name('master-produk.show');
     Route::post('/master-produk/store', [MasterProdukController::class, 'store'])->name('master-produk.store');
     Route::post('/master-produk/update/{id}', [MasterProdukController::class, 'update'])->name('master-produk.update');
+
+    //MASTER SUB PRODUK
+    Route::get('/master-sub-produk', [MasterSubProdukController::class, 'index'])->name('master-sub-produk.index');
+    Route::get('/master-sub-produk/create', [MasterSubProdukController::class, 'create'])->name('master-sub-produk.create');
+    Route::get('/master-sub-produk/edit/{id}', [MasterSubProdukController::class, 'edit'])->name('master-sub-produk.edit');
+    Route::delete('/master-sub-produk/delete/{id}', [MasterSubProdukController::class, 'delete'])->name('master-sub-produk.delete');
+    Route::get('/master-sub-produk/show/{id}', [MasterSubProdukController::class, 'show'])->name('master-sub-produk.show');
+    Route::post('/master-sub-produk/store', [MasterSubProdukController::class, 'store'])->name('master-sub-produk.store');
+    Route::post('/master-sub-produk/update/{id}', [MasterSubProdukController::class, 'update'])->name('master-sub-produk.update');
 
     //MASTER PART DISKON
     Route::get('/master-diskon', [MasterDiskonPartController::class, 'index'])->name('master-diskon.index');
