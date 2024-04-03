@@ -24,45 +24,44 @@
     @endif
 
     <div class="card" style="padding: 10px;">
-            <div class="card-body">
-                <div class="col-lg-12">
-                    <form action="{{ route('master-sub-produk.store') }}" method="POST">
-                    @csrf
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <strong>Kode Sub Produk</strong>
-                                <input type="text" name="kode_sub_produk" class="form-control" placeholder="Isi Kode Produk">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <strong>Nama Sub Produk</strong>
-                                <input type="text" name="nama_produk" class="form-control" placeholder="Isi Nama Sub Produk">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <strong>Pilih Produk</strong>
-                                <select name="kode_produk" class="form-control mr-2 my-select">
-                                    <option value="">-- Pilih --</option>
-                                    @foreach($master_produk as $k)
-                                    <option value="{{ $k->kode_produk }}">{{ $k->kode_produk }} - {{ $k->keterangan }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <div class="float-right">
-                                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Simpan Data</button>                            
-                            </div>
+        <div class="card-body">
+            <div class="col-lg-12">
+                <form action="{{ route('master-sub-produk.store') }}" method="POST">
+                @csrf
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <strong>Kode Sub Produk</strong>
+                            <input type="text" name="sub_produk" class="form-control" placeholder="Isi Kode Produk">
                         </div>
                     </div>
-                </form>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <strong>Nama Sub Produk</strong>
+                            <input type="text" name="nama_produk" class="form-control" placeholder="Isi Nama Sub Produk">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <strong>Pilih Produk</strong>
+                            <select name="kode_produk" class="form-control mr-2 my-select">
+                                <option value="">-- Pilih --</option>
+                                @foreach($master_produk as $k)
+                                <option value="{{ $k->kode_produk }}">{{ $k->kode_produk }} - {{ $k->produk->keterangan }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                        <div class="float-right">
+                            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Simpan Data</button>                            
+                        </div>
+                    </div>
                 </div>
+            </form>
             </div>
+        </div>
     </div>
-
 </div>
 @endsection
 

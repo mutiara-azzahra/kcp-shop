@@ -8,7 +8,7 @@
                 <h4>Ubah Master Part</h4>
             </div>
             <div class="float-right">
-                    <a class="btn btn-success" href="{{ route('master-produk.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
+                    <a class="btn btn-success" href="{{ route('master-sub-produk.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
             </div>
         </div>
     </div>
@@ -26,19 +26,30 @@
     <div class="card" style="padding: 10px;">
         <div class="card-body">
             <div class="col-lg-12">
-                <form action="{{ route('master-produk.update', $master_sub_produk_id->id ) }}" method="POST">
+                <form action="{{ route('master-sub-produk.update', $master_sub_produk_id->id ) }}" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Kode Produk</strong>
-                            <input type="text" name="kode_produk" class="form-control" value="{{ $master_sub_produk_id->nama_produk }}" readonly>
+                            <input type="text" name="sub_produk" class="form-control" value="{{ $master_sub_produk_id->sub_produk }}" readonly>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Nama Produk</strong>
                             <input type="text" name="keterangan" class="form-control" value="{{ $master_sub_produk_id->keterangan }}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group mb-2">
+                            <strong>Kode Produk</strong>
+                            <select name="kode_produk" class="form-control my-select" value="{{ $master_sub_produk_id->kode_produk }}">
+                                <option value="">---Pilih Kode Produk--</option>
+                                @foreach($master_produk as $k)
+                                    <option value="{{ $k->kode_produk }}" {{ $k->kode_produk == $k->kode_produk ? 'selected' : '' }}>{{ $k->kode_produk }} - {{ $k->produk->keterangan }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">

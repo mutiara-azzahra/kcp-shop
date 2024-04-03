@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class MasterSubProduk extends Model
 {
     use HasFactory;
+
+    protected $table = 'master_sub_produk_part';
+    protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'sub_produk',
+        'keterangan',
+        'kode_produk',
+        'status',
+        'create_at',
+        'update_at',
+        'created_by', 
+        'updated_by'
+    ];
 }
