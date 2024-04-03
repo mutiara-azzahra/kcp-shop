@@ -176,6 +176,11 @@
                       </a>
                   </li>
                   <li class="nav-item">
+                      <a href="{{ route('master-sub-produk.index')}}" class="nav-link">
+                        <p>Sub Produk</p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
                       <a href="{{ route('master-diskon.index')}}" class="nav-link">
                         <p>Part Diskon</p>
                       </a>
