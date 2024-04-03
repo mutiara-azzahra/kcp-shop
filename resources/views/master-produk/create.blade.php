@@ -32,7 +32,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <strong>Kode Produk</strong>
-                                <input type="text" name="nama_produk" class="form-control" placeholder="Isi Kode Produk">
+                                <input type="text" name="kode_produk" class="form-control" placeholder="Isi Kode Produk">
                             </div>
                         </div>
                         <div class="col-md-12">

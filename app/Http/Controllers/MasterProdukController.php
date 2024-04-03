@@ -49,7 +49,7 @@ class MasterProdukController extends Controller
     {
         $master_produk_id  = MasterProduk::findOrFail($id);
 
-        return view('master-produk.update',compact('master_produk_id', 'kode_rak'));
+        return view('master-produk.update',compact('master_produk_id'));
     }
 
     public function delete($id)

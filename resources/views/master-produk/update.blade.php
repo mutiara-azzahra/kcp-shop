@@ -32,13 +32,13 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Kode Produk</strong>
-                            <input type="text" name="kode_produk" class="form-control" value="{{ $master_produk_id->nama_produk }}" readonly>
+                            <input type="text" name="kode_produk" class="form-control" value="{{ $master_produk_id->kode_produk }}">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Nama Produk</strong>
-                            <input type="text" name="keterangan" class="form-control" value="{{ $master_produk_id->keterangan }}" readonly>
+                            <input type="text" name="keterangan" class="form-control" value="{{ $master_produk_id->keterangan }}">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
