@@ -18,7 +18,6 @@ class LaporanPenjualanKelompokProdukController extends Controller
 
     public function api($id)
     {
-
         $data = MasterSubProduk::where('kode_produk', $id)->get();
 
         return $data;

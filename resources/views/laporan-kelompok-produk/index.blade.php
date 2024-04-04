@@ -31,10 +31,10 @@
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Produk</strong>
-                            <select name="kode_produk" class="form-control" id="kode_produk" onchange="getSubProduk()">
+                            <select name="kode_produk" class="form-control my-select" id="kode_produk" onchange="getSubProduk()">
                                 <option value="">---Pilih Produk--</option>
                                 @foreach($all_produk as $k)
-                                    <option value=" {{ $k->kode_produk }}"> {{ $k->keterangan }} </option>
+                                    <option value="{{ $k->kode_produk }}"> {{ $k->keterangan }} </option>
                                 @endforeach
                             </select>
                         </div>
@@ -42,7 +42,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Sub Produk</strong>
-                            <select name="sub_produk" class="form-control" id="sub_produk" >
+                            <select name="sub_produk" class="form-control my-select" id="sub_produk" >
                                 <option value="">---Pilih Sub Produk--</option>
                             </select>
                         </div>
@@ -79,7 +79,6 @@
         const endpoint = '/api/produk/'+kode_produk
 
         const response = await axios.get('/api/produk/'+ kode_produk).catch(error => console.log(error));
-        console.log(response.data)
         const data_sub_produk = response.data
         const subProdukEl = $('#sub_produk')
 
