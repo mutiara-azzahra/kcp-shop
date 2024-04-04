@@ -16,13 +16,13 @@ class LaporanPenjualanKelompokProdukController extends Controller
         return view('laporan-kelompok-produk.index', compact('all_produk'));
     }
 
-    public function api($kode_produk)
-{
-    // Assuming 'kode_produk' is a column name in your database table
-    $data = MasterSubProduk::where('kode_produk', $kode_produk)->get();
+    public function api($id)
+    {
 
-    return json_encode($data);
-}
+        $data = MasterSubProduk::where('kode_produk', $id)->get();
+
+        return json_encode($data);
+    }
 
     public function view(Request $request){
 

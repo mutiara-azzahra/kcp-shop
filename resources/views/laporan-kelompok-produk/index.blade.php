@@ -72,9 +72,6 @@
 @section('script')
 
 <script>
-    $('.my-select-1').select2({
-        width: '100%'
-    });
     
     let getSubProduk = async () => {
         const kode_produk =  $('#kode_produk').val();
