@@ -24,7 +24,7 @@ class MasterSubProduk extends Model
     ];
 
     public function produk(){
-        return $this->hasOne(MasterProduk::class, 'kode_produk', 'kode_produk');
+        return $this->belongsTo(MasterProduk::class, 'kode_produk', 'kode_produk');
     }
 
 }
