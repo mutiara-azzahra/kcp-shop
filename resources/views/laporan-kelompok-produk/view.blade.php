@@ -5,7 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
             <div class="float-left">
-                <h4>Laporan Penjualan Kelompok Produk <b>{{ $nama_produk }}</b></h4>
+                <h4>Laporan Penjualan Kelompok Produk <b>{{ $nama_sub_produk->keterangan }}</b></h4>
                 <h6>{{ Carbon\Carbon::parse($tanggal_awal)->format('d-m-Y') }} s/d {{ Carbon\Carbon::parse($tanggal_akhir)->format('d-m-Y') }}</h6>
             </div>
             <div class="float-right">
@@ -45,7 +45,7 @@
                     <tbody>
                     @foreach($amount_toko as $kd_outlet => $amount)
                         <tr>
-                            <td class="text-center">{{ $nama_produk }}</td>
+                            <td class="text-center">{{ $nama_sub_produk->keterangan }}</td>
                             <td class="text-center">{{ $kd_outlet }}</td>
                             <td class="text-left">{{ $map_invoice[$kd_outlet]->first()->nm_outlet }}</td>
                             <td class="text-right">{{ number_format($amount, 0, ',', ',') }}</td>

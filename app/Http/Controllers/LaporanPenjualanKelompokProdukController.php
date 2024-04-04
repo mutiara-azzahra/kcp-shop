@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\MasterProduk;
 use App\Models\MasterSubProduk;
+use App\Models\TransaksiInvoiceHeader;
 
 class LaporanPenjualanKelompokProdukController extends Controller
 {
@@ -25,7 +26,7 @@ class LaporanPenjualanKelompokProdukController extends Controller
 
     public function view(Request $request){
 
-        $produk             = $request->produk;
+        $sub_produk         = $request->sub_produk;
         $tanggal_awal       = $request->tanggal_awal;
         $tanggal_akhir_req  = $request->tanggal_akhir;
 
@@ -35,39 +36,23 @@ class LaporanPenjualanKelompokProdukController extends Controller
         $invoices = TransaksiInvoiceHeader::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
             ->get();
 
-        $produkNames = [
-            1 => 'ICHIDAI',
-            2 => 'BRIO',
-            3 => 'LIQUID',
-            4 => 'ALL PRODUK',
-        ];
-        
-        $nama_produk = $produkNames[$produk] ?? 'Unknown';
-
         $map_invoice = $invoices->groupBy('kd_outlet');
 
-        if($sub_produk == 1){
 
-            $amount_toko = $map_invoice->map(function ($outletInvoices) {
-                return $outletInvoices->sum(function ($invoice) {
-                    return $invoice->details_invoice()->whereIn('part_no', function ($query) {
-                        $query->select('part_no')
-                            ->from('master_part')
-                            ->where('level_4', $level_4);
-                    })->sum('nominal_total');
-                });
+
+        $amount_toko = $map_invoice->map(function ($outletInvoices) use ($sub_produk) {
+            return $outletInvoices->sum(function ($invoice) use ($sub_produk) {
+                return $invoice->details_invoice()->whereIn('part_no', function ($query) use ($sub_produk) {
+                    $query->select('part_no')
+                        ->from('master_part')
+                        ->where('level_4', $sub_produk);
+                })->sum('nominal_total');
             });
+        });
 
-        } elseif($sub_produk == 2) {
+        $nama_sub_produk = MasterSubProduk::where('sub_produk', $sub_produk)->first();
 
-            $amount_toko = $map_invoice->map(function ($outletInvoices) {
-                return $outletInvoices->sum(function ($invoice) {
-                    return $invoice->details_invoice()->value('nominal_total');
-                });
-            });
 
-        }
-
-        return view('laporan-kelompok-produk.view', compact('amount_toko', 'map_invoice', 'nama_produk' ,'tanggal_awal', 'tanggal_akhir'));
+        return view('laporan-kelompok-produk.view', compact('amount_toko', 'map_invoice', 'nama_sub_produk','tanggal_awal', 'tanggal_akhir'));
     }
 }
