@@ -21,7 +21,7 @@ class LaporanPenjualanKelompokProdukController extends Controller
 
         $data = MasterSubProduk::where('kode_produk', $id)->get();
 
-        return json_encode($data);
+        return $data;
     }
 
     public function view(Request $request){
