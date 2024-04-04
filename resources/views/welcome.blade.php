@@ -670,6 +670,9 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- (Optional) Latest compiled and minified JavaScript translation files -->
   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script> -->
+
+  <!-- Axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   
   <!-- DataTables  & Plugins -->
   <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>

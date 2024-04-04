@@ -2,13 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\MasterProduk;
+use App\Models\MasterSubProduk;
 
 class LaporanPenjualanKelompokProdukController extends Controller
 {
     public function index(){
 
-        return view('laporan-kelompok-produk.index');
+        $all_produk = MasterProduk::where('status', 'A')->get();
+
+        return view('laporan-kelompok-produk.index', compact('all_produk'));
+    }
+
+
+    public function api($id)
+    {
+        $data = MasterSubProduk::where('kode_produk', $id)->where('status', 'A')->get();
+
+        return json_encode($data);
     }
 
     public function view(Request $request){

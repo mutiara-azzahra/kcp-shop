@@ -28,25 +28,24 @@
             <form action="{{ route('laporan-kelompok-produk.view') }}"  method="POST">
                 @csrf
                 <div class="row">
-                    <div class="form-group col-12">
-                        <strong>Produk</strong><br>
-                        <select name="produk" class="form-control mb-2" id="toko-selection">     
-                            <option value="">-- Pilih Produk --</option>
-                            <option value="1">ICHIDAI</option>
-                            <option value="2">BRIO</option>
-                            <option value="3">LIQUID</option>
-                            <option value="4">ALL PRODUK</option>
-                        </select>
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <strong>Produk</strong>
+                            <select name="kode_produk" class="form-control" id="kode_produk" onchange="getSubProduk()">
+                                <option value="">---Pilih Produk--</option>
+                                @foreach($all_produk as $k)
+                                    <option value=" {{ $k->kode_produk }}"> {{ $k->keterangan }} </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group col-12">
-                        <strong>Kelompok Produk</strong><br>
-                        <select name="kelompok_produk" class="form-control mb-2" id="toko-selection">     
-                            <option value="">-- Pilih Kelompok Produk --</option>
-                            <option value="1">ICHIDAI</option>
-                            <option value="2">BRIO</option>
-                            <option value="3">LIQUID</option>
-                            <option value="4">ALL KELOMPOK PRODUK</option>
-                        </select>
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <strong>Sub Produk</strong>
+                            <select name="sub_produk" class="form-control" id="sub_produk" >
+                                <option value="">---Pilih Sub Produk--</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group col-6">
                         <label for="">Tanggal Awal</label>
@@ -80,40 +79,24 @@
 
 
 <script>
-    let getKecamatan = async () => {
-        const id_kota =  $('#id_kota').val();
-        const endpoint = '/api/kecamatan/'+id_kota
+    let getSubProduk = async () => {
+        const kode_produk =  $('#kode_produk').val();
+        const endpoint = '/api/produk/'+kode_produk
 
-        const response = await axios.get('/api/kecamatan/'+ id_kota).catch(error => console.log(error));
+        const response = await axios.get('/api/produk/'+ kode_produk).catch(error => console.log(error));
         console.log(response.data)
-        const data_kecamatan = response.data
-        const kecamatanEl = $('#id_kecamatan')
+        const data_sub_produk = response.data
+        const subProdukEl = $('#sub_produk')
 
-        kecamatanEl.children('option:not(:first)').remove();
+        subProdukEl.children('option:not(:first)').remove();
         
-        data_kecamatan.map((data) => {
-            kecamatanEl.append(
-                '<option value="'+data.id_kecamatan+'">'+data.nama_kecamatan+'</option>'
+        data_sub_produk.map((data) => {
+            subProdukEl.append(
+                '<option value="'+data.sub_produk+'">'+data.keterangan+'</option>'
             )
         })
     }
 
-    let getKelurahan = async () => {
-    const id_kecamatan =  $('#id_kecamatan').val();
-    const endpoint = '/api/kelurahan/'+id_kecamatan
-
-        const response = await axios.get('/api/kelurahan/'+id_kecamatan).catch(error => console.log(error));
-        const data_kelurahan = response.data
-        const kelurahanEl = $('#id_kelurahan')
-
-        kelurahanEl.children('option:not(:first)').remove();
-
-        data_kelurahan.map((data) => {
-            kelurahanEl.append(
-                '<option value="'+data.id_kelurahan+'">'+data.nama_kelurahan+'</option>'
-            )
-        })
-    }
 </script>
 
 @endsection

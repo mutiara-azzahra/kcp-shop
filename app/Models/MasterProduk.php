@@ -9,7 +9,7 @@ class MasterProduk extends Model
 {
     use HasFactory;
 
-    protected $table = 'master_produk_part';
+    protected $table = 'master_produk';
     protected $primaryKey = 'id';
 
     protected $fillable = [
@@ -22,7 +22,7 @@ class MasterProduk extends Model
         'updated_by'
     ];
 
-    public function produk(){
+    public function sub_produk(){
         return $this->hasMany(MasterSubProduk::class, 'kode_produk', 'kode_produk');
     }
 

@@ -576,6 +576,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/retur/approve/{id}', [ReturController::class, 'approve'])->name('retur.approve');
     Route::get('/retur/history', [ReturController::class, 'history'])->name('retur.history');
 
+    //API
+
+    Route::get('/api/produk/{id}', [MasterSubProduk::class,'api'])->name('api.produk');
+
 });
 
 Route::get('/login', [LoginController::class, 'formLogin'])->name('login.formLogin');

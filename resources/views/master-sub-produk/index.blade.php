@@ -48,7 +48,7 @@
                             <td class="text-center">{{ $p->sub_produk }}</td>
                             <td class="text-left">{{ $p->keterangan }}</td>
                             <td class="text-center">{{ $p->kode_produk }}</td>
-                            <td class="text-left">{{ $p->produk->keterangan }}</td>
+                            <td class="text-center">{{ $p->produk->keterangan }}</td>
                             <td class="text-center"> 
                                 <form action="{{ route('master-sub-produk.delete', $p->id) }}" method="POST" id="form_delete_{{ $p->id }}" data-id="{{ $p->id }}">                                       
                                     <a class="btn btn-info btn-sm" href="{{ route('master-sub-produk.edit',$p->id) }}"><i class="fas fa-edit"></i></a>
