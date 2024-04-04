@@ -577,7 +577,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/retur/history', [ReturController::class, 'history'])->name('retur.history');
 
     //API
-    Route::get('/api/sub_produk/{id}', [LaporanPenjualanKelompokProdukController::class, 'api']);
+    Route::get('/api/produk/{id}', [LaporanPenjualanKelompokProdukController::class, 'api']);
 
 });
 

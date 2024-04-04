@@ -17,8 +17,8 @@ class MasterSubProduk extends Model
         'keterangan',
         'kode_produk',
         'status',
-        'create_at',
-        'update_at',
+        'created_at',
+        'updated_at',
         'created_by', 
         'updated_by'
     ];

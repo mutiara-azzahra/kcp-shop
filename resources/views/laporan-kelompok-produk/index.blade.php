@@ -78,10 +78,10 @@
     
     let getSubProduk = async () => {
         const kode_produk =  $('#kode_produk').val();
-        
-        const endpoint = '/api/sub_produk/'+kode_produk
 
-        const response = await axios.get('/api/sub_produk/'+ kode_produk).catch(error => console.log(error));
+        const endpoint = '/api/produk/'+kode_produk
+
+        const response = await axios.get('/api/produk/'+ kode_produk).catch(error => console.log(error));
         console.log(response.data)
         const data_sub_produk = response.data
         const subProdukEl = $('#sub_produk')
