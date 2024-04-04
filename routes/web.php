@@ -578,7 +578,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //API
 
-    Route::get('/api/produk/{id}', [MasterSubProduk::class,'api'])->name('api.produk');
+    Route::get('/api/produk/{id}', [LaporanPenjualanKelompokProdukController::class,'api'])->name('api.produk');
 
 });
 

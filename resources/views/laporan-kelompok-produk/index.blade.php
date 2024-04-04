@@ -75,13 +75,12 @@
     $('.my-select-1').select2({
         width: '100%'
     });
-</script>
-
-
-<script>
+    
     let getSubProduk = async () => {
         const kode_produk =  $('#kode_produk').val();
         const endpoint = '/api/produk/'+kode_produk
+
+        console.log(kode_produk)
 
         const response = await axios.get('/api/produk/'+ kode_produk).catch(error => console.log(error));
         console.log(response.data)
