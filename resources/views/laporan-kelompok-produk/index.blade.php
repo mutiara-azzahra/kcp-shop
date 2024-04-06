@@ -80,6 +80,8 @@
 
         const response = await axios.get('/api/produk/'+ kode_produk).catch(error => console.log(error));
         const data_sub_produk = response.data
+
+        console.log(response.data)
         const subProdukEl = $('#sub_produk')
 
         subProdukEl.children('option:not(:first)').remove();
