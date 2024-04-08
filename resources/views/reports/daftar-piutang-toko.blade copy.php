@@ -195,18 +195,9 @@
                 @foreach ($data as $p)
                 <tr>
                     @php
-                    $nominal_invoice    = $p->details_invoice->sum('nominal_total');
-                    $piutang_terbayar   = $p->piutang_details->sum('nominal');
-                    $sisa               = $nominal_invoice - $piutang_terbayar;
-
-                    $tanggal_bayar = '';
-
-                    if(isset($p->piutang_details) && $firstPiutangDetail = $p->piutang_details->first()) {
-                        $tanggal_bayar = Carbon\Carbon::parse($firstPiutangDetail->created_at)->format('d-m-Y');
-                    } else {
-                        $tanggal_bayar = '-';
-                    }
-
+                    $nominal_invoice = $p->details_invoice->sum('nominal_total');
+                    $piutang_terbayar = $p->piutang_details->sum('nominal');
+                    $sisa = $nominal_invoice - $piutang_terbayar;
                     @endphp
 
                     <td class="td-qty">{{$loop->iteration}}.</td>
@@ -216,7 +207,7 @@
                     <td class="td-angka">{{ number_format($nominal_invoice, 0, ',', '.') }}</td>
                     <td class="td-angka"> - </td>
                     <td class="td-angka">{{ number_format($piutang_terbayar, 0, ',', '.') }}</td>
-                    <td class="td-qty">{{ $tanggal_bayar }}</td>
+                    <td class="td-qty">{{ Carbon\Carbon::parse($p->first()->piutang_details->sortByDesc('created_at')->first()->created_at)->format('d-m-Y') }}</td>
                     <td class="td-angka">{{ number_format($sisa, 0, ',', '.') }}</td>
                     <td class="td-angka"> - </td>
                 </tr>
