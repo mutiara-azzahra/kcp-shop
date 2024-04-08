@@ -690,18 +690,16 @@
   <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
   <script>
-      function closeAlertAfterTime(alertId, milliseconds) {
-          setTimeout(function () {
-              var alertElement = document.getElementById(alertId);
-              if (alertElement) {
-                  alertElement.style.display = 'none'; 
-              }
-          }, milliseconds);
-      }
-      closeAlertAfterTime('myAlert', 3500);
-  </script>
+    function closeAlertAfterTime(alertId, milliseconds) {
+        setTimeout(function () {
+            var alertElement = document.getElementById(alertId);
+            if (alertElement) {
+                alertElement.style.display = 'none'; 
+            }
+        }, milliseconds);
+    }
+    closeAlertAfterTime('myAlert', 3500);
 
-  <script>
     $(function () {
       $("#example1")
         .DataTable({
