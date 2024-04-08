@@ -144,28 +144,26 @@ class IntransitController extends Controller
                 ->where('invoice_non', $no_surat_pesanan)
                 ->value('id_rak');
 
-            //Intransit Barang, Stok masuk ke Rak (StokGudang: modal) stok_part db
-            // $part_no_ada  = StokGudang::where('part_no', $itemPartNo)->where('rak', $rak)->first();
-
-            //If no data existing
-            // if(!$part_no_ada){
-            //     $masuk_rak              = new StokGudang();
-            //     $masuk_rak->part_no     = $itemPartNo;
-            //     $masuk_rak->id_rak      = $rak;
-            //     $masuk_rak->stok        = $stok_masuk;
-            //     $masuk_rak->created_by  = Auth::user()->nama_user;
-            //     $masuk_rak->created_at  = now();
-            //     $masuk_rak->save();
-
-            // } else {
-                
-            //     StokGudang::where('part_no', $part_no)->where('rak', $rak)->update([
-            //         'stok'          => $part_no_ada->stok + $stok_masuk,
-            //         'ket_status'    => 'CLOSE',
-            //         'modi_date'     => NOW()
-            //     ]);
-            // }
+            //LIST BARANG MASUK, KARTU STOK
+            $stok_awal_barang = FlowStokGudang::where('part_no', $itemPartNo)->orderBy('created_at', 'desc')->value('stok_akhir');
             
+            if(isset($stok_awal_barang) && $stok_awal_barang != '') {
+                $stok_awal = MasterStokGudang::where('part_no', $itemPartNo)->value('stok');
+            } else{
+                $stok_awal = $stok_awal_barang;
+            }
+
+            $value['part_no']              = $itemPartNo;
+            $value['keterangan']           = 'Barang Masuk';
+            $value['referensi']            = $no_surat_pesanan;
+            $value['tanggal_barang_masuk'] = NOW();
+            $value['stok_awal']            = $stok_awal;
+            $value['stok_masuk']           = $stok_masuk;
+            $value['stok_keluar']          = 0;
+            $value['stok_akhir']           = $stok_awal + $stok_masuk;
+
+            FlowStokGudang::create($value);
+
         }
 
         return redirect()->route('intransit.index')->with('success', 'Barang berhasil dimasukkan ke gudang');

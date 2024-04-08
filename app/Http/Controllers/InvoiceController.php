@@ -84,7 +84,28 @@ class InvoiceController extends Controller
 
                 TransaksiInvoiceDetails::create($details);
 
+                //LIST BARANG KELUAR, KARTU STOK
+                $stok_awal_barang = FlowStokGudang::where('part_no', $itemPartNo)->orderBy('created_at', 'desc')->value('stok_akhir');
+                
+                if(isset($stok_awal_barang) && $stok_awal_barang != '') {
+                    $stok_awal = 0;
+                } else{
+                    $stok_awal = $stok_awal_barang;
+                }
+
+                $value['part_no']               = $itemPartNo;
+                $value['keterangan']            = 'Terjual';
+                $value['referensi']             = $header->noinv;
+                $value['tanggal_barang_keluar'] = NOW();
+                $value['stok_awal']             = $stok_awal;
+                $value['stok_masuk']            = 0;
+                $value['stok_keluar']           = $s->qty;
+                $value['stok_akhir']            = $stok_awal - $s->qty;
+                
+                FlowStokGudang::create($value);
+
             }
+
         }
 
         return redirect()->route('invoice.index')->with('success','SO baru berhasil diteruskan menjadi invoice');
