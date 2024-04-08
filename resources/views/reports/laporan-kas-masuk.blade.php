@@ -186,7 +186,7 @@
                 <tr>
                     <td class="td-qty">{{ Carbon\Carbon::parse($p->created_at)->format('d-m-Y') }}</td>
                     <td class="td-qty">{{$p->no_kas_masuk }}</td>
-                    <td class="td-qty"></td>
+                    <td class="td-qty">{{$p->no_piutang}}</td>
                     <td class="td-qty">{{$p->terima_dari }} <b>{{$p->keterangan }}</b></td>
                     <td class="td-angka">{{$p->pembayaran_via }}</td>
                     <td class="td-part">{{ number_format($p->nominal, 0, ',', '.') }}</td>

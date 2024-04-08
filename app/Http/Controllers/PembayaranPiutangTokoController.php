@@ -255,6 +255,7 @@ class PembayaranPiutangTokoController extends Controller
         //UPDATE STATUS KAS MASUK
 
         KasMasukHeader::where('no_kas_masuk', $request->no_kas_masuk)->update([
+            'no_piutang'    => $created_piutang->no_piutang,
             'status'        => 'C',
             'updated_at'    => NOW(),
             'updated_by'    => Auth::user()->nama_user
