@@ -8,8 +8,8 @@
                 <h4>Master Outlet</h4>
             </div>
             <div class="float-right">
-                <!-- <a class="btn m-1 btn-success" href="{{ route('master-toko.create') }}"><i class="fas fa-plus"></i> Tambah Toko</a>
-                <a class="btn m-1 btn-danger" href="{{ route('master-toko.list-pengajuan') }}"><i class="fas fa-list"></i> List Pengajuan</a> -->
+                <a class="btn m-1 btn-success" href="{{ route('master-toko.create') }}"><i class="fas fa-plus"></i> Tambah Toko</a>
+                <a class="btn m-1 btn-danger" href="{{ route('master-toko.list-pengajuan') }}"><i class="fas fa-list"></i> List Pengajuan</a>
             </div>
         </div>
     </div>

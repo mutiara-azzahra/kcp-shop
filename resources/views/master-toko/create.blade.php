@@ -35,7 +35,7 @@
                             <select name="kode_kab" class="form-control mb-2 my-select">     
                                 <option value="">-- Pilih Kabupaten/Kota --</option>
                                 @foreach($kota as $k)
-                                    <option value="{{ $k->kode_kab }}">{{ $s->nm_area }}</option>
+                                    <option value="{{ $k->kode_kab }}">{{ $k->kode_prp }} - {{ $k->nm_area }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -78,18 +78,6 @@
                     </div>
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
-                            <strong>Jatuh Tempo / TOP</strong>
-                            <input type="text" name="jth_tempo" class="form-control" placeholder="Tanggal Jatuh Tempo">
-                        </div>
-                    </div>
-                    <div class="form-group mb-2 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <strong>Ekspedisi</strong>
-                            <input type="text" name="expedisi" class="form-control" placeholder="Ekspedisi">
-                        </div>
-                    </div>
-                    <div class="form-group mb-2 col-md-12 col-lg-12">
-                        <div class="form-group">
                             <strong>NIK</strong>
                             <input type="text" name="nik" class="form-control" placeholder="NIK">
                         </div>
@@ -121,7 +109,7 @@
                     <div class="form-group mb-2 col-md-12 col-lg-12">
                         <div class="form-group">
                             <strong>NPWP</strong>
-                            <input type="text" name="npwp" class="form-control" placeholder="NPWP">
+                            <input type="text" name="no_npwp" class="form-control" placeholder="Nomor NPWP">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">

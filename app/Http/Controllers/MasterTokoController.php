@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\MasterOutlet;
 use App\Models\MasterProvinsi;
+use App\Models\MasterAreaOutlet;
 
 class MasterTokoController extends Controller
 {
@@ -18,7 +19,7 @@ class MasterTokoController extends Controller
 
     public function create(){
 
-        $kota = MasterAreaOutlet::where('status','A')->get();
+        $kota = MasterAreaOutlet::where('status','Y')->get();
 
         return view('master-toko.create', compact('kota'));
     }
@@ -35,6 +36,49 @@ class MasterTokoController extends Controller
         $outlet = MasterOutlet::where('kd_outlet', $kd_outlet)->first();
 
         return view('master-toko.show', compact('outlet'));
+    }
+
+    public function store(Request $request){
+
+        $request->validate([
+            'kode_kab'          => 'required',
+            'kd_outlet'        => 'required',
+            'nm_pemilik'        => 'required',
+            'nm_outlet'         => 'required',
+            'almt_outlet'       => 'required',
+            'almt_pengiriman'   => 'required',
+            'tlpn'              => 'required',
+            'jth_tempo'         => 'required',
+            'expedisi'          => 'required',
+            'nik'               => 'required',
+        ]);
+
+        try {
+            $kode_toko = MasterOutlet::where('kd_outlet', $request->kd_outlet)->first();
+        
+            if (isset($kode_toko)) {
+
+                return redirect()->back()->with('danger', 'Error: Kode Toko sudah ada.');
+
+            } else {
+
+                $provinsi = MasterAreaOutlet::where('kode_kab', $request->kode_kab)->first();
+                
+                $request->merge([
+                    'kode_prp'      => $provinsi->kode_prp,
+                    'status'        => 'Y',
+                    'no_npwp'       => isset($request->no_npwp) ? $request->no_npwp : '*',
+                ]);
+        
+                MasterOutlet::create($request->all());
+
+                return redirect()->route('master-toko.index')->with('success', 'Data baru berhasil ditambahkan');
+            }
+        } catch (QueryException $exception) {
+         
+            return redirect()->back()->with('danger', 'Error: Kode Toko sudah ada');
+        }
+
     }
 
     public function update(Request $request){
