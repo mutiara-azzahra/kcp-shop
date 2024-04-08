@@ -183,7 +183,7 @@ class PembayaranPiutangTokoController extends Controller
         $request->merge([
             'no_piutang'      => $newPiutang->no_piutang,
             'area_piutang'    => $area,
-            'tanggal_piutang' => now(),
+            'tanggal_piutang' => NOW(),
             'kd_outlet'       => $selected_invoice->kd_outlet,
             'nm_outlet'       => $selected_invoice->nm_outlet,
             'nominal_potong'  => $nominal,
@@ -191,7 +191,7 @@ class PembayaranPiutangTokoController extends Controller
             'pembayaran_via'  => $pembayaran_via,
             'no_kasir_masuk'  => $request->no_kas_masuk,
             'status'          => 'O',
-            'created_at'      => now(),
+            'created_at'      => NOW(),
             'created_by'      => Auth::user()->nama_user
         ]);
 
@@ -216,13 +216,13 @@ class PembayaranPiutangTokoController extends Controller
                 ]);
                 
                 $value = [
-                    'noinv'                 => $invoice->noinv,
-                    'no_piutang'            => $newPiutang->no_piutang,
-                    'no_kas_masuk'          => $request->no_kas_masuk,
-                    'nominal'               => $nominal_invoice,
-                    'status'                => 'O',
-                    'created_at'            => NOW(),
-                    'created_by'            => Auth::user()->nama_user,
+                    'noinv'         => $invoice->noinv,
+                    'no_piutang'    => $newPiutang->no_piutang,
+                    'no_kas_masuk'  => $request->no_kas_masuk,
+                    'nominal'       => $nominal_invoice,
+                    'status'        => 'O',
+                    'created_at'    => now(),
+                    'created_by'    => Auth::user()->nama_user,
                 ];
 
                 $created_piutang = TransaksiPembayaranPiutang::create($value);
@@ -243,7 +243,7 @@ class PembayaranPiutangTokoController extends Controller
                     'no_kas_masuk'          => $request->no_kas_masuk,
                     'nominal'               => $created->nominal_potong,
                     'status'                => 'O',
-                    'created_at'            => NOW(),
+                    'created_at'            => now(),
                     'created_by'            => Auth::user()->nama_user,
                 ];
 
