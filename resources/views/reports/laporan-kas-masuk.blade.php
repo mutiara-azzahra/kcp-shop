@@ -164,7 +164,7 @@
             <tr>
                 <td class="atas">Cetak Oleh</td>
                 <td class="atas">:</td>
-                <td class="atas"></td>
+                <td class="atas">{{ Auth::user()->nama_user }}, {{ NOW() }}</td>
             </tr>
         </table>
     </div>
