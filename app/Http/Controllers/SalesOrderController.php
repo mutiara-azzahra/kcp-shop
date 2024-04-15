@@ -20,7 +20,7 @@ class SalesOrderController extends Controller
 {
     public function index(){
 
-        $surat_pesanan = TransaksiSpHeader::orderBy('nosp', 'desc')->get();
+        $surat_pesanan = TransaksiSpHeader::orderBy('nosp', 'desc')->where('status', 'O');
 
         return view('sales-order.index', compact('surat_pesanan'));
     }
@@ -42,12 +42,27 @@ class SalesOrderController extends Controller
     public function details($nosp){
 
         $surat_pesanan_id   = TransaksiSpHeader::where('nosp', $nosp)->first();
-        
-        $totalSum = 0;
+        $check_auth         = Auth::user()->id_role;
 
+        foreach ($surat_pesanan_id->details_sp as $i){
+            $getMaxDisk = MasterDiskonPart::where('part_no', $i->part_no)->value('diskon_maksimal');
+
+            $approval_head_mkt = false;
+            $approval_spv = false;
+    
+            if ($i->disc > $getMaxDisk) {
+                $approval_head_mkt = auth()->user()->id_role == 5;
+                $approval_spv = false;
+            } elseif ($i->disc <= $getMaxDisk) {
+                $approval_spv = auth()->user()->id_role == 24;
+                $approval_head_mkt = false;
+            }
+        }
+
+        $totalSum = 0;
         $totalSum += $surat_pesanan_id->details_sp->sum('nominal_total');
 
-        return view('sales-order.details', ['nosp' => $nosp] , compact('surat_pesanan_id', 'totalSum'));
+        return view('sales-order.details', ['nosp' => $nosp] , compact('surat_pesanan_id', 'totalSum', 'approval_head_mkt', 'approval_spv', 'check_auth'));
     }
 
     public function create(){

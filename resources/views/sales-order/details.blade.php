@@ -29,31 +29,14 @@
                 Sales Order
             </div>
             <div class="float-right">
-
-            @if($surat_pesanan_id->details_sp->contains('disc', 100) && Auth::user()->id_role == 5)
-                @if(isset($surat_pesanan_id->so))
-
-                @else
-                    <a class="btn btn-warning btn-md m-1" href="{{ route('sales-order.approve', $surat_pesanan_id->nosp) }}"><i class="fas fa-check"></i> Approve</a>
-                    <a class="btn btn-danger btn-md m-1" href="{{ route('sales-order.reject', $surat_pesanan_id->nosp) }}"><i class="fas fa-ban"></i> Tolak</a>
-                @endif
-
-            @elseif($surat_pesanan_id->details_sp->contains('disc', 100) && Auth::user()->id_role == 24)
-
-            @elseif(Auth::user()->id_role == 24)
-                @if(isset($surat_pesanan_id->so))
-
-                @else
-                    <a class="btn btn-warning btn-md m-1" href="{{ route('sales-order.approve', $surat_pesanan_id->nosp) }}"><i class="fas fa-check"></i> Approve</a>
-                    <a class="btn btn-danger btn-md m-1" href="{{ route('sales-order.reject', $surat_pesanan_id->nosp) }}"><i class="fas fa-ban"></i> Tolak</a>
-                @endif
-
+            @if($approval_head_mkt)
+                <a class="btn btn-warning btn-md m-1" href="{{ route('sales-order.approve', $surat_pesanan_id->nosp) }}"><i class="fas fa-check"></i> Approve</a>
+                <a class="btn btn-danger btn-md m-1" href="{{ route('sales-order.reject', $surat_pesanan_id->nosp) }}"><i class="fas fa-ban"></i> Tolak</a>
+            @elseif($approval_spv)
+                <a class="btn btn-warning btn-md m-1" href="{{ route('sales-order.approve', $surat_pesanan_id->nosp) }}"><i class="fas fa-check"></i> Approve</a>
+                <a class="btn btn-danger btn-md m-1" href="{{ route('sales-order.reject', $surat_pesanan_id->nosp) }}"><i class="fas fa-ban"></i> Tolak</a>
             @endif
-
             </div>
-
-
-            
         </div>
         <div class="card-body">
             <div class="row">
