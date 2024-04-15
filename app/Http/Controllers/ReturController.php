@@ -115,27 +115,30 @@ class ReturController extends Controller
 
         $retur_approved = ReturHeader::where('id', $id)->first();
 
+        //dd($retur_approved->details);
+
         foreach($retur_approved->details as $i){
 
-            $stok_akhir = FlowStokGudang::where('part_no', $i->part_no)->first();
-
-            if(isset($stok_akhir)){
-                $stok_awal = $stok_akhir->stok_akhir;
+            //LIST BARANG MASUK, KARTU STOK
+            $stok_awal_barang = FlowStokGudang::where('part_no', $i->part_no)->orderBy('created_at', 'desc')->value('stok_akhir');
+                
+            if(isset($stok_awal_barang) && $stok_awal_barang != '') {
+                $stok_awal = MasterStokGudang::where('part_no', $i->part_no)->value('stok');
             } else{
-                $stok_awal = 0;
+                $stok_awal = $stok_awal_barang;
             }
 
-            $flow_stok                          = new FlowStokGudang();
-            $flow_stok->tanggal_barang_masuk    = now();
-            $flow_stok->tanggal_barang_keluar   = null;
-            $flow_stok->part_no                 = $i->part_no;
-            $flow_stok->stok_awal               = $stok_awal;
-            $flow_stok->stok_masuk              = $i->qty_retur;
-            $flow_stok->stok_keluar             = 0;
-            $flow_stok->stok_akhir              = $flow_stok->stok_awal + $flow_stok->stok_masuk - $flow_stok->stok_keluar;
-            $flow_stok->created_by              = Auth::user()->nama_user;
-            $flow_stok->save();
-            
+            $value['part_no']              = $itemPartNo;
+            $value['keterangan']           = 'Barang Retur' ;
+            $value['referensi']            = $i->no_retur;
+            $value['tanggal_barang_masuk'] = NOW();
+            $value['stok_awal']            = $stok_awal;
+            $value['stok_masuk']           = $i->qty_retur;
+            $value['stok_keluar']          = 0;
+            $value['stok_akhir']           = $stok_awal + $i->qty_retur - 0;
+
+            FlowStokGudang::create($value);
+
         }
 
         ReturHeader::where('id', $id)->update([
