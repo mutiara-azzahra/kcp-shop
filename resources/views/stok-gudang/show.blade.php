@@ -33,19 +33,21 @@
 
     <div class="card" style="padding: 10px;">
         <div class="card-header">
-            <b>Barang Masuk dan Keluar</b>
+            <b>Kartu Stok</b>
         </div>
         <div class="card-body">
             <div class="col-lg-12">  
-                <table class="table table-hover table-bordered table-sm bg-light table-striped" id="example2">
+                <table class="table table-hover table-bordered table-sm bg-light table-striped" id="example1">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
                             <th class="text-center">No</th>
                             <th class="text-center">Part No</th>
                             <th class="text-center">Keterangan</th>
+                            <th class="text-center">Referensi</th>
+                            <th class="text-center">Stok Awal</th>
                             <th class="text-center">Stok Masuk</th>
                             <th class="text-center">Stok Keluar</th>
-                            <th class="text-center">Lokasi Rak</th>
+                            <th class="text-center">Stok Akhir</th>
                             <th class="text-center">Tanggal</th>
                         </tr>
                     </thead>
@@ -54,25 +56,16 @@
                         $no=1;
                         @endphp
 
-                        @foreach($barang_masuk as $p)
+                        @foreach($kartu_stok as $p)
                         <tr>
                             <td class="text-center">{{ $no++ }}</td>
                             <td class="text-left">{{ $p->part_no }}</td>
-                            <td class="text-center">MASUK</td>
-                            <td class="text-right">{{ number_format($p->qty, 0, ',', '.') }}</td>
-                            <td></td>
-                            <td class="text-center">{{ $p->rak->kode_rak_lokasi }}</td>
-                            <td class="text-center">{{ $p->created_at }}</td>
-                        </tr>
-                        @endforeach
-                        @foreach($barang_terjual as $p)
-                        <tr>
-                            <td class="text-center">{{ $no++ }}</td>
-                            <td class="text-left">{{ $p->part_no }}</td>
-                            <td class="text-center">TERJUAL</td>
-                            <td></td>
-                            <td class="text-right">{{ number_format($p->qty, 0, ',', '.') }}</td>
-                            <td></td>
+                            <td class="text-left">{{ $p->keterangan }}</td>
+                            <td class="text-left">{{ $p->referensi }}</td>
+                            <td class="text-center">{{ $p->stok_awal }}</td>
+                            <td class="text-center">{{ $p->stok_masuk }}</td>
+                            <td class="text-center">{{ $p->stok_keluar }}</td>
+                            <td class="text-center">{{ $p->stok_akhir }}</td>
                             <td class="text-center">{{ $p->created_at }}</td>
                         </tr>
                         @endforeach
@@ -81,41 +74,5 @@
             </div>
         </div>
     </div>
-
-    {{-- <div class="card" style="padding: 10px;">
-        <div class="card-header">
-            <b>Lokasi Rak</b>
-        </div>
-        <div class="card-body">
-            <div class="col-lg-12">  
-                <table class="table table-hover table-bordered table-sm bg-light table-striped" id="example2">
-                    <thead>
-                        <tr style="background-color: #6082B6; color:white">
-                            <th class="text-center">No</th>
-                            <th class="text-center">Part No</th>
-                            <th class="text-center">Stok</th>
-                            <th class="text-center">Lokasi Rak</th>
-                            <th class="text-center">Tanggal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                        $no=1;
-                        @endphp
-
-                        @foreach($stok_rak as $p)
-                        <tr>
-                            <td class="text-center">{{ $no++ }}</td>
-                            <td class="text-left">{{ $p->part_no }}</td>
-                            <td class="text-right">{{ number_format($p->stok, 0, ',', '.') }}</td>
-                            <td class="text-center">{{ $p->rak->kode_rak_lokasi}}</td>
-                            <td class="text-center">{{ $p->created_at }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div> --}}
 </div>
 @endsection

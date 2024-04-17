@@ -34,6 +34,7 @@
                                 <option value="">---Pilih Report--</option>
                                 <option value="1">Kas Masuk</option>
                                 <option value="2">Kas Keluar</option>
+                                <option value="3">Laporan Kas Harian</option>
                             </select>
                         </div>
                     </div>
