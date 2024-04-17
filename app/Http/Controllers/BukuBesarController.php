@@ -44,14 +44,14 @@ class LkhController extends Controller
 
             foreach($packingsheet_belum_lkh as $h){
                
-                    $details['no_lkh']          = $no_lkh;
-                    $details['area_lkh']        = $h->area_ps;
-                    $details['kd_outlet']       = $h->kd_outlet;
-                    $details['koli']            = $h->details_dus->count('no_dus');
-                    $details['no_packingsheet'] = $nops;
-                    $details['created_at']      = NOW();
+                $details['no_lkh']          = $no_lkh;
+                $details['area_lkh']        = $h->area_ps;
+                $details['kd_outlet']       = $h->kd_outlet;
+                $details['koli']            = $h->details_dus->count('no_dus');
+                $details['no_packingsheet'] = $nops;
+                $details['created_at']      = NOW();
 
-                    TransaksiLkhDetails::create($details);
+                TransaksiLkhDetails::create($details);
 
             }
         }
