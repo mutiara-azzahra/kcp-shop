@@ -22,4 +22,9 @@ class TransaksiInvoiceDetails extends Model
         return $this->hasOne(MasterPart::class, 'part_no', 'part_no');
     }
 
+    public function header()
+    {
+        return $this->hasOne(TransaksiInvoiceHeader::class, 'noinv', 'noinv');
+    }
+
 }

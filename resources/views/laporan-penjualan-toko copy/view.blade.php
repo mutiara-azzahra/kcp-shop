@@ -35,7 +35,15 @@
                         <tr style="background-color: #6082B6; color:white">
                             <th class="text-center">Kode Outlet</th>
                             <th class="text-center">Nama Outlet</th>
-                            <th class="text-center">Produk</th>
+                            @php
+                                $uniqueMonths = [];
+
+                                foreach ($nominal_perbulan as $invoicesByMonth) {
+                                    foreach ($invoicesByMonth as $month => $invoices) {
+                                        $uniqueMonths[$month] = \Carbon\Carbon::parse($month)->format('M Y');
+                                    }
+                                }
+                            @endphp
                             @foreach ($uniqueMonths as $month)
                                 <th class="text-center">{{ $month }}</th>
                             @endforeach
@@ -43,20 +51,19 @@
                     </thead>
 
                     <tbody>
-                    @foreach ($nominal_perbulan as $kd_outlet => $invoicesByMonth)
-                        <tr>
-                            <td class="text-left">{{ $kd_outlet }}</td>
-                            <td class="text-left">{{ $invoicesByMonth->first()->first()->nm_outlet }}</td>
-                            <td class="text-left">{{ $produk }}</td>
-                            @foreach ($uniqueMonths as $month => $monthLabel)
-                                <td class="text-right">
-                                    {{ $invoicesByMonth->has($month) ? number_format($invoicesByMonth[$month]->sum(function ($invoice) {
-                                        return $invoice->details_invoice->sum('nominal_total');
-                                    }), 0, ',', ',') : 0 }}
-                                </td>
-                            @endforeach
-                        </tr>
-                    @endforeach
+                        @foreach ($nominal_perbulan as $kd_outlet => $invoicesByMonth)
+                            <tr>
+                                <td class="text-left">{{ $kd_outlet }}</td>
+                                <td class="text-left">{{ $invoicesByMonth->first()->first()->nm_outlet }}</td>
+                                @foreach ($uniqueMonths as $month => $monthLabel)
+                                    <td class="text-right">
+                                        {{ $invoicesByMonth->has($month) ? number_format($invoicesByMonth[$month]->sum(function ($invoice) {
+                                            return $invoice->details_invoice->sum('nominal_total');
+                                        }) , 0, ',', ',') : 0 }}
+                                    </td>
+                                @endforeach
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
