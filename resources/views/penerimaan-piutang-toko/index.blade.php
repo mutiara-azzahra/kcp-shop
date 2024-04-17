@@ -31,15 +31,15 @@
                         <tr style="background-color: #6082B6; color:white">
                             <th class="text-center">No. Pembayaran</th>
                             <th class="text-center">Tgl. Pemotongan</th>
-                            <th class="text-center">Kode Toko</th>
+                            <th class="text-center">Kode</th>
                             <th class="text-center">Nama Toko</th>
                             <th class="text-center">Pembayaran Via</th>
                             <th class="text-center">Bank</th>
                             <th class="text-center">No. BG</th>
                             <th class="text-center">Pembayaran</th>
                             <th class="text-center">Cetak Date</th>
-                            <th class="text-center">Referensi</th>
-                            <th class="text-center">Aksi</th>
+                            <th class="text-center">Reff</th>
+                            <th class="text-center"></th>
                         </tr>
                     </thead>
                     <tbody>
