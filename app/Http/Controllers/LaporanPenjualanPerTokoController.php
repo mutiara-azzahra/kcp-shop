@@ -33,27 +33,7 @@ class LaporanPenjualanPerTokoController extends Controller
             4 => 'ALL PRODUK',
         ];
 
-        $invoices = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
-        ->where('part_no', function ($query) {
-            $query->select('part_no')
-                ->from('master_part')
-                ->where('level_2', 'IC2');
-        });
-                
-
-        // $nominal_perbulan = $map_invoice->map(function ($outletInvoices) {
-        //     return $outletInvoices->groupBy(function ($invoice) {
-        //         return Carbon::parse($invoice->created_at)->format('Y-m');
-        //     })->map(function ($invoicesByMonth) {
-        //         return $invoicesByMonth->flatMap(function ($invoice) {
-        //             return $invoice->details_invoice()->whereHas('nama_part', function ($query) {
-        //                 $query->where('level_2', 'IC2');
-        //             })->get();
-        //         });
-        //     });
-        // });
-
-        dd($invoices);
+        $invoices = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])->get();
 
         $uniqueMonths = [];
 
