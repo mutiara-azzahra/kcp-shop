@@ -42,15 +42,14 @@ class MasterTokoController extends Controller
 
         $request->validate([
             'kode_kab'          => 'required',
-            'kd_outlet'        => 'required',
+            'kd_outlet'         => 'required',
             'nm_pemilik'        => 'required',
             'nm_outlet'         => 'required',
             'almt_outlet'       => 'required',
             'almt_pengiriman'   => 'required',
             'tlpn'              => 'required',
             'jth_tempo'         => 'required',
-            'expedisi'          => 'required',
-            'nik'               => 'required',
+            'expedisi'          => 'required'
         ]);
 
         try {

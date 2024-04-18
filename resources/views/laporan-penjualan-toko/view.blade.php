@@ -35,25 +35,31 @@
                         <tr style="background-color: #6082B6; color:white">
                             <th class="text-center">Kode Outlet</th>
                             <th class="text-center">Nama Outlet</th>
-                            <th class="text-center">Produk</th>
-                            @foreach ($uniqueMonths as $month)
-                                <th class="text-center">{{ $month }}</th>
+                            @php
+                            $uniqueMonths = [];
+
+                            foreach ($sumNominalIch as $i) {
+                                foreach ($i as $month => $invoices) {
+                                    $uniqueMonths[$month] = \Carbon\Carbon::parse($month)->format('M Y');
+                                }
+                            }
+
+                            ksort($uniqueMonths);
+
+                            @endphp
+                            @foreach ($uniqueMonths as $month => $formattedMonth)
+                                <th class="text-center">{{ $formattedMonth }}</th>
                             @endforeach
                         </tr>
                     </thead>
 
                     <tbody>
-                    @foreach ($nominal_perbulan as $kd_outlet => $invoicesByMonth)
+                    @foreach ($sumNominalIch as $kd_outlet => $details)
                         <tr>
                             <td class="text-left">{{ $kd_outlet }}</td>
-                            <td class="text-left">{{ $invoicesByMonth->first()->first()->nm_outlet }}</td>
-                            <td class="text-left">{{ $produk }}</td>
-                            @foreach ($uniqueMonths as $month => $monthLabel)
-                                <td class="text-right">
-                                    {{ $invoicesByMonth->has($month) ? number_format($invoicesByMonth[$month]->sum(function ($invoice) {
-                                        return $invoice->details_invoice->sum('nominal_total');
-                                    }), 0, ',', ',') : 0 }}
-                                </td>
+                            <td class="text-left">{{ App\Models\MasterOutlet::where('kd_outlet', $kd_outlet)->value('nm_outlet') }}</td>                           
+                            @foreach ($details as $month => $total)
+                                <td class="text-right">{{ $month }}</td>
                             @endforeach
                         </tr>
                     @endforeach
