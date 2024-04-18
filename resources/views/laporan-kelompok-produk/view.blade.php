@@ -5,8 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
             <div class="float-left">
-                <h4>Laporan Penjualan Kelompok Produk <b>{{ $nama_sub_produk->keterangan }}</b></h4>
-                <h6>{{ Carbon\Carbon::parse($tanggal_awal)->format('d-m-Y') }} s/d {{ Carbon\Carbon::parse($tanggal_akhir)->format('d-m-Y') }}</h6>
+                <h4>Laporan Penjualan Kelompok Produk </h4>
             </div>
             <div class="float-right">
                 <a class="btn btn-success" href="{{ route('laporan-kelompok-produk.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
@@ -34,21 +33,22 @@
                 <table class="table table-hover table-bordered table-sm bg-light" id="example1">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
+                            <th class="text-center">Kode Produk</th>
                             <th class="text-center">Nama Produk</th>
-                            <th class="text-center">Kode Outlet</th>
-                            <th class="text-center">Nama Outlet</th>
-                            <th class="text-center">{{ Carbon\Carbon::parse($tanggal_awal)->format('d/m/Y') }}
-                                - {{ Carbon\Carbon::parse($tanggal_akhir)->format('d/m/Y') }}</th>
+                            <th class="text-center">Nominal</th>
                         </tr>
                     </thead>
-
                     <tbody>
-                    @foreach($amount_toko as $kd_outlet => $amount)
+                    @foreach($flattened as $partNumber)
                         <tr>
-                            <td class="text-center">{{ $nama_sub_produk->keterangan }}</td>
-                            <td class="text-center">{{ $kd_outlet }}</td>
-                            <td class="text-left">{{ $map_invoice[$kd_outlet]->first()->nm_outlet }}</td>
-                            <td class="text-right">{{ number_format($amount, 0, ',', ',') }}</td>
+                            <td class="text-center">{{ $nama_produk }}</td>
+                            <td class="text-center">{{ $partNumber }}</td>
+                            <td class="text-right">
+                                @php
+                                    $sumNominalTotal = $invoicesIchidai->where('part_no', $partNumber)->sum('nominal_total');
+                                @endphp
+                                {{ $sumNominalTotal }}
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\MasterProduk;
+use App\Models\MasterPart;
 use App\Models\MasterSubProduk;
 use App\Models\TransaksiInvoiceHeader;
+use App\Models\TransaksiInvoiceDetails;
 
 class LaporanPenjualanKelompokProdukController extends Controller
 {
@@ -29,30 +31,30 @@ class LaporanPenjualanKelompokProdukController extends Controller
         $sub_produk         = $request->sub_produk;
         $tanggal_awal       = $request->tanggal_awal;
         $tanggal_akhir_req  = $request->tanggal_akhir;
+        $level_2            = $request->kode_produk;
+        $level_4            = $request->sub_produk;
 
         $date               = Carbon::parse($tanggal_akhir_req);
         $tanggal_akhir      = $date->addDay()->toDateString();
 
-        $invoices = TransaksiInvoiceHeader::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
+        $invoices = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
             ->get();
 
-        $map_invoice = $invoices->groupBy('kd_outlet');
+        $nama_produk = 'ICHIDAI';
 
+        $part   = MasterPart::where('level_2', 'IC2')->where('level_4', $level_4)->pluck('part_no')->toArray();
+        $flattened  = collect($part)->flatten()->toArray();
 
+        $invoicesIchidai = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
+            ->whereIn('part_no', $flattened)
+            ->get();
 
-        $amount_toko = $map_invoice->map(function ($outletInvoices) use ($sub_produk) {
-            return $outletInvoices->sum(function ($invoice) use ($sub_produk) {
-                return $invoice->details_invoice()->whereIn('part_no', function ($query) use ($sub_produk) {
-                    $query->select('part_no')
-                        ->from('master_part')
-                        ->where('level_4', $sub_produk);
-                })->sum('nominal_total');
-            });
-        });
+        $partNumbers = [];
 
-        $nama_sub_produk = MasterSubProduk::where('sub_produk', $sub_produk)->first();
+        foreach ($invoicesIchidai as $invoice) {
+            $partNumbers[$invoice->part_no] = $invoice->sum('nominal_total');
+        }
 
-
-        return view('laporan-kelompok-produk.view', compact('amount_toko', 'map_invoice', 'nama_sub_produk','tanggal_awal', 'tanggal_akhir'));
+        return view('laporan-kelompok-produk.view', compact('partNumbers','nama_produk','invoicesIchidai', 'flattened'));
     }
 }
