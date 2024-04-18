@@ -39,7 +39,7 @@
                             @php
                             $uniqueMonths = [];
 
-                            foreach ($sumNominalIch as $i) {
+                            foreach ($sumNominal as $i) {
                                 foreach ($i as $month => $invoices) {
                                     $uniqueMonths[$month] = \Carbon\Carbon::parse($month)->format('M Y');
                                 }
@@ -55,7 +55,7 @@
                     </thead>
 
                     <tbody>
-                    @foreach ($sumNominalIch as $kd_outlet => $details)
+                    @foreach ($sumNominal as $kd_outlet => $details)
                         <tr>
                             <td class="text-center">{{ $nama_produk }}</td>
                             <td class="text-center">{{ $kd_outlet }}</td>
