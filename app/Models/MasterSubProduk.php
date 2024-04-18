@@ -27,4 +27,8 @@ class MasterSubProduk extends Model
         return $this->belongsTo(MasterProduk::class, 'kode_produk', 'kode_produk');
     }
 
+    public function part(){
+        return $this->hasMany(MasterPart::class, 'sub_produk', 'level_4');
+    }
+
 }
