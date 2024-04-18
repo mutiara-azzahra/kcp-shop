@@ -5,7 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
             <div class="float-left">
-                <h4>Laporan Penjualan Toko</h4>
+                <h4>Laporan Penjualan Toko {{ $nama_produk }}</h4>
             </div>
             <div class="float-right">
                 <a class="btn btn-success" href="{{ route('laporan-penjualan-toko.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
@@ -33,6 +33,7 @@
                 <table class="table table-hover table-bordered table-sm bg-light" id="example1">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
+                            <th class="text-center">Nama Produk</th>
                             <th class="text-center">Kode Outlet</th>
                             <th class="text-center">Nama Outlet</th>
                             @php
@@ -56,6 +57,7 @@
                     <tbody>
                     @foreach ($sumNominalIch as $kd_outlet => $details)
                         <tr>
+                            <td class="text-center">{{ $nama_produk }}</td>
                             <td class="text-center">{{ $kd_outlet }}</td>
                             <td class="text-left">{{ App\Models\MasterOutlet::where('kd_outlet', $kd_outlet)->value('nm_outlet') }}</td>                           
 

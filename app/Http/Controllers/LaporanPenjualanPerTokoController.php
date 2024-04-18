@@ -27,12 +27,24 @@ class LaporanPenjualanPerTokoController extends Controller
         $date               = Carbon::parse($tanggal_akhir_req);    
         $tanggal_akhir      = $date->addDay()->toDateString();
 
-        $produkNames = [
+        $kode_produk = [
             1 => 'ICHIDAI',
             2 => 'BRIO',
             3 => 'LIQUID',
             4 => 'ALL PRODUK',
         ];
+
+        $nama_produk = '';
+
+        if($produk == 1){
+            $nama_produk = 'ICHIDAI';
+        }elseif($produk == 2){
+            $nama_produk = 'BRIO';
+        }elseif($produk == 3){
+            $nama_produk = 'LIQUID';
+        }elseif($produk == 4){
+            $nama_produk = 'ALL PRODUK';
+        }
 
         $partIchidai  = MasterPart::where('level_2', 'IC2')->pluck('part_no')->toArray();
         $flattened    = collect($partIchidai)->flatten()->toArray();
@@ -55,6 +67,6 @@ class LaporanPenjualanPerTokoController extends Controller
             });
         }
 
-        return view('laporan-penjualan-toko.view',  compact('sumNominalIch', 'produk', 'produk'));
+        return view('laporan-penjualan-toko.view',  compact('sumNominalIch' ,'nama_produk', 'produk'));
     }
 }
