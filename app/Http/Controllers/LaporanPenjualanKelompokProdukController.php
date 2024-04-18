@@ -40,19 +40,55 @@ class LaporanPenjualanKelompokProdukController extends Controller
         $invoices = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
             ->get();
 
-        $nama_produk = 'ICHIDAI';
+        $nama_produk = '';
 
-        $part   = MasterPart::where('level_2', 'IC2')->where('level_4', $level_4)->pluck('part_no')->toArray();
-        $flattened  = collect($part)->flatten()->toArray();
+        if($level_2 == 'ICH'){
+            $nama_produk = 'ICHIDAI';
 
-        $invoicesIchidai = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
-            ->whereIn('part_no', $flattened)
-            ->get();
+            $part   = MasterPart::where('level_2', 'IC2')->where('level_4', $level_4)->pluck('part_no')->toArray();
+            $flattened  = collect($part)->flatten()->toArray();
 
-        $partNumbers = [];
+            $invoicesIchidai = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
+                ->whereIn('part_no', $flattened)
+                ->get();
 
-        foreach ($invoicesIchidai as $invoice) {
-            $partNumbers[$invoice->part_no] = $invoice->sum('nominal_total');
+            $partNumbers = [];
+
+            foreach ($invoicesIchidai as $invoice) {
+                $partNumbers[$invoice->part_no] = $invoice->sum('nominal_total');
+            }
+        } elseif($level_2 == 'BRI'){
+
+            $nama_produk = 'BRIO';
+
+            $part   = MasterPart::where('level_2', 'BP2')->where('level_4', $level_4)->pluck('part_no')->toArray();
+            $flattened  = collect($part)->flatten()->toArray();
+
+            $invoicesIchidai = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
+                ->whereIn('part_no', $flattened)
+                ->get();
+
+            $partNumbers = [];
+
+            foreach ($invoicesIchidai as $invoice) {
+                $partNumbers[$invoice->part_no] = $invoice->sum('nominal_total');
+            }
+        } elseif($level_2 == 'LIQ'){
+
+            $nama_produk = 'LIQUID';
+
+            $part   = MasterPart::where('level_2', 'LQ2')->where('level_4', $level_4)->pluck('part_no')->toArray();
+            $flattened  = collect($part)->flatten()->toArray();
+
+            $invoicesIchidai = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
+                ->whereIn('part_no', $flattened)
+                ->get();
+
+            $partNumbers = [];
+
+            foreach ($invoicesIchidai as $invoice) {
+                $partNumbers[$invoice->part_no] = $invoice->sum('nominal_total');
+            }
         }
 
         return view('laporan-kelompok-produk.view', compact('partNumbers','nama_produk','invoicesIchidai', 'flattened'));

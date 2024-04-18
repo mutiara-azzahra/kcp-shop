@@ -5,7 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
             <div class="float-left">
-                <h4>Laporan Penjualan Kelompok Produk </h4>
+                <h4>Laporan Penjualan Kelompok Produk {{ $nama_produk }}</h4>
             </div>
             <div class="float-right">
                 <a class="btn btn-success" href="{{ route('laporan-kelompok-produk.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
@@ -42,7 +42,7 @@
                     @foreach($flattened as $partNumber)
                         <tr>
                             <td class="text-center">{{ $nama_produk }}</td>
-                            <td class="text-center">{{ $partNumber }}</td>
+                            <td class="text-left">{{ $partNumber }}</td>
                             <td class="text-right">
                                 @php
                                     $sumNominalTotal = $invoicesIchidai->where('part_no', $partNumber)->sum('nominal_total');
