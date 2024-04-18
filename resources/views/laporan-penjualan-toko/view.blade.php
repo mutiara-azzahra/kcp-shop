@@ -56,11 +56,15 @@
                     <tbody>
                     @foreach ($sumNominalIch as $kd_outlet => $details)
                         <tr>
-                            <td class="text-left">{{ $kd_outlet }}</td>
+                            <td class="text-center">{{ $kd_outlet }}</td>
                             <td class="text-left">{{ App\Models\MasterOutlet::where('kd_outlet', $kd_outlet)->value('nm_outlet') }}</td>                           
-                            @foreach ($details as $month => $total)
-                                <td class="text-right">{{ $month }}</td>
+
+                            @foreach ($uniqueMonths as $month => $monthLabel)
+                                <td class="text-right">
+                                    {{ $details->has($month) ? number_format($details[$month], 0, ',', ',') : 0 }}
+                                </td>
                             @endforeach
+
                         </tr>
                     @endforeach
                     </tbody>
