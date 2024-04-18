@@ -183,7 +183,11 @@ class ReportLssController extends Controller
                     $getBeli = InvoiceNonHeader::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
                     ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
                     ->get();
+
+                    // dd($getBeli);
         
+                    
+
                     $getHpp = TransaksiInvoiceDetails::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
                         ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
                         ->get();
@@ -198,7 +202,7 @@ class ReportLssController extends Controller
                     $beli = 0;
         
                     foreach($getBeli as $s){
-                        $beli += $s->details_pembelian->whereIn('part_no', $flattened)->sum('total_amount');
+                        $beli += $s->details_pembelian->whereIn('part_no', $flattened)->value('total_amount');
                     }
         
                     $hpp     = $getHpp->whereIn('part_no', $flattened)->sum('nominal_total')/1.11;
@@ -277,12 +281,12 @@ class ReportLssController extends Controller
                     }
         
                 }
-            }
 
             $data = LSS::where('bulan', $bulan)->where('tahun', $tahun)->get();
 
             return view('report-lss.view', compact('data', 'bulan', 'tahun'));
 
+        }
         }
 
     }

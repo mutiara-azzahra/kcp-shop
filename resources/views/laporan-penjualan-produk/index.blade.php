@@ -35,7 +35,6 @@
                             <option value="1">ICHIDAI</option>
                             <option value="2">BRIO</option>
                             <option value="3">LIQUID</option>
-                            <option value="4">ALL PRODUK</option>
                         </select>
                     </div>
                     <div class="form-group col-6">

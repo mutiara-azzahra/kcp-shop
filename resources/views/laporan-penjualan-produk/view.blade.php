@@ -41,11 +41,11 @@
                     </thead>
 
                     <tbody>
-                    @foreach($groupedInvoicesBrio as $i => $groupBrio)
+                    @foreach($groupedInvoices as $i => $group)
                         <tr>
                             <td class="text-center">{{ $i }}</td>
                             <td class="text-center">{{ App\Models\MasterSubProduk::where('sub_produk', $i)->value('keterangan') }}</td>
-                            <td class="text-right">{{ $groupBrio->sum('nominal_total') }}</td>
+                            <td class="text-right">{{ $group->sum('nominal_total') }}</td>
                         </tr>
                     @endforeach
                     </tbody>
