@@ -23,7 +23,7 @@ class MasterBankController extends Controller
 
     public function show($id){
 
-         $master_bank_id = MasterBank::findOrFail($id);
+        $master_bank_id = MasterBank::findOrFail($id);
 
         return view('master-bank.show', compact('master_bank_id'));
        

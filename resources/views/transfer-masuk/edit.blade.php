@@ -67,16 +67,6 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Transfer Via</strong>
-                            <select name="bank" class="form-control my-select" >
-                                <option value="">--Pilih Bank--</option>
-                                <option value="BRI">BRI</option>
-                                <option value="BNI">BNI</option>
-                                <option value="MANDIRI">MANDIRI</option>
-                                <option value="BCA">BCA</option>
-                                <option value="DANAMON">DANAMON</option>
-                                <option value="DANAMON_REGULER">DANAMON REGULER</option>
-                            </select>
-
                             <select name="sales" class="form-control my-select" value="{{ $transfer_masuk->bank }}">
                                 <option value="">---Pilih sales--</option>
                                 <option value="bank" {{ $transfer_masuk->bank ==  $transfer_masuk->bank ? 'selected' : '' }}>{{ $transfer_masuk->bank }}</option>

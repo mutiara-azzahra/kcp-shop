@@ -41,7 +41,16 @@
                             <td class="text-center">{{ $no++ }}</td>
                             <td class="text-center">{{ $p->kode_bank }}</td>
                             <td class="text-left">{{ $p->nama_bank }}</td>
-                            <td class="text-center"><a class="btn btn-info btn-sm" href="{{ route('master-bank.show',$p->kode_bank) }}"><i class="fas fa-eye"></i></a></td>
+                            <td class="text-center">
+                                <form action="{{ route('master-bank.delete', $p->id) }}" method="POST" id="form_delete_{{ $p->id }}" data-id="{{ $p->id }}">
+                                    <a class="btn btn-info btn-sm" href="{{ route('master-bank.show',$p->id) }}"><i class="fas fa-eye"></i></a>
+                                    
+                                    @csrf
+                                    @method('GET')
+                                    
+                                    <a class="btn btn-danger btn-sm" onclick="Dekete('{{ $p->id }}')"><i class="fas fa-times"></i></a>
+                                </form>
+                            </td>
                         </tr>
                         @endforeach
                         
@@ -54,5 +63,25 @@
 @endsection
 
 @section('script')
+
+<script>
+    Dekete = (id)=>{
+        Swal.fire({
+            title: 'Apa anda yakin menghapus data master bank ini?',
+            text:  "Data tidak dapat kembali" ,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6' ,
+            cancelButtonColor: 'red' ,
+            confirmButtonText: 'hapus data' ,
+            cancelButtonText: 'batal' ,
+            reverseButtons: false
+            }).then((result) => {
+                if (result.value) {
+                    document.getElementById('form_delete_' + id).submit();
+                }
+        })
+    }
+
+</script>
 
 @endsection
