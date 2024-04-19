@@ -22,7 +22,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Kode Bank</strong>
-                            <input type="number" name="kode_bank" class="form-control" placeholder="Isi Kode Bank">
+                            <input type="text" name="kode_bank" class="form-control" placeholder="Isi Kode Bank">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">

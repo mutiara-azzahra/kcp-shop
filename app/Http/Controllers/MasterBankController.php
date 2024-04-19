@@ -11,7 +11,7 @@ class MasterBankController extends Controller
 {
     public function index(){
 
-        $bank = MasterBank::where('status', 'A')->get();
+        $bank = MasterBank::where('status', 'Y')->get();
 
         return view('master-bank.index', compact('bank'));
     }
@@ -37,6 +37,7 @@ class MasterBankController extends Controller
         ]);
 
         $request->merge([
+            'status'       => 'Y',
             'created_by'   => Auth::user()->nama_user,
         ]);
 

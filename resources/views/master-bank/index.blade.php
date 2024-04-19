@@ -28,6 +28,7 @@
                             <th class="text-center">No</th>
                             <th class="text-center">Kode Bank</th>
                             <th class="text-center">Nama Bank</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,10 +38,10 @@
 
                         @foreach($bank as $p)
                         <tr>
-                            <td>{{ $no++ }}</td>
-                            <td>{{ $p->kode_bank }}</td>
-                            <td>{{ $p->nama_bank }}</td>
-                            <td class="text-center"><a class="btn btn-info btn-sm" href="{{ route('master-bank.show',$p->kode) }}"><i class="fas fa-eye"></i></a></td>
+                            <td class="text-center">{{ $no++ }}</td>
+                            <td class="text-center">{{ $p->kode_bank }}</td>
+                            <td class="text-left">{{ $p->nama_bank }}</td>
+                            <td class="text-center"><a class="btn btn-info btn-sm" href="{{ route('master-bank.show',$p->kode_bank) }}"><i class="fas fa-eye"></i></a></td>
                         </tr>
                         @endforeach
                         
