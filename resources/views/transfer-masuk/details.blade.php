@@ -7,8 +7,11 @@
              <div class="float-left">
                 <h4>Details Transfer Masuk</h4>
             </div>
-            <div class="float-right">
+            <div class="float-right p-1">
                 <a class="btn btn-success" href="{{ route('transfer-masuk.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
+            </div>
+            <div class="float-right p-1">
+                <a class="btn btn-info" href="{{ route('transfer-masuk.edit', $transfer->id_transfer) }}"><i class="fas fa-edit"></i> Ubah</a>
             </div>
         </div>
     </div>

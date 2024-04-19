@@ -1,5 +1,3 @@
-@extends('welcome')
- 
 @section('content')
 <div class="container" style="padding: 10px;">
     <div class="row mt-5">

@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\InventarisController;
+use App\Http\Controllers\MasterBankController;
 use App\Http\Controllers\MasterRoleController;
 use App\Http\Controllers\MasterPartController;
 use App\Http\Controllers\MasterProdukController;
@@ -95,6 +96,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/inventaris', [InventarisController::class, 'store'])->name('inventaris.store');
     Route::get('/inventaris/create', [InventarisController::class, 'create'])->name('inventaris.create');
     Route::get('/inventaris/show/{id}', [InventarisController::class, 'show'])->name('inventaris.show');
+
+    //INVENTARIS
+    Route::get('/master-bank', [MasterBankController::class, 'index'])->name('master-bank.index');
+    Route::post('/master-bank', [MasterBankController::class, 'store'])->name('master-bank.store');
+    Route::get('/master-bank/create', [MasterBankController::class, 'create'])->name('master-bank.create');
+    Route::get('/master-bank/show/{id}', [MasterBankController::class, 'show'])->name('master-bank.show');
+    
 
     //MASTER PROVINSI
     Route::get('/master-provinsi', [MasterProvinsiController::class, 'index'])->name('master-provinsi.index');

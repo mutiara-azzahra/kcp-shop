@@ -40,7 +40,8 @@ class LaporanPenjualanKelompokProdukController extends Controller
         $invoices = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
             ->get();
 
-        $nama_produk = '';
+        $nama_produk    = '';
+        $sub_produk     = MasterSubProduk::where('sub_produk', $level_4)->value('keterangan');
 
         if($level_2 == 'ICH'){
             $nama_produk = 'ICHIDAI';
