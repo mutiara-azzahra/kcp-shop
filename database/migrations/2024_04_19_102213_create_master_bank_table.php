@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('master_bank', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->integer('kode_bank');
+            $table->string('nama_bank')->nullable();
+            $table->enum('status', ['Y', 'N'])->default('Y');
             $table->timestamps();
+            $table->datetime('created_by')->nullable();
+            $table->datetime('updated_by')->nullable();
         });
     }
 

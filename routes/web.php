@@ -97,11 +97,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/inventaris/create', [InventarisController::class, 'create'])->name('inventaris.create');
     Route::get('/inventaris/show/{id}', [InventarisController::class, 'show'])->name('inventaris.show');
 
-    //INVENTARIS
+    //MASTER BANK
     Route::get('/master-bank', [MasterBankController::class, 'index'])->name('master-bank.index');
-    Route::post('/master-bank', [MasterBankController::class, 'store'])->name('master-bank.store');
     Route::get('/master-bank/create', [MasterBankController::class, 'create'])->name('master-bank.create');
+    Route::get('/master-bank/edit/{id}', [MasterBankController::class, 'edit'])->name('master-bank.edit');
+    Route::delete('/master-bank/delete/{id}', [MasterBankController::class, 'delete'])->name('master-bank.delete');
     Route::get('/master-bank/show/{id}', [MasterBankController::class, 'show'])->name('master-bank.show');
+    Route::post('/master-bank/store', [MasterBankController::class, 'store'])->name('master-bank.store');
+    Route::post('/master-bank/update/{id}', [MasterBankController::class, 'update'])->name('master-bank.update');
     
 
     //MASTER PROVINSI

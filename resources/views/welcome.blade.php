@@ -321,6 +321,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('master-bank.index')}}" class="nav-link">
+                      <p>Master Bank</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                       <i class="nav-icon"></i>
                       <p>
