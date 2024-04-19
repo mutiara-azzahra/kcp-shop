@@ -20,7 +20,7 @@ class SalesOrderController extends Controller
 {
     public function index(){
 
-        $surat_pesanan = TransaksiSpHeader::orderBy('nosp', 'desc')->where('status', 'O');
+        $surat_pesanan = TransaksiSpHeader::orderBy('nosp', 'desc')->get();
 
         return view('sales-order.index', compact('surat_pesanan'));
     }

@@ -11,6 +11,7 @@ use App\Models\MasterPerkiraan;
 use App\Models\KasMasukHeader;
 use App\Models\KasMasukDetails;
 use App\Models\MasterOutlet;
+use App\Models\MasterBank;
 use App\Models\TransferMasukHeader;
 use App\Models\TransferMasukDetails;
 
@@ -130,12 +131,13 @@ class TransferMasukController extends Controller
 
     public function edit($id_transfer){
 
-        $transfer   = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
+        $transfer_masuk   = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
         $check      = KasMasukHeader::where('id_transfer', $id_transfer)->first();
         $kas_masuk  = KasMasukHeader::all();
         $outlet     = MasterOutlet::where('status', 'Y')->get();
+        $all_bank   = MasterBank::where('status', 'Y')->get();
 
-        return view('transfer-masuk.edit', compact('transfer', 'outlet', 'kas_masuk','check'));
+        return view('transfer-masuk.edit', compact('transfer_masuk', 'outlet', 'kas_masuk','check', 'all_bank'));
     }
 
     public function store_validasi($id_transfer)

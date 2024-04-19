@@ -29,6 +29,8 @@ class SuratPesananController extends Controller
 
     public function create(){
 
+        // sales 1 : normal sales, sales 2 : kanvasing sales
+
         $sales      = MasterSales::where('sales', Auth::user()->username)->value('id');
         $all_sales  = MasterSales::where('status', 'A')->get();
         $toko       = MasterAreaSales::where('id_sales', $sales)->get();
@@ -89,11 +91,11 @@ class SuratPesananController extends Controller
 
     public function detail($nosp)
     {
-        $details     = TransaksiSpHeader::where('nosp', $nosp)->first();
-        $total       = TransaksiSpDetails::where('nosp', $nosp)->get();
-        $master_part = MasterPart::where('status', 'A')->get();
-        $part_kanvasan = StokGudang::where('id_rak', '33')->get();
-        $check       = TransaksiSpDetails::where('nosp', $nosp)->first();
+        $details        = TransaksiSpHeader::where('nosp', $nosp)->first();
+        $total          = TransaksiSpDetails::where('nosp', $nosp)->get();
+        $master_part    = MasterPart::where('status', 'A')->get();
+        $part_kanvasan  = StokGudang::where('id_rak', '33')->get();
+        $check          = TransaksiSpDetails::where('nosp', $nosp)->first();
 
         $totalSum = 0;
         
@@ -121,45 +123,19 @@ class SuratPesananController extends Controller
             $harga_het      = MasterPart::where('part_no', $value['part_no'])->value('het');
             $diskon_maks    = MasterDiskonPart::where('part_no', $value['part_no'])->value('diskon_maksimal');
 
-            if($diskon_maks != null){
+            $value['hrg_pcs'] = $harga_het;
 
-                if($value['disc'] > $diskon_maks){
-
-                    return redirect()->route('surat-pesanan.index')->with('danger','Nilai diskon part melebihi diskon maskimal! Silahkan input kembali');
-                
-                } else{
-
-                    $value['hrg_pcs'] = $harga_het;
-
-                    if($value['disc'] == null){
-                        $value['disc'] = 0;
-                    }
-
-                    $value['disc']          = $value['disc'];
-                    $value['nominal']       = $harga_het * $value['qty'];
-                    $value['nominal_disc']  = ($harga_het * $value['qty'] * $value['disc'])/100;
-                    $value['nominal_total'] = $value['nominal'] - $value['nominal_disc'];
-                    $value['crea_date']     = NOW();
-
-                    TransaksiSpDetails::create($value);
-                }
-            } else {
-
-                    $value['hrg_pcs'] = $harga_het;
-
-                    if($value['disc'] == null){
-                        $value['disc'] = 0;
-                    }
-
-                    $value['disc']          = $value['disc'];
-                    $value['nominal']       = $harga_het * $value['qty'];
-                    $value['nominal_disc']  = ($harga_het * $value['qty'] * $value['disc'])/100;
-                    $value['nominal_total'] = $value['nominal'] - $value['nominal_disc'];
-                    $value['crea_date']     = NOW();
-
-                    TransaksiSpDetails::create($value);
+            if($value['disc'] == null){
+                $value['disc'] = 0;
             }
 
+            $value['disc']          = $value['disc'];
+            $value['nominal']       = $harga_het * $value['qty'];
+            $value['nominal_disc']  = ($harga_het * $value['qty'] * $value['disc'])/100;
+            $value['nominal_total'] = $value['nominal'] - $value['nominal_disc'];
+            $value['crea_date']     = NOW();
+
+            TransaksiSpDetails::create($value);
             
         }        
         

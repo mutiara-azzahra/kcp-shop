@@ -25,64 +25,31 @@
 
     <div class="card" style="padding: 10px;">
         <div class="card-body">
-            <div class="col-lg-8 p-1">
-                <table class="table table-borderless">
-                    <tr>
-                        <th class="text-left">No. Transfer</th>
-                        <td>:</td>
-                        <td class="text-left"><b>{{ $transfer->id_transfer }}</b></td>
-                    </tr>
-                    <tr>
-                        <th class="text-left">Transfer Via</th>
-                        <td>:</td>
-                        <td class="text-left"><b>{{ $transfer->bank }}</b></td>
-                    </tr>
-                    <tr>
-                        <th class="text-left">Keterangan</th>
-                        <td>:</td>
-                        <td class="text-left"><b>{{ $transfer->keterangan }}</b></td>
-                    </tr>
-                    <tr>
-                        <th class="text-left">Nominal</th>
-                        <td>:</td>
-                        <td class="text-left"><b>{{ number_format($transfer->details->where('akuntansi_to', 'D')->sum('total'), 0, ',', ',') }}</b></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" style="padding: 10px;">
-        <div class="card-body">
             <div class="col-lg-12">
-                <form action="{{ route('transfer-masuk.store-transfer', $transfer->id_transfer ) }}" method="POST">
+                <form action="{{ route('transfer-masuk.store-transfer', $transfer_masuk->id_transfer ) }}" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>No. Transfer Masuk</strong>
-                            <input type="text" name="kode_produk" class="form-control" value="{{ $transfer->id_transfer }}">
+                            <input type="text" name="id_transfer" class="form-control" value="{{ $transfer_masuk->id_transfer }}" readonly>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Transfer Via</strong>
-                            <select name="sales" class="form-control my-select" value="{{ $transfer_masuk->bank }}">
-                                <option value="">---Pilih sales--</option>
-                                <option value="bank" {{ $transfer_masuk->bank ==  $transfer_masuk->bank ? 'selected' : '' }}>{{ $transfer_masuk->bank }}</option>
+                            <select name="bank" class="form-control my-select">
+                                <option value="">---Pilih Bank--</option>
+                                @foreach($all_bank as $i)
+                                    <option value="{{ $i->nama_bank }}" {{ $transfer_masuk->bank == $i->nama_bank ? 'selected' : '' }}>{{ $i->nama_bank }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Keterangan</strong>
-                            <input type="text" name="keterangan" class="form-control" value="{{ $master_produk_id->keterangan }}">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <strong>Nominal</strong>
-                            <input type="text" name="keterangan" class="form-control" value="{{ $master_produk_id->keterangan }}">
+                            <input type="text" name="keterangan" class="form-control" value="{{ $transfer_masuk->keterangan }}">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
