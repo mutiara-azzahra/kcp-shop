@@ -193,8 +193,11 @@
                 </thead>
     
                 <tbody>
+
+                    
                     @foreach ($data as $p)
 
+                    {{-- Tanggal 1-10 --}}
                     <tr>
                         <td class="td-qty">{{$loop->iteration}}.</td>
                         <td class="td-qty">{{ Carbon\Carbon::parse($p->created_at)->format('d-m-Y') }}</td>
@@ -207,13 +210,15 @@
                         <td class="td-angka">{{ number_format($sisa, 0, ',', '.') }}</td>
                         <td class="td-angka"> - </td>
                     </tr>
-                    @endforeach
 
-                    @if($pesan_bayar)
-                        <tr>
-                            <td colspan="10">{{ $pesan_bayar }}</td>
-                        </tr>
-                    @endif
+                    {{-- Tanggal 11-20 --}}
+
+
+
+                    {{-- Tanggal 20-31 --}}
+
+
+                    @endforeach
             </tbody>
 
             </table>
