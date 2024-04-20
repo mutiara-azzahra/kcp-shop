@@ -125,6 +125,26 @@ class AccountReceivableController extends Controller
     public function cetak_pdf(Request $request)
     {
 
+        $pesan_bayar = '';
+        $nominal_invoice    = $p->details_invoice->sum('nominal_total');
+        $piutang_terbayar   = $p->piutang_details->sum('nominal');
+        $sisa               = $nominal_invoice - $piutang_terbayar;
+        $tanggal_bayar      = '';
+        $tanggal_pembayaran = Carbon\Carbon::parse($tanggal_bayar)->format('d');
+
+        if(isset($p->piutang_details) && $firstPiutangDetail = $p->piutang_details->first()){
+            $tanggal_bayar = Carbon\Carbon::parse($firstPiutangDetail->created_at)->format('d-m-Y');
+        }
+            
+
+        if ($tanggal_pembayaran >= 1 && $tanggal_pembayaran <= 10){
+            $pesan_bayar = "Harap Bayar pada tanggal 10 bulan ini";
+        }elseif ($tanggal_pembayaran >= 11 && $tanggal_pembayaran <= 20){
+            $pesan_bayar = "Harap Bayar pada tanggal 20 bulan ini";
+        }elseif ($tanggal_pembayaran >= 21 && $tanggal_pembayaran <= 30){
+            $pesan_bayar = "Harap Bayar pada tanggal 30 bulan ini";
+        }
+
         $selectedItems      = $request->input('selected_items', []);
         $data               = TransaksiInvoiceHeader::whereIn('noinv', $selectedItems)->get();
         $pdf                = PDF::loadView('reports.daftar-piutang-toko', ['data'=>$data]);
