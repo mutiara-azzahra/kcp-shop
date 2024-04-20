@@ -191,40 +191,32 @@
                         <th class="th-header">CATATAN</th>
                     </tr>
                 </thead>
+    
                 <tbody>
-                @foreach ($data as $p)
-                <tr>
-                    @php
-                    $nominal_invoice    = $p->details_invoice->sum('nominal_total');
-                    $piutang_terbayar   = $p->piutang_details->sum('nominal');
-                    $sisa               = $nominal_invoice - $piutang_terbayar;
+                    @foreach ($data as $p)
 
-                    $tanggal_bayar = '';
+                    <tr>
+                        <td class="td-qty">{{$loop->iteration}}.</td>
+                        <td class="td-qty">{{ Carbon\Carbon::parse($p->created_at)->format('d-m-Y') }}</td>
+                        <td class="td-part">{{ $p->noinv }}</td>
+                        <td class="td-qty">{{ Carbon\Carbon::parse($p->tgl_jatuh_tempo)->format('d-m-Y') }}</td>
+                        <td class="td-angka">{{ number_format($nominal_invoice, 0, ',', '.') }}</td>
+                        <td class="td-angka"> - </td>
+                        <td class="td-angka">{{ number_format($piutang_terbayar, 0, ',', '.') }}</td>
+                        <td class="td-qty">{{ $tanggal_bayar }}</td>
+                        <td class="td-angka">{{ number_format($sisa, 0, ',', '.') }}</td>
+                        <td class="td-angka"> - </td>
+                    </tr>
+                    @endforeach
 
-                    if(isset($p->piutang_details) && $firstPiutangDetail = $p->piutang_details->first()) {
-                        $tanggal_bayar = Carbon\Carbon::parse($firstPiutangDetail->created_at)->format('d-m-Y');
-                    } else {
-                        $tanggal_bayar = '-';
-                    }
+                    @if($pesan_bayar)
+                        <tr>
+                            <td colspan="10">{{ $pesan_bayar }}</td>
+                        </tr>
+                    @endif
+            </tbody>
 
-                    @endphp
-
-                    <td class="td-qty">{{$loop->iteration}}.</td>
-                    <td class="td-qty">{{ Carbon\Carbon::parse($p->created_at)->format('d-m-Y') }}</td>
-                    <td class="td-part">{{ $p->noinv }}</td>
-                    <td class="td-qty">{{ Carbon\Carbon::parse($p->tgl_jatuh_tempo)->format('d-m-Y') }}</td>
-                    <td class="td-angka">{{ number_format($nominal_invoice, 0, ',', '.') }}</td>
-                    <td class="td-angka"> - </td>
-                    <td class="td-angka">{{ number_format($piutang_terbayar, 0, ',', '.') }}</td>
-                    <td class="td-qty">{{ $tanggal_bayar }}</td>
-                    <td class="td-angka">{{ number_format($sisa, 0, ',', '.') }}</td>
-                    <td class="td-angka"> - </td>
-                </tr>
-                @endforeach
-                </tbody>
             </table>
-
-
           
             <table class="atas" style="line-height: 15px;">
                 <tr>
