@@ -189,9 +189,9 @@ class TransferMasukController extends Controller
     {
 
         $request->validate([
-            'bank'        => 'required',
+            'bank'          => 'required',
             'tanggal_bank'  => 'required',
-            'keterangan'  => 'required',
+            'keterangan'    => 'required',
         ]);
 
         $updated = TransferMasukHeader::where('id', $id)->update([
