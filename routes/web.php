@@ -471,7 +471,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/transfer-masuk/store-validasi/{id_transfer}', [TransferMasukController::class, 'store_validasi'])->name('transfer-masuk.store-validasi');
     Route::get('/transfer-masuk/edit/{id_transfer}', [TransferMasukController::class, 'edit'])->name('transfer-masuk.edit');
     Route::get('/transfer-masuk/cetak/{id_transfer}', [TransferMasukController::class, 'cetak'])->name('transfer-masuk.cetak');
-    Route::post('/transfer-masuk/store-transfer', [TransferMasukController::class, 'store_transfer'])->name('transfer-masuk.store-transfer');
+    Route::post('/transfer-masuk/store-transfer/{id}', [TransferMasukController::class, 'store_transfer'])->name('transfer-masuk.store-transfer');
     Route::delete('/transfer-masuk/details/{id}', [TransferMasukController::class, 'delete_details'])->name('transfer-masuk.delete-details');
     Route::delete('/transfer-masuk/delete-details/{id}', [TransferMasukController::class, 'delete_details'])->name('transfer-masuk.delete');
 

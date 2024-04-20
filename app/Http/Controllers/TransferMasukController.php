@@ -185,5 +185,29 @@ class TransferMasukController extends Controller
         }
     }
 
+    public function store_transfer(Request $request, $id)
+    {
+
+        $request->validate([
+            'bank'        => 'required',
+            'tanggal_bank'  => 'required',
+            'keterangan'  => 'required',
+        ]);
+
+        $updated = TransferMasukHeader::where('id', $id)->update([
+                'bank'          => $request->bank,
+                'tanggal_bank'  => $request->tanggal_bank,
+                'keterangan'    => $request->keterangan,
+                'updated_at'    => NOW(),
+                'updated_by'    => Auth::user()->nama_user
+            ]);
+        
+        if ($updated){
+            return redirect()->route('transfer-masuk.index')->with('success','Transfer Masuk berhasil diubah!');
+        } else{
+            return redirect()->route('transfer-masuk.index')->with('danger','Transfer Masuk gagal diubah');
+        }   
+    }
+
     
 }

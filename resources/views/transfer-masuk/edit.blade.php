@@ -26,13 +26,19 @@
     <div class="card" style="padding: 10px;">
         <div class="card-body">
             <div class="col-lg-12">
-                <form action="{{ route('transfer-masuk.store-transfer', $transfer_masuk->id_transfer ) }}" method="POST">
+            <form action="{{ route('transfer-masuk.store-transfer', ['id' => $transfer_masuk->id]) }}" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>No. Transfer Masuk</strong>
                             <input type="text" name="id_transfer" class="form-control" value="{{ $transfer_masuk->id_transfer }}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <strong>Tanggal Bank</strong>
+                            <input type="date" name="tanggal_bank" class="form-control" value="{{ $transfer_masuk->tanggal_bank }}">
                         </div>
                     </div>
                     <div class="col-md-12">
