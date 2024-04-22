@@ -4,20 +4,17 @@ namespace App\Http\Controllers;
 
 use Auth;
 use PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\TransaksiPackingsheetHeader;
-use App\Models\TransaksiLkhHeader;
-use App\Models\TransaksiLkhDetails;
+use App\Models\MasterPerkiraan;
 
-class LkhController extends Controller
+class BukuBesarController extends Controller
 {
     public function index(){
 
-        $packingsheet = TransaksiPackingsheetHeader::where('flag_lkh', 'N')->get();
-        $lkh          = TransaksiLkhHeader::where('status', 'O')->orderBy('id', 'desc')->get();
+        $perkiraan = MasterPerkiraan::where('status', 'AKTIF')->get();
 
-        return view('laporan-kiriman-harian.index', compact('packingsheet', 'lkh'));
+        return view('buku-besar.index', compact('perkiraan'));
     }
 
     public function store(Request $request){
@@ -56,7 +53,7 @@ class LkhController extends Controller
             }
         }
 
-        return redirect()->route('laporan-kiriman-harian.index')->with('success','Packingsheet berhasil diteruskan ke LKH!');
+        return redirect()->route('buku-besar.index')->with('success','Packingsheet berhasil diteruskan ke LKH!');
     }
 
     public function details($no_lkh)
@@ -67,7 +64,7 @@ class LkhController extends Controller
         $driver         = User::where('id_role', 22)->get();
         $helper         = User::where('id_role', 13)->get();
 
-        return view('laporan-kiriman-harian.details', ['no_lkh' => $no_lkh] ,compact('details', 'lkh_details', 'driver', 'helper'));
+        return view('buku-besar.details', ['no_lkh' => $no_lkh] ,compact('details', 'lkh_details', 'driver', 'helper'));
     }
 
     public function store_details(Request $request, $no_lkh)
@@ -86,7 +83,7 @@ class LkhController extends Controller
             'updated_by'        => Auth::user()->nama_user
         ]);
         
-        return redirect()->route('laporan-kiriman-harian.index')->with('success','Details LKH berhasil ditambahkan!');
+        return redirect()->route('buku-besar.index')->with('success','Details LKH berhasil ditambahkan!');
     }
 
     public function cetak($no_lkh)
@@ -117,7 +114,7 @@ class LkhController extends Controller
             'updated_by'        => Auth::user()->nama_user
         ]);
         
-        return redirect()->route('laporan-kiriman-harian.index')->with('success','Details LKH berhasil diubah!');
+        return redirect()->route('buku-besar.index')->with('success','Details LKH berhasil diubah!');
     }
 
 
@@ -125,7 +122,7 @@ class LkhController extends Controller
 
         $history = TransaksiLkhHeader::where('status', 'C')->get();
 
-        return view('laporan-kiriman-harian.history', compact('history'));
+        return view('buku-besar.history', compact('history'));
     }
 
 }

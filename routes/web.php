@@ -63,6 +63,7 @@ use App\Http\Controllers\LaporanPenjualanPerTokoController;
 use App\Http\Controllers\LaporanPenjualanPerProdukController;
 use App\Http\Controllers\LaporanPenjualanKelompokProdukController;
 use App\Http\Controllers\PenerimaanPiutangTokoController;
+use App\Http\Controllers\BukuBesarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -577,6 +578,11 @@ Route::group(['middleware' => 'auth'], function () {
     //LAPORAN MARKETING - PENJUALAN KELOMPOK PRODUK
     Route::get('/laporan-kelompok-produk', [LaporanPenjualanKelompokProdukController::class, 'index'])->name('laporan-kelompok-produk.index');
     Route::post('/laporan-kelompok-produk/view', [LaporanPenjualanKelompokProdukController::class, 'view'])->name('laporan-kelompok-produk.view');
+
+    //LAPORAN MARKETING - PENJUALAN KELOMPOK PRODUK
+    Route::get('/buku-besar', [BukuBesarController::class, 'index'])->name('buku-besar.index');
+    Route::post('/buku-besar/store', [BukuBesarController::class, 'store'])->name('buku-besar.store');
+    Route::get('/buku-besar/{tanggal_awal}/{tanggal_akhir}', [BukuBesarController::class, 'view'])->name('buku-besar.view');
 
     //RETUR
     Route::get('/retur', [ReturController::class, 'index'])->name('retur.index');

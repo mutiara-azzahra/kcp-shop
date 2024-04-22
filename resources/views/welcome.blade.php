@@ -391,6 +391,25 @@
             </li>
             @endif
 
+            @if(in_array(Auth::user()->id_role, [2, 5, 6, 7, 12, 17]))
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon"></i>
+                <p>
+                  Akuntansi
+                  <i class="right fas fa-angle-right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('buku-besar.index')}}" class="nav-link">
+                      <p>Buku Besar</p>
+                    </a>
+                </li>
+              </ul>
+            </li>
+            @endif
+
             @if(in_array(Auth::user()->id_role, [4, 5, 6, 7, 9, 11, 12, 17, 20, 24]))
             <!-- {{-- MARKETING --}} -->
             <li class="nav-item">
