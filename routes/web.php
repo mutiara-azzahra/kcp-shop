@@ -579,10 +579,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/laporan-kelompok-produk', [LaporanPenjualanKelompokProdukController::class, 'index'])->name('laporan-kelompok-produk.index');
     Route::post('/laporan-kelompok-produk/view', [LaporanPenjualanKelompokProdukController::class, 'view'])->name('laporan-kelompok-produk.view');
 
-    //LAPORAN MARKETING - PENJUALAN KELOMPOK PRODUK
+    //BUKU BESAR
     Route::get('/buku-besar', [BukuBesarController::class, 'index'])->name('buku-besar.index');
     Route::post('/buku-besar/store', [BukuBesarController::class, 'store'])->name('buku-besar.store');
     Route::get('/buku-besar/{tanggal_awal}/{tanggal_akhir}', [BukuBesarController::class, 'view'])->name('buku-besar.view');
+
+    //BUKU BESAR
+    Route::get('/setup-perkiraan', [BukuBesarController::class, 'index'])->name('setup-perkiraan.index');
+    Route::post('/setup-perkiraan/store', [BukuBesarController::class, 'store'])->name('setup-perkiraan.store');
+    Route::get('/setup-perkiraan/{tanggal_awal}/{tanggal_akhir}', [BukuBesarController::class, 'view'])->name('setup-perkiraan.view');
 
     //RETUR
     Route::get('/retur', [ReturController::class, 'index'])->name('retur.index');

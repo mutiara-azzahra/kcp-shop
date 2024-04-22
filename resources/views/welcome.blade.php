@@ -401,6 +401,11 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
+              <li class="nav-item">
+                    <a href="{{ route('setup-perkiraan.index')}}" class="nav-link">
+                      <p>Account Closing</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('buku-besar.index')}}" class="nav-link">
                       <p>Buku Besar</p>
