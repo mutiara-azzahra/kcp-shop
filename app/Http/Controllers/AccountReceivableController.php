@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use PDF;
 use Auth;
+use DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\MasterOutlet;
@@ -125,28 +126,27 @@ class AccountReceivableController extends Controller
     public function cetak_pdf(Request $request)
     {
 
-        $pesan_bayar = '';
-        $nominal_invoice    = $p->details_invoice->sum('nominal_total');
-        $piutang_terbayar   = $p->piutang_details->sum('nominal');
-        $sisa               = $nominal_invoice - $piutang_terbayar;
-        $tanggal_bayar      = '';
-        $tanggal_pembayaran = Carbon\Carbon::parse($tanggal_bayar)->format('d');
-
-        if(isset($p->piutang_details) && $firstPiutangDetail = $p->piutang_details->first()){
-            $tanggal_bayar = Carbon\Carbon::parse($firstPiutangDetail->created_at)->format('d-m-Y');
-        }
-            
-
-        if ($tanggal_pembayaran >= 1 && $tanggal_pembayaran <= 10){
-            $pesan_bayar = "Harap Bayar pada tanggal 10 bulan ini";
-        }elseif ($tanggal_pembayaran >= 11 && $tanggal_pembayaran <= 20){
-            $pesan_bayar = "Harap Bayar pada tanggal 20 bulan ini";
-        }elseif ($tanggal_pembayaran >= 21 && $tanggal_pembayaran <= 30){
-            $pesan_bayar = "Harap Bayar pada tanggal 30 bulan ini";
-        }
 
         $selectedItems      = $request->input('selected_items', []);
         $data               = TransaksiInvoiceHeader::whereIn('noinv', $selectedItems)->get();
+
+
+        // Data Pembayaran Tanggal 1-10
+
+        $data1 = TransaksiInvoiceHeader::whereIn('noinv', $selectedItems)
+            ->whereIn(DB::raw('DAY(created_at)'), [1, 2, 3, 4, 5, 6, 7, 8, 10])
+            ->get();
+
+
+
+        dd($data1);
+
+        
+
+
+        // dd($data->groupBy('created_at')->month()
+
+        // dd($data);
         $pdf                = PDF::loadView('reports.daftar-piutang-toko', ['data'=>$data]);
         $pdf->setPaper('letter', 'landscape');
 
