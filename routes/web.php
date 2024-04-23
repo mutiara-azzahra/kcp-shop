@@ -64,6 +64,7 @@ use App\Http\Controllers\LaporanPenjualanPerProdukController;
 use App\Http\Controllers\LaporanPenjualanKelompokProdukController;
 use App\Http\Controllers\PenerimaanPiutangTokoController;
 use App\Http\Controllers\BukuBesarController;
+use App\Http\Controllers\SetupPerkiraanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -585,9 +586,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/buku-besar/{tanggal_awal}/{tanggal_akhir}', [BukuBesarController::class, 'view'])->name('buku-besar.view');
 
     //BUKU BESAR
-    Route::get('/setup-perkiraan', [BukuBesarController::class, 'index'])->name('setup-perkiraan.index');
-    Route::post('/setup-perkiraan/store', [BukuBesarController::class, 'store'])->name('setup-perkiraan.store');
-    Route::get('/setup-perkiraan/{tanggal_awal}/{tanggal_akhir}', [BukuBesarController::class, 'view'])->name('setup-perkiraan.view');
+    Route::get('/setup-perkiraan', [SetupPerkiraanController::class, 'index'])->name('setup-perkiraan.index');
+    Route::post('/setup-perkiraan/store', [SetupPerkiraanController::class, 'store'])->name('setup-perkiraan.store');
+    Route::get('/setup-perkiraan/{tanggal_awal}/{tanggal_akhir}', [SetupPerkiraanController::class, 'view'])->name('setup-perkiraan.view');
 
     //RETUR
     Route::get('/retur', [ReturController::class, 'index'])->name('retur.index');

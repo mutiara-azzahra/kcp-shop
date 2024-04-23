@@ -5,7 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
              <div class="float-left">
-                <h4>Buku Besar</h4>
+                <h4>Setup Perkiraan / Akun Closing Per Bulan</h4>
             </div>
         </div>
     </div>
@@ -20,40 +20,38 @@
         </div>
     @endif
 
-    <div class="card" style="padding: 10px;">
-        <div class="card-header">
-            Pilih Periode
-        </div>
-        <div class="card-body">
-            <form action="{{ route('buku-besar.store') }}"  method="POST">
-                @csrf
-                <div class="row">
-                    <div class="form-group col-12">
-                        <strong>Pilih Perkiraan</strong><br>
-                        <select name="id_perkiraan" class="form-control mb-2 my-select">     
-                            <option value="">-- Pilih Perkiraan --</option>
-                            @foreach($perkiraan as $s)
-                                <option value="{{ $s->id_perkiraan }}">{{ $s->id_perkiraan }} - {{ $s->nm_perkiraan }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group col-6">
-                        <label for="">Tanggal Awal</label>
-                        <input type="date" name="tanggal_awal" id="" class="form-control" placeholder="">
-                    </div>
+    <div class="card" style="padding: 2px;">
+        <div class="card-body p-2">
+            <div class="col-lg-12">  
+                <table class="table table-hover table-bordered table-sm bg-light" id="example1">
+                    <thead>
+                        <tr style="background-color: #6082B6; color:white">
+                            <th class="text-center">Kode Perkiraan</th>
+                            <th class="text-center">Nama Perkiraan</th>
+                            <th class="text-center">Head Kategori</th>
+                            <th class="text-center">Bulan</th>
+                            <th class="text-center">Tahun</th>
+                            <th class="text-center">Nominal</th>
+                        </tr>
+                    </thead>
 
-                    <div class="form-group col-6">
-                        <label for="">Tanggal Akhir</label>
-                        <input type="date" name="tanggal_akhir" id="" class="form-control" placeholder="">
-                    </div>
-                </div>
+                    <tbody>
+                        @php
+                        $no=1;
+                        @endphp
 
-                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                    <div class="float-right pt-3">
-                        <button type="submit" class="btn btn-warning"><i class="fas fa-save"></i> Proses Data</button>                            
-                    </div>
-                </div>
-            </form>
+                        @foreach($setup_akun as $p)
+                        <tr>
+                            <td class="text-left"></td>
+                            <td class="text-left"></td>
+                            <td class="text-left"></td>
+                            <td class="text-left"></td>
+                            <td class="text-left"></td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
