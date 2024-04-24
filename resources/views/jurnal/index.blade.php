@@ -25,8 +25,7 @@
             Pilih Periode
         </div>
         <div class="card-body">
-            <form action="{{ route('jurnal.store') }}"  method="POST">
-                @csrf
+            <form action="{{ route('jurnal.store') }}" method="GET">
                 <div class="row">
                     <div class="form-group col-6">
                         <label for="">Tanggal Awal</label>

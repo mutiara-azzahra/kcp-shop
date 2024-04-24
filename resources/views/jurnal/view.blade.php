@@ -45,13 +45,21 @@
                     <tbody>
                     @foreach ($jurnal_header as $i)
                         <tr>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>                           
-
-                            @foreach ($i->details as $d)
-                                <td class="text-right"></td>
-                            @endforeach
+                            <td class="text-center">{{ $i->trx_date }}</td>
+                            <td class="text-center">{{ $i->trx_from }}</td>
+                            <td class="text-center">
+                                @foreach ($i->details as $d)
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-center">{{ $d->perkiraan }}</td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center">
+                                        
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

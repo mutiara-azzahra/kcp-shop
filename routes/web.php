@@ -594,7 +594,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     //JURNAL
     Route::get('/jurnal', [JurnalController::class, 'index'])->name('jurnal.index');
-    Route::post('/jurnal/store', [JurnalPembukuanController::class, 'store'])->name('jurnal.store');
+    Route::get('/jurnal/store', [JurnalController::class, 'store'])->name('jurnal.store');
+    Route::get('/jurnal/view/{tanggal_awal}/{tanggal_akhir}', [JurnalController::class, 'view'])->name('jurnal.view');
 
     //JURNAL PEMBUKUAN
     Route::get('/jurnal-pembukuan', [JurnalPembukuanController::class, 'index'])->name('jurnal-pembukuan.index');
