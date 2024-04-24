@@ -7,6 +7,9 @@
              <div class="float-left">
                 <h4>Jurnal Pembukuan</h4>
             </div>
+            <div class="float-right">
+                <a class="btn btn-success" href="{{ route('jurnal-pembukuan.create') }}"><i class="fas fa-plus"></i> Buat Baru</a>
+            </div>
         </div>
     </div>
 

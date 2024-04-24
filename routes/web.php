@@ -63,6 +63,7 @@ use App\Http\Controllers\LaporanPenjualanPerTokoController;
 use App\Http\Controllers\LaporanPenjualanPerProdukController;
 use App\Http\Controllers\LaporanPenjualanKelompokProdukController;
 use App\Http\Controllers\PenerimaanPiutangTokoController;
+use App\Http\Controllers\JurnalPembukuanController;
 use App\Http\Controllers\BukuBesarController;
 use App\Http\Controllers\SetupPerkiraanController;
 
@@ -585,10 +586,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/buku-besar/store', [BukuBesarController::class, 'store'])->name('buku-besar.store');
     Route::get('/buku-besar/{tanggal_awal}/{tanggal_akhir}', [BukuBesarController::class, 'view'])->name('buku-besar.view');
 
-    //BUKU BESAR
+    //SETUP PERKIRAAN
     Route::get('/setup-perkiraan', [SetupPerkiraanController::class, 'index'])->name('setup-perkiraan.index');
     Route::post('/setup-perkiraan/store', [SetupPerkiraanController::class, 'store'])->name('setup-perkiraan.store');
     Route::get('/setup-perkiraan/{tanggal_awal}/{tanggal_akhir}', [SetupPerkiraanController::class, 'view'])->name('setup-perkiraan.view');
+
+    //SETUP PERKIRAAN
+    Route::get('/jurnal-pembukuan', [JurnalPembukuanController::class, 'index'])->name('jurnal-pembukuan.index');
+    Route::get('/jurnal-pembukuan/create', [JurnalPembukuanController::class, 'create'])->name('jurnal-pembukuan.create');
+    Route::post('/jurnal-pembukuan/store', [JurnalPembukuanController::class, 'store'])->name('jurnal-pembukuan.store');
+    Route::get('/jurnal-pembukuan/{tanggal_awal}/{tanggal_akhir}', [JurnalPembukuanController::class, 'view'])->name('jurnal-pembukuan.view');
 
     //RETUR
     Route::get('/retur', [ReturController::class, 'index'])->name('retur.index');
