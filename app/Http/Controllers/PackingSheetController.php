@@ -213,8 +213,8 @@ class PackingSheetController extends Controller
 
     public function store_edit($id, $nops , Request $request)
     {
-        $cari_so    = TransaksiPackingsheetHeader::where('nops', $nops)->value('noso');
-        $ubah_so    = TransaksiSOHeader::where('noso', $cari_so)->first();
+        $cari_so    = TransaksiPackingsheetDetails::findOrFail($id);
+        $ubah_so    = TransaksiSOHeader::where('noso', $cari_so->noso)->first();
         $part_no_ps = TransaksiPackingsheetDetails::where('id', $id)->value('part_no');
 
         $updated    = TransaksiPackingsheetDetails::where('id', $id)->update([
@@ -224,9 +224,9 @@ class PackingSheetController extends Controller
         ]);
 
         $het        = MasterPart::where('part_no', $part_no_ps)->value('het');
-        $getDisc    = TransaksiSODetails::where('noso', $cari_so)->where('part_no', $part_no_ps)->value('disc');
-
-        $updated_so = TransaksiSODetails::where('noso', $cari_so)->where('part_no', $part_no_ps)
+        $getDisc    = TransaksiSODetails::where('noso', $cari_so->noso)->where('part_no', $part_no_ps)->value('disc');
+      
+        $updated_so = TransaksiSODetails::where('noso', $cari_so->noso)->where('part_no', $part_no_ps)
             ->update([
             'qty'           => $request->qty,
             'nominal'       => $request->qty * $het,

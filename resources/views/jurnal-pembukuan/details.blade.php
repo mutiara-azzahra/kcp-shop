@@ -90,7 +90,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="form-group col-12">
-                                            <input type="hidden" name="no_kas_masuk" value="{{ $kas_masuk->no_kas_masuk }}">
+                                            {{-- <input type="hidden" name="no_kas_masuk" value="{{ $kas_masuk->no_kas_masuk }}"> --}}
                                             <input type="text" name="total" class="form-control">
                                         </div>
                                     </td>

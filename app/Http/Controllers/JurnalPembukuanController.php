@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\MasterPerkiraan;
 use App\Models\TransaksiAkuntansiJurnalHeader;
+use App\Models\TransaksiAkuntansiJurnalDetails;
 
 class JurnalPembukuanController extends Controller
 {
@@ -20,6 +22,8 @@ class JurnalPembukuanController extends Controller
     }
 
     public function store(Request $request){
+
+        // dd($request->all());
 
         $request -> validate([
             'kategori'  => 'required',
@@ -49,15 +53,17 @@ class JurnalPembukuanController extends Controller
         
         $jurnal_header = TransaksiAkuntansiJurnalHeader::findOrFail($id);
 
+        $perkiraan  = MasterPerkiraan::where('status', 'AKTIF')->get();
+
         if (!$jurnal_header) {
             return redirect()->back()->with('warning', 'Jurnal Header tidak ditemukan');
         }
 
-        $balance_debet = $jurnal_header->details_keluar->where('akuntansi_to', 'D')->sum('total');
-        $balance_kredit = $jurnal_header->details_keluar->where('akuntansi_to', 'K')->sum('total');
+        $balance_debet = $jurnal_header->details->where('akuntansi_to', 'D')->sum('total');
+        $balance_kredit = $jurnal_header->details->where('akuntansi_to', 'K')->sum('total');
 
         $balancing = $balance_debet - $balance_kredit;
 
-        return view('jurnal-pembukuan.details', compact('kas_keluar', 'perkiraan', 'balancing'));
+        return view('jurnal-pembukuan.details', compact('perkiraan', 'balancing'));
     }
 }

@@ -34,7 +34,6 @@
                                 <tr style="background-color: #6082B6; color:white">
                                     <th class="text-center">Part No</th>
                                     <th class="text-center">Stok Rak</th>
-                                    <th class="text-center">Rak</th>
                                     <th class="text-center">Qty</th>
                                 </tr>
                             </thead>
@@ -46,12 +45,7 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="form-group col-12">
-                                        <input type="text" name="part_no" class="form-control" value="{{ $details->rak->where('part_no', $details->part_no)->first()->rak->kode_rak_lokasi }}" readonly>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <div class="form-group col-12">
-                                        <input type="text" name="part_no" class="form-control" value="{{ $details->rak->where('part_no', $details->part_no)->value('stok') }}" readonly>
+                                        <input type="text" name="part_no" class="form-control" value="{{ $details->stok->stok }}" readonly>
                                     </div>
                                 </td>
                                 <td class="text-center">
@@ -64,7 +58,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                         <div class="float-right">
-                            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Simpan Data</button>                            
+                            <button type="submit" class="btn btn-warning"><i class="fas fa-save"></i> Simpan Data</button>                            
                         </div>
                     </div>
                 </div>
