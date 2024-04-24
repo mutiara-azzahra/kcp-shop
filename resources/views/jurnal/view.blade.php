@@ -13,7 +13,7 @@
         </div>
         <div class="col-lg-12 pb-3">
             <div class="float-left">
-                Periode
+                <h3>Periode {{ $tanggal_awal }} s/d {{ $tanggal_akhir }}</h3>
             </div>
         </div>
     </div>

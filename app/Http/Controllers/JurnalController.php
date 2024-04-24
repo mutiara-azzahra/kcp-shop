@@ -26,6 +26,6 @@ class JurnalController extends Controller
         $jurnal_header  = TransaksiAkuntansiJurnalHeader::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
             ->get();
 
-        return view('jurnal.view', compact('jurnal_header'));
+        return view('jurnal.view', compact('jurnal_header', 'tanggal_awal', 'tanggal_akhir'));
     }
 }
