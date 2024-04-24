@@ -18,6 +18,11 @@ class JurnalController extends Controller
         $tanggal_awal   = $request->tanggal_awal;
         $tanggal_akhir  = $request->tanggal_akhir;
 
+        return redirect()->route('sales-order.view', [ 'tanggal_awal' => $tanggal_awal, 'tanggal_akhir' => $tanggal_akhir]);
+    }
+
+    public function view($tanggal_awal, $tanggal_akhir){
+
         $jurnal_header  = TransaksiAkuntansiJurnalHeader::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
             ->get();
 

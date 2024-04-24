@@ -5,10 +5,10 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
             <div class="float-left">
-                <h4>Periode</h4>
+                <h4>Jurnal</h4>
             </div>
             <div class="float-right">
-                <a class="btn btn-success" href="{{ route('laporan-penjualan-toko.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
+                <a class="btn btn-success" href="{{ route('jurnal.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
             </div>
         </div>
         <div class="col-lg-12 pb-3">
@@ -33,40 +33,25 @@
                 <table class="table table-hover table-bordered table-sm bg-light" id="example1">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
-                            <th class="text-center">Nama Produk</th>
-                            <th class="text-center">Kode Outlet</th>
-                            <th class="text-center">Nama Outlet</th>
-                            @php
-                            $uniqueMonths = [];
-
-                            foreach ($sumNominal as $i) {
-                                foreach ($i as $month => $invoices) {
-                                    $uniqueMonths[$month] = \Carbon\Carbon::parse($month)->format('M Y');
-                                }
-                            }
-
-                            ksort($uniqueMonths);
-
-                            @endphp
-                            @foreach ($uniqueMonths as $month => $formattedMonth)
-                                <th class="text-center">{{ $formattedMonth }}</th>
-                            @endforeach
+                            <th class="text-center">Tanggal</th>
+                            <th class="text-center">Trx</th>
+                            <th class="text-center">Perkiraan</th>
+                            <th class="text-center">Keterangan</th>
+                            <th class="text-center">Debet</th>
+                            <th class="text-center">Kredit</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                    @foreach ($sumNominal as $kd_outlet => $details)
+                    @foreach ($jurnal_header as $i)
                         <tr>
-                            <td class="text-center">{{ $nama_produk }}</td>
-                            <td class="text-center">{{ $kd_outlet }}</td>
-                            <td class="text-left">{{ App\Models\MasterOutlet::where('kd_outlet', $kd_outlet)->value('nm_outlet') }}</td>                           
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>                           
 
-                            @foreach ($uniqueMonths as $month => $monthLabel)
-                                <td class="text-right">
-                                    {{ $details->has($month) ? number_format($details[$month], 0, ',', ',') : 0 }}
-                                </td>
+                            @foreach ($i->details as $d)
+                                <td class="text-right"></td>
                             @endforeach
-
                         </tr>
                     @endforeach
                     </tbody>
