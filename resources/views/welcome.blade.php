@@ -416,6 +416,32 @@
                       <p>Buku Besar</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon"></i>
+                      <p>
+                        Laporan Akuntansi
+                        <i class="right fas fa-angle-right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                          <a href="{{ route('jurnal.index')}}" class="nav-link">
+                            <p>Jurnal</p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('laporan-penjualan-produk.index')}}" class="nav-link">
+                            <p>Neraca</p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="{{ route('laporan-kelompok-produk.index')}}" class="nav-link">
+                            <p>Buku Besar</p>
+                          </a>
+                      </li>
+                    </ul>
+                </li>
               </ul>
             </li>
             @endif

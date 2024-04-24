@@ -5,7 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
              <div class="float-left">
-                <h4>Buku Besar</h4>
+                <h4>Jurnal</h4>
             </div>
         </div>
     </div>
@@ -25,18 +25,9 @@
             Pilih Periode
         </div>
         <div class="card-body">
-            <form action="{{ route('buku-besar.store') }}"  method="POST">
+            <form action="{{ route('jurnal.store') }}"  method="POST">
                 @csrf
                 <div class="row">
-                    <div class="form-group col-12">
-                        <strong>Pilih Perkiraan</strong><br>
-                        <select name="id_perkiraan" class="form-control mb-2 my-select">     
-                            <option value="">-- Pilih Perkiraan --</option>
-                            @foreach($perkiraan as $s)
-                                <option value="{{ $s->id_perkiraan }}">{{ $s->id_perkiraan }} - {{ $s->nm_perkiraan }}</option>
-                            @endforeach
-                        </select>
-                    </div>
                     <div class="form-group col-6">
                         <label for="">Tanggal Awal</label>
                         <input type="date" name="tanggal_awal" id="" class="form-control" placeholder="">

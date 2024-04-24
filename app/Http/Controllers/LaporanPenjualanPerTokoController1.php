@@ -35,8 +35,6 @@ class LaporanPenjualanPerTokoController extends Controller
             });
         });
 
-        dd($nominal_perbulan);
-
         return view('laporan-penjualan-toko.view', compact('map_invoice', 'invoices', 'nominal_perbulan'));
     }
 }

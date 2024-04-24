@@ -64,6 +64,7 @@ use App\Http\Controllers\LaporanPenjualanPerProdukController;
 use App\Http\Controllers\LaporanPenjualanKelompokProdukController;
 use App\Http\Controllers\PenerimaanPiutangTokoController;
 use App\Http\Controllers\JurnalPembukuanController;
+use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\BukuBesarController;
 use App\Http\Controllers\SetupPerkiraanController;
 
@@ -591,7 +592,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/setup-perkiraan/store', [SetupPerkiraanController::class, 'store'])->name('setup-perkiraan.store');
     Route::get('/setup-perkiraan/{tanggal_awal}/{tanggal_akhir}', [SetupPerkiraanController::class, 'view'])->name('setup-perkiraan.view');
 
-    //SETUP PERKIRAAN
+    //JURNAL
+    Route::get('/jurnal', [JurnalController::class, 'index'])->name('jurnal.index');
+    Route::post('/jurnal/store', [JurnalPembukuanController::class, 'store'])->name('jurnal.store');
+
+    //JURNAL PEMBUKUAN
     Route::get('/jurnal-pembukuan', [JurnalPembukuanController::class, 'index'])->name('jurnal-pembukuan.index');
     Route::get('/jurnal-pembukuan/create', [JurnalPembukuanController::class, 'create'])->name('jurnal-pembukuan.create');
     Route::post('/jurnal-pembukuan/store', [JurnalPembukuanController::class, 'store'])->name('jurnal-pembukuan.store');
