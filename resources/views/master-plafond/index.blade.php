@@ -46,7 +46,7 @@
                             <td class="text-center">{{ $p->kd_outlet }}</td>
                             <td class="text-left">{{ $p->nm_outlet }}</td>
                             <td class="text-right">{{ number_format($p->nominal_plafond, 0, '.', ',') }}</td>
-                            <td class="text-right"></td>
+                            <td class="text-right">{{ number_format($p->invoice_header->where('flag_pembayaran_lunas', 'N')->flatMap->details_invoice->sum('nominal_total'), 0, '.', ',') }}</td>
                             <td class="text-center">
                                 <a class="btn btn-info btn-sm" href="{{ route('master-plafond.tambah', $p->id ) }}">
                                     <i class="fas fa-plus"></i>

@@ -22,4 +22,9 @@ class TransaksiPlafond extends Model
     {
         return $this->belongsTo(MasterOutlet::class, 'kd_outlet', 'kd_outlet');
     }
+
+    public function invoice_header()
+    {
+        return $this->hasMany(TransaksiInvoiceHeader::class, 'kd_outlet', 'kd_outlet');
+    }
 }
