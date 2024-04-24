@@ -106,11 +106,11 @@ class JurnalPembukuanController extends Controller
             $jurnal_details = TransaksiAkuntansiJurnalDetails::findOrFail($id);
             $jurnal_details->delete();
 
-            return redirect()->route('jurnal-pembukuan.details', ['id' => $jUrnal_details->id])->with('success', 'Data jurnal detail berhasil dihapus!');
+            return redirect()->route('jurnal-pembukuan.details', ['id' => $jurnal_details->id_header])->with('success', 'Data jurnal detail berhasil dihapus!');
 
         } catch (\Exception $e) {
 
-            return redirect()->route('jurnal-pembukuan.details', ['id' => $jUrnal_details->id])->with('danger', 'Terjadi kesalahan saat menghapus data jurnal detail.');
+            return redirect()->route('jurnal-pembukuan.details', ['id' => $jurnal_details->id_header])->with('danger', 'Terjadi kesalahan saat menghapus data jurnal detail.');
         }
     }
 }

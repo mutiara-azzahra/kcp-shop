@@ -161,7 +161,7 @@
 
     Hapus = (id)=>{
         Swal.fire({
-            title: 'Apa anda yakin menghapus data detail kas masuk ini?',
+            title: 'Apa anda yakin menghapus data detail jurnal detail ini?',
             text:  "Data tidak dapat kembali" ,
             showCancelButton: true,
             confirmButtonColor: '#3085d6' ,
