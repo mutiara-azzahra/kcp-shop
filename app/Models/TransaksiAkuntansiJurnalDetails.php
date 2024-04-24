@@ -15,8 +15,6 @@ class TransaksiAkuntansiJurnalDetails extends Model
     protected $fillable = [
         'id_header', 
         'perkiraan',
-        'keterangan',
-        'kategori',
         'debet',
         'kredit',
         'status',
@@ -25,5 +23,10 @@ class TransaksiAkuntansiJurnalDetails extends Model
         'updated_at',
         'updated_by'
     ];
+
+    public function details_perkiraan()
+    {
+        return $this->belongsTo(MasterPerkiraan::class, 'perkiraan', 'id_perkiraan');
+    }
 
 }

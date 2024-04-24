@@ -90,7 +90,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="form-group col-12">
-                                            {{-- <input type="hidden" name="no_kas_masuk" value="{{ $kas_masuk->no_kas_masuk }}"> --}}
+                                            <input type="hidden" name="id_header" value="{{ $jurnal_header->id }}">
                                             <input type="text" name="total" class="form-control">
                                         </div>
                                     </td>
@@ -99,7 +99,7 @@
                         </table>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                             <div class="float-right">
-                                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Simpan Data</button>                           
+                                <button type="submit" class="btn btn-warning"><i class="fas fa-save"></i> Simpan Data</button>                           
                             </div>
                         </div>
                     </div>
@@ -116,7 +116,6 @@
                         <thead>
                             <tr style="background-color: #6082B6; color:white">
                                 <th class="text-center">Perkiraan</th>
-                                <th class="text-center">Akuntansi To</th>
                                 <th class="text-center">DEBET</th>
                                 <th class="text-center">KREDIT</th>
                                 <th class="text-center"></th>
@@ -128,27 +127,12 @@
                                 <td class="text-left">
                                     {{ $i->details_perkiraan->id_perkiraan }} - {{ $i->details_perkiraan->nm_sub_perkiraan }}
                                 </td>
-                                <td class="text-center">
-                                    @if($i->akuntansi_to == 'D')
-
-                                    DEBET
-                                    @else
-
-                                    KREDIT
-                                    @endif
-                                </td>
-                                @if($i->akuntansi_to == 'D')
                                 <td class="text-right">
-                                    {{ number_format($i->total, 0, ',', '.') }}
+                                    {{ number_format($i->debet, 0, ',', '.') }}
                                 </td>
-                                <td></td>
-                                
-                                @else
-                                <td></td>
                                 <td class="text-right">
-                                    {{ number_format($i->total, 0, ',', '.') }}
+                                    {{ number_format($i->kredit, 0, ',', '.') }}
                                 </td>
-                                @endif
                                 <td class="text-center">
                                     <form action="{{ route('jurnal-pembukuan.delete-details', $i->id) }}" method="POST" id="form_delete_{{ $i->id }}" data-id="{{ $i->id }}">
 

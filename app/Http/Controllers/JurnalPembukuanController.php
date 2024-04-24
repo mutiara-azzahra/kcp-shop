@@ -57,11 +57,45 @@ class JurnalPembukuanController extends Controller
             return redirect()->back()->with('warning', 'Jurnal Header tidak ditemukan');
         }
 
-        $balance_debet = $jurnal_header->details->where('akuntansi_to', 'D')->sum('total');
-        $balance_kredit = $jurnal_header->details->where('akuntansi_to', 'K')->sum('total');
+        $balance_debet  = $jurnal_header->details->sum('debet');
+        $balance_kredit = $jurnal_header->details->sum('kredit');
 
         $balancing = $balance_debet - $balance_kredit;
 
+        
+
         return view('jurnal-pembukuan.details', compact('jurnal_header', 'perkiraan', 'balancing'));
+    }
+
+    public function store_details(Request $request){
+
+        $request->validate([
+            'id_header'    => 'required',
+            'perkiraan'    => 'required',
+            'akuntansi_to' => 'required',
+            'total'        => 'required',
+        ]);
+
+        $perkiraan = MasterPerkiraan::findOrFail($request->perkiraan);
+
+        $value['id_header'] = $request->id_header;
+        $value['perkiraan'] = $perkiraan->id_perkiraan;
+
+        if ($request->akuntansi_to == 'D') {
+            $value['debet'] = $request->total;
+            $value['kredit'] = 0;
+        } else {
+            $value['debet'] = 0;
+            $value['kredit'] = $request->total;
+        }
+
+        $value['status'] = 'Y';
+        $value['created_by'] = Auth::user()->nama_user;
+        $value['created_at'] = now();
+        $value['updated_at'] = now();
+
+        TransaksiAkuntansiJurnalDetails::create($value);
+            
+        return redirect()->route('jurnal-pembukuan.details', ['id' => $request->id_header])->with('success','Data jurnal baru berhasil ditambahkan!');
     }
 }

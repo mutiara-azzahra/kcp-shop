@@ -29,6 +29,6 @@ class TransaksiAkuntansiJurnalHeader extends Model
 
     public function details()
     {
-        return $this->hasMany(TransaksiAkuntansiJurnalDetails::class, 'id', 'id_header');
+        return $this->hasMany(TransaksiAkuntansiJurnalDetails::class, 'id_header', 'id');
     }
 }
