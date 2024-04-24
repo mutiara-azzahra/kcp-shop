@@ -414,7 +414,7 @@ Route::group(['middleware' => 'auth'], function () {
     //ROUTE PEMBAYARAN PIUTANG TOKO
     Route::get('/pembayaran-toko', [PembayaranTokoController::class, 'index'])->name('pembayaran-toko.index');
 
-    //KAS KELUAR
+    //KAS MASUK
     Route::get('/kas-masuk', [KasMasukController::class, 'index'])->name('kas-masuk.index');
     Route::get('/kas-masuk/bukti-bayar', [KasMasukController::class, 'bukti_bayar'])->name('kas-masuk.bukti-bayar');
     Route::get('/kas-masuk/bayar-manual', [KasMasukController::class, 'bayar_manual'])->name('kas-masuk.bayar-manual');
@@ -597,6 +597,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/jurnal-pembukuan/store', [JurnalPembukuanController::class, 'store'])->name('jurnal-pembukuan.store');
     Route::get('/jurnal-pembukuan/details/{id}', [JurnalPembukuanController::class, 'details'])->name('jurnal-pembukuan.details');
     Route::get('/jurnal-pembukuan/{tanggal_awal}/{tanggal_akhir}', [JurnalPembukuanController::class, 'view'])->name('jurnal-pembukuan.view');
+    Route::post('/jurnal-pembukuan/store-details', [JurnalPembukuanController::class, 'store_details'])->name('jurnal-pembukuan.store-details');
+    Route::delete('/jurnal-pembukuan/delete-details/{id}', [JurnalPembukuanController::class, 'delete_details'])->name('jurnal-pembukuan.delete-details');
 
     //RETUR
     Route::get('/retur', [ReturController::class, 'index'])->name('retur.index');

@@ -56,7 +56,7 @@
     <div class="card" style="padding: 10px;">
         <div class="card-body">
             <div class="col-lg-12 p-1" id="main" data-loading="true">
-                <form action="{{ route('kas-masuk.store-details')}}" method="POST">
+                <form action="{{ route('jurnal-pembukuan.store-details')}}" method="POST">
                     @csrf
                     <div class="table-container">
                         <table class="table table-hover table-sm bg-light table-striped table-bordered" id="table">
@@ -123,7 +123,7 @@
                             </tr>
                         </thead>
                         <tbody class="input-fields">
-                            @foreach($kas_masuk->details as $i)
+                            @foreach($jurnal_header->details as $i)
                             <tr>
                                 <td class="text-left">
                                     {{ $i->details_perkiraan->id_perkiraan }} - {{ $i->details_perkiraan->nm_sub_perkiraan }}
@@ -150,7 +150,7 @@
                                 </td>
                                 @endif
                                 <td class="text-center">
-                                    <form action="{{ route('kas-masuk.delete-details', $i->id) }}" method="POST" id="form_delete_{{ $i->id }}" data-id="{{ $i->id }}">
+                                    <form action="{{ route('jurnal-pembukuan.delete-details', $i->id) }}" method="POST" id="form_delete_{{ $i->id }}" data-id="{{ $i->id }}">
 
                                         @csrf
                                         @method('DELETE')

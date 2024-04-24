@@ -23,15 +23,13 @@ class JurnalPembukuanController extends Controller
 
     public function store(Request $request){
 
-        // dd($request->all());
-
         $request -> validate([
             'kategori'  => 'required',
             'trx_date'  => 'required',
         ]);
 
         $request->merge([
-            'kategori'          => $request->terima_dari,
+            'kategori'          => $request->kategori,
             'trx_date'          => $request->trx_date,
             'keterangan'        => $request->keterangan,
             'status'            => 'Y',
@@ -64,6 +62,6 @@ class JurnalPembukuanController extends Controller
 
         $balancing = $balance_debet - $balance_kredit;
 
-        return view('jurnal-pembukuan.details', compact('perkiraan', 'balancing'));
+        return view('jurnal-pembukuan.details', compact('jurnal_header', 'perkiraan', 'balancing'));
     }
 }
