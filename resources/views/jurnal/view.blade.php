@@ -13,6 +13,7 @@
         </div>
         <div class="col-lg-12 pb-3">
             <div class="float-left">
+                Periode
             </div>
         </div>
     </div>
@@ -32,7 +33,7 @@
             <div class="col-lg-12">  
                 <table class="table table-hover table-bordered table-sm bg-light" id="example1">
                     <thead>
-                        <tr style="background-color: #6082B6; color:white">
+                        <tr style="background-color: #32CD32; color:black">
                             <th class="text-center">Tanggal</th>
                             <th class="text-center">Trx</th>
                             <th class="text-center">Perkiraan</th>
@@ -45,21 +46,21 @@
                     <tbody>
                     @foreach ($jurnal_header as $i)
                         <tr>
-                            <td class="text-center">{{ $i->trx_date }}</td>
-                            <td class="text-center">{{ $i->trx_from }}</td>
-                            <td class="text-center">
-                                @foreach ($i->details as $d)
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="text-center">{{ $d->perkiraan }}</td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center">
-                                        
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </td>
+                            <td class="text-center" style="background-color: #89CFF0; color:black">{{ $i->trx_date }}</td>
+                            <td class="text-center" style="background-color: #89CFF0; color:black">{{ $i->trx_from }}</td>
+                            <td class="text-center" style="background-color: #89CFF0; color:black" colspan="4">{{ $i->keterangan }}</td>
+                            
+                            @foreach ($i->details as $d)
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td class="text-center">{{ $d->perkiraan }}</td>
+                                <td class="text-left">{{ $d->details_perkiraan->nm_perkiraan }}</td>
+                                <td class="text-right">{{ $d->debet }}</td>
+                                <td class="text-right">{{ $d->kredit }}</td>
+                            </tr>
+                            @endforeach
+                            
                         </tr>
                     @endforeach
                     </tbody>
