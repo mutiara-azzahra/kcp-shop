@@ -150,8 +150,14 @@ class AccountReceivableController extends Controller
                     return 'Harap dibayar pada tanggal 31-' . $month . '-' . $year;
                 }
             });
-        
-        $pdf                = PDF::loadView('reports.daftar-piutang-toko', ['data'=>$data]);
+
+        $grand_total = 0;
+
+        foreach($data as $p => $month){
+            $grand_total += $month->flatMap->details_invoice->sum('nominal_total') - $month->flatMap->piutang_details->sum('nominal');
+        }
+
+        $pdf                = PDF::loadView('reports.daftar-piutang-toko', ['data'=>$data, 'grand_total' =>$grand_total]);
         $pdf->setPaper('letter', 'landscape');
 
         return $pdf->stream('piutang-toko.pdf');

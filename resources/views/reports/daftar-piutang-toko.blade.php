@@ -66,18 +66,29 @@
       }
       .td-qty{
         text-align: center;
-        border: none;
+        border-right: none;
+        border-left: none;
+        height: 20px;
+        border-bottom: 1px solid black;
       }
       .td-angka{
         text-align: right;
         border: none;
+        height: 22px;
+        border-right: none;
+        border-left: none;
+        border-bottom: 1px solid black;
       }
       .th-header{
         text-align: center;
-        border-top: 1px solid #000; /* Add a top border with a black color */
-        border-bottom: 1px solid #000; /* Add a bottom border with a black color */
-        border-left: none; /* Remove the left border */
-        border-right: none;
+        
+      }
+
+      .td-bawah{
+        text-align: right;
+        border: none;
+        height: 22px;
+        border: none;
       }
       br{
           margin-bottom: 2px !important;
@@ -207,9 +218,9 @@
                             @endphp
 
                             <td class="td-qty">{{ $counter }}.</td>
-                            <td class="td-angka">{{ Carbon\Carbon::parse($i->created_at)->format('d-m-Y') }}</td>
-                            <td class="td-angka">{{ $i->noinv }}</td>
-                            <td class="td-angka">{{ Carbon\Carbon::parse($i->tgl_jatuh_tempo)->format('d-m-Y') }}</td>
+                            <td class="td-qty">{{ Carbon\Carbon::parse($i->created_at)->format('d-m-Y') }}</td>
+                            <td class="td-qty">{{ $i->noinv }}</td>
+                            <td class="td-qty">{{ Carbon\Carbon::parse($i->tgl_jatuh_tempo)->format('d-m-Y') }}</td>
                             <td class="td-angka">{{ number_format($nominal_invoice, 0, ',', '.') }}</td>
                             <td class="td-angka"> - </td>
                             <td class="td-angka">{{ number_format($piutang_terbayar, 0, ',', '.') }}</td>
@@ -221,7 +232,7 @@
 
                         @endforeach
                         <tr>
-                            <td class="td-qty">{{ $counter++ }}.</td>
+                            <td class="td-qty"></td>
                             <td class="td-angka" colspan="7"><b>{{ $p }}</b></td>
                             <td class="td-angka"><b>Rp. {{ number_format($sisa_batas, 0, ',', '.') }}</b></td>
                         </tr>
@@ -232,14 +243,14 @@
           
             <table class="atas" style="line-height: 15px;">
                 <tr>
-                    <td class="atas-total"><b>Harap dibayar pada tangal:</b></td>
+                    <td class="atas-total"><b>GRAND TOTAL: {{ number_format($grand_total, 0, ',', '.') }}</b></td>
                 </tr>
             </table>
 
             <br>
 
             <table style="border: none">
-                <td class="td-angka">
+                <td class="td-bawah">
                     <table class="atas" style="padding-bottom: 10px">
                         <tr>
                             <td class="rekening" style="margin:0px;"><b>Catatan :</b></td>
@@ -281,8 +292,8 @@
                     </table>
                 </td>
 
-                <td class="td-angka">
-                    <table class="td-angka" style="width:100%">
+                <td class="td-bawah">
+                    <table class="td-bawah" style="width:100%">
                         <tr>
                             <td class="atas">
                                 <div class="ttd">
