@@ -153,21 +153,7 @@
                 </td>
                 <td class="atas" style="width: 350px;">
                     <table class="atas" style="line-height: 13px;">
-                        <tr>
-                            <td class="atas">Kepada : <b>{{ $data->first()->nm_outlet }} - {{ $data->first()->kd_outlet }}</b></td>
-                        </tr>
-                        <tr>
-                            <td class="atas"><b>{{ $data->first()->outlet->almt_outlet }}</b></td>
-                        </tr>
-                        <tr>
-                            @if($data->first()->outlet->kode_prp == 6300)
-                            <td class="atas"><b>KALIMANTAN SELATAN</b></td>
-
-                            @elseif($data->first()->outlet->kode_prp == 6200)
-                            <td class="atas"><b>KALIMANTAN TENGAH</b></td>
-
-                            @endif
-                        </tr>
+                        
                     </table>
                 </td>
             </tr>
@@ -188,36 +174,57 @@
                         <th class="th-header">TELAH BAYAR</th>
                         <th class="th-header">TANGGAL BAYAR</th>
                         <th class="th-header">SISA</th>
-                        <th class="th-header">CATATAN</th>
                     </tr>
                 </thead>
     
                 <tbody>
 
-                    
-                    @foreach ($data as $p)
+                    @php $counter = 1; @endphp
 
-                    {{-- Tanggal 1-10 --}}
-                    <tr>
-                        <td class="td-qty">{{$loop->iteration}}.</td>
-                        <td class="td-qty">{{ Carbon\Carbon::parse($p->created_at)->format('d-m-Y') }}</td>
-                        <td class="td-part">{{ $p->noinv }}</td>
-                        <td class="td-qty">{{ Carbon\Carbon::parse($p->tgl_jatuh_tempo)->format('d-m-Y') }}</td>
-                        <td class="td-angka">{{ number_format($nominal_invoice, 0, ',', '.') }}</td>
-                        <td class="td-angka"> - </td>
-                        <td class="td-angka">{{ number_format($piutang_terbayar, 0, ',', '.') }}</td>
-                        <td class="td-qty">{{ $tanggal_bayar }}</td>
-                        <td class="td-angka">{{ number_format($sisa, 0, ',', '.') }}</td>
-                        <td class="td-angka"> - </td>
-                    </tr>
+                    @foreach ($data as $p => $month)
 
-                    {{-- Tanggal 11-20 --}}
+                        @php
 
+                        $sisa_batas = $month->flatMap->details_invoice->sum('nominal_total') - $month->flatMap->piutang_details->sum('nominal');
 
+                        @endphp
+                        
+                        @foreach ($month as $i)
+                        <tr>
+                            @php
+                            $nominal_invoice    = $i->details_invoice->sum('nominal_total');
+                            $piutang_terbayar   = $i->piutang_details->sum('nominal');
+                            $sisa               = $nominal_invoice - $piutang_terbayar;
 
-                    {{-- Tanggal 20-31 --}}
+                            $tanggal_bayar = '';
 
+                            if(isset($i->piutang_details) && $firstPiutangDetail = $i->piutang_details->first()) {
+                                $tanggal_bayar = Carbon\Carbon::parse($firstPiutangDetail->created_at)->format('d-m-Y');
+                            } else {
+                                $tanggal_bayar = '-';
+                            }
 
+                            @endphp
+
+                            <td class="td-qty">{{ $counter }}.</td>
+                            <td class="td-angka">{{ Carbon\Carbon::parse($i->created_at)->format('d-m-Y') }}</td>
+                            <td class="td-angka">{{ $i->noinv }}</td>
+                            <td class="td-angka">{{ Carbon\Carbon::parse($i->tgl_jatuh_tempo)->format('d-m-Y') }}</td>
+                            <td class="td-angka">{{ number_format($nominal_invoice, 0, ',', '.') }}</td>
+                            <td class="td-angka"> - </td>
+                            <td class="td-angka">{{ number_format($piutang_terbayar, 0, ',', '.') }}</td>
+                            <td class="td-qty">{{ $tanggal_bayar }}</td>
+                            <td class="td-angka">{{ number_format($sisa, 0, ',', '.') }}</td>
+                        </tr>
+
+                        @php $counter++; @endphp
+
+                        @endforeach
+                        <tr>
+                            <td class="td-qty">{{ $counter++ }}.</td>
+                            <td class="td-angka" colspan="7"><b>{{ $p }}</b></td>
+                            <td class="td-angka"><b>Rp. {{ number_format($sisa_batas, 0, ',', '.') }}</b></td>
+                        </tr>
                     @endforeach
             </tbody>
 

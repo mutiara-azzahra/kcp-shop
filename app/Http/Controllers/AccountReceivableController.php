@@ -126,27 +126,31 @@ class AccountReceivableController extends Controller
     public function cetak_pdf(Request $request)
     {
 
-
         $selectedItems      = $request->input('selected_items', []);
-        $data               = TransaksiInvoiceHeader::whereIn('noinv', $selectedItems)->get();
-
-
-        // Data Pembayaran Tanggal 1-10
-
-        $data1 = TransaksiInvoiceHeader::whereIn('noinv', $selectedItems)
-            ->whereIn(DB::raw('DAY(created_at)'), [1, 2, 3, 4, 5, 6, 7, 8, 10])
-            ->get();
-
-
-
-        dd($data1);
-
         
+        $data = TransaksiInvoiceHeader::whereIn('noinv', $selectedItems)
+            ->get()
+            ->groupBy(function ($item) {
 
+                $tgl_jatuh_tempo = Carbon::parse($item->tgl_jatuh_tempo);
 
-        // dd($data->groupBy('created_at')->month()
+                $day    = $tgl_jatuh_tempo->format('d');
+                $month  = $tgl_jatuh_tempo->format('m');
+                $year   = $tgl_jatuh_tempo->format('Y');
 
-        // dd($data);
+                if (in_array($day, [1, 2, 3, 4, 5, 6])) {
+                    return 'Harap dibayar pada tanggal 06-' . $month . '-' . $year;
+                } elseif (in_array($day, [7, 8, 9, 10, 11, 12])) {
+                    return 'Harap dibayar pada tanggal 12-' . $month . '-' . $year;
+                } elseif (in_array($day, [13, 14, 15, 16, 17, 18, 19])) {
+                    return 'Harap dibayar pada tanggal 19-' . $month . '-' . $year;
+                } elseif (in_array($day, [20, 21, 22, 23, 24, 25, 26])){
+                    return 'Harap dibayar pada tanggal 26-' . $month . '-' . $year;
+                } elseif (in_array($day, [26, 27, 28, 29, 30, 31])){
+                    return 'Harap dibayar pada tanggal 31-' . $month . '-' . $year;
+                }
+            });
+        
         $pdf                = PDF::loadView('reports.daftar-piutang-toko', ['data'=>$data]);
         $pdf->setPaper('letter', 'landscape');
 
