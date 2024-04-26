@@ -64,7 +64,7 @@
                                     @method('DELETE')
                                 </form>
 
-                                <a class="btn btn-info btn-sm" href="{{ route('kas-keluar.show', $p->no_keluar)}}"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-info btn-sm" href="{{ route('kas-keluar.details', [ 'no_keluar' => $p->no_keluar, 'id' => $p->header_keluar->jurnal_header->id ])}}"><i class="fas fa-eye"></i></a>
                                 <a class="btn btn-success btn-sm" onclick="Selesai('{{ $p->id }}')"><i class="fas fa-check"></i></a>
                                 <a class="btn btn-danger btn-sm" onclick="Delete('{{ $p->id }}')"><i class="fas fa-times"></i></a>
                             </td>
@@ -124,7 +124,7 @@
                             <td class="text-center">
                                 <form action="{{ route('kas-keluar.delete', $p->id) }}" method="POST" id="form_hapus_{{ $p->id }}" data-hapus="{{ $p->id }}">
                                     
-                                    <a class="btn btn-info btn-sm" href="{{ route('kas-keluar.details', $p->no_keluar)}}"><i class="fas fa-edit"></i></a>
+                                    <a class="btn btn-info btn-sm" href="{{ route('kas-keluar.details', [ 'no_keluar' => $p->no_keluar, 'id' => $p->header_keluar->jurnal_header->id ])}}"><i class="fas fa-edit"></i></a>
                                     <a class="btn btn-warning btn-sm" href="{{ route('kas-keluar.cetak', $p->no_keluar)}}" target="_blank"><i class="fas fa-print"></i></a>
 
                                     @csrf

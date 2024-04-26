@@ -55,7 +55,7 @@ class KasKeluarController extends Controller
 
         //CREATE JURNAL KAS KELUAR
         $jurnal = [
-            'trx_date'      => NOW(),
+            'trx_date'      => $request->trx_date,
             'trx_from'      => $created->no_keluar,
             'keterangan'    => $request->keterangan,
             'catatan'       => $request->pembayaran,
@@ -107,7 +107,7 @@ class KasKeluarController extends Controller
     
         TransaksiKasKeluarDetails::create([
             'no_keluar'     => $request['no_keluar'],
-            'perkiraan'     => $perkiraan ? $perkiraan->perkiraan . '.' . $perkiraan->sub_perkiraan : null,
+            'perkiraan'     => $perkiraan->id_perkiraan,
             'akuntansi_to'  => $request['akuntansi_to'],
             'total'         => $request['total'],
             'created_at'    => NOW(),
