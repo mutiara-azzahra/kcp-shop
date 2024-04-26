@@ -81,7 +81,7 @@
                                             <select name="perkiraan" class="form-control mr-2 my-select">     
                                                 <option value="">-- Pilih Perkiraan --</option>
                                                 @foreach($perkiraan as $s)
-                                                    <option value="{{ $s->perkiraan }}">{{ $s->id_perkiraan }} - {{ $s->nm_perkiraan }} </option>
+                                                    <option value="{{ $s->id_perkiraan }}">{{ $s->id_perkiraan }} - {{ $s->nm_perkiraan }} </option>
                                                 @endforeach
                                             </select>
                                         </div>

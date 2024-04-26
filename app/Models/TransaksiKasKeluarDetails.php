@@ -22,4 +22,9 @@ class TransaksiKasKeluarDetails extends Model
         return $this->belongsTo(MasterPerkiraan::class, 'perkiraan', 'id_perkiraan');
     }
 
+    public function header_keluar()
+    {
+        return $this->hasOne(TransaksiKasKeluarHeader::class, 'no_keluar', 'no_keluar');
+    }
+
 }

@@ -29,4 +29,9 @@ class TransaksiAkuntansiJurnalDetails extends Model
         return $this->belongsTo(MasterPerkiraan::class, 'perkiraan', 'id_perkiraan');
     }
 
+    public function header()
+    {
+        return $this->hasOne(TransaksiAkuntansiJurnalHeader::class, 'id_perkiraan', 'id');
+    }
+
 }
