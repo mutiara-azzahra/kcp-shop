@@ -38,7 +38,7 @@
                     <tr>
                         <th class="text-left">Tgl. Transaksi</th>
                         <td>:</td>
-                        <td class="text-left"><b>{{ Carbon\Carbon::parse($kas_keluar->tanggal_transaksi)->format('d-m-Y') }}</b></td>
+                        <td class="text-left"><b>{{ Carbon\Carbon::parse($kas_keluar->trx_date)->format('d-m-Y') }}</b></td>
                     </tr>
                     <tr>
                         <th class="text-left">No. Kas Keluar</th>

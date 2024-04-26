@@ -102,21 +102,20 @@ class KasKeluarController extends Controller
             'total'        => 'required',
             'id_header'    => 'required',
         ]);
-        
-        $perkiraan = MasterPerkiraan::findOrFail($request['perkiraan']);
     
         TransaksiKasKeluarDetails::create([
-            'no_keluar'     => $request['no_keluar'],
-            'perkiraan'     => $perkiraan->id_perkiraan,
-            'akuntansi_to'  => $request['akuntansi_to'],
-            'total'         => $request['total'],
+            'no_keluar'     => $request->no_keluar,
+            'perkiraan'     => $request->perkiraan,
+            'akuntansi_to'  => $request->akuntansi_to,
+            'total'         => $request->total,
             'created_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user
         ]);
 
         //CREATE JURNAL KAS KELUAR DETAILS
 
         $value['id_header'] = $request->id_header;
-        $value['perkiraan'] = $perkiraan->id_perkiraan;
+        $value['perkiraan'] = $request->perkiraan;
 
         if ($request->akuntansi_to == 'D') {
             $value['debet'] = $request->total;
