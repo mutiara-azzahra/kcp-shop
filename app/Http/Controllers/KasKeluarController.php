@@ -77,8 +77,8 @@ class KasKeluarController extends Controller
     public function details($no_keluar, $id_header){
         
         $jurnal_header  = $id_header;
-        $perkiraan  = MasterPerkiraan::where('status', 'AKTIF')->get();
-        $kas_keluar = TransaksiKasKeluarHeader::where('no_keluar', $no_keluar)->first();
+        $perkiraan      = MasterPerkiraan::where('status', 'AKTIF')->get();
+        $kas_keluar     = TransaksiKasKeluarHeader::where('no_keluar', $no_keluar)->first();
 
         if (!$kas_keluar) {
             return redirect()->back()->with('warning', 'Nomor Kas Keluar tidak ditemukan');
@@ -114,19 +114,26 @@ class KasKeluarController extends Controller
         ]);
 
         //CREATE JURNAL KAS KELUAR DETAILS
-        $jurnal = [
-            'id_header'     => NOW(),
-            'perkiraan'     => $created->no_keluar,
-            'debet'         => $request->keterangan,
-            'kredit'        => $request->pembayaran,
-            'created_at'    => NOW(),
-            'updated_at'    => NOW(),
-            'created_by'    => Auth::user()->nama_user,
-        ];
 
-        $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
+        $value['id_header'] = $request->id_header;
+        $value['perkiraan'] = $perkiraan->id_perkiraan;
+
+        if ($request->akuntansi_to == 'D') {
+            $value['debet'] = $request->total;
+            $value['kredit'] = 0;
+        } else {
+            $value['debet'] = 0;
+            $value['kredit'] = $request->total;
+        }
+
+        $value['status'] = 'Y';
+        $value['created_by'] = Auth::user()->nama_user;
+        $value['created_at'] = now();
+        $value['updated_at'] = now();
+
+        TransaksiAkuntansiJurnalDetails::create($value);
             
-        return redirect()->route('kas-keluar.details' , ['no_keluar' => $request->no_keluar])->with('success','Data kas keluar baru berhasil ditambahkan!');
+        return redirect()->route('kas-keluar.details' , ['no_keluar' => $request->no_keluar, 'id_header' => $request->id_header ])->with('success','Data kas keluar baru berhasil ditambahkan!');
     
     }
 
