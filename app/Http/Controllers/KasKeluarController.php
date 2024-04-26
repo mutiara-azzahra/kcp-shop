@@ -113,7 +113,6 @@ class KasKeluarController extends Controller
         ]);
 
         //CREATE JURNAL KAS KELUAR DETAILS
-
         $value['id_header'] = $request->id_header;
         $value['perkiraan'] = $request->perkiraan;
 

@@ -30,11 +30,6 @@ class InvoiceController extends Controller
 
         return view('invoice.create');
     }
-    public function store(Request $request){
-
-        return redirect()->route('invoice.index')->with('succes','Data baru berhasil ditambahkan');
-
-    }
 
     public function approve($noso){
 
@@ -49,6 +44,7 @@ class InvoiceController extends Controller
 
         $top = NOW()->addDays($so_to_invoice->outlet->jth_tempo);
 
+        //CREATE INVOICE HEADER
         $data['noinv']              = $newInv->noinv;
         $data['noso']               = $so_to_invoice->noso;
         $data['kd_outlet']          = $so_to_invoice->kd_outlet;
@@ -57,9 +53,53 @@ class InvoiceController extends Controller
         $data['status']             = 'O';
         $data['ket_status']         = 'OPEN';
         $data['user_sales']         = $so_to_invoice->user_sales;
-
+        $data['user_sales']         = $so_to_invoice->user_sales;
+        $data['created_by']         = Auth::user()->nama_user;
+        
         $header = TransaksiInvoiceHeader::create($data);
 
+        //CREATE JURNAL HEADER
+
+        // Penjualan (k) 4.1000
+
+        $jurnal = [
+            'trx_date'      => $request->trx_date,
+            'trx_from'      => $created->no_keluar,
+            'keterangan'    => $request->keterangan,
+            'catatan'       => $request->pembayaran,
+            'kategori'      => 'KAS_KELUAR',
+            'created_at'    => NOW(),
+            'updated_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user,
+        ];
+
+        $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
+
+        //CREATE JURNAL KAS KELUAR DETAILS: DEBET
+        $debet['id_header']  = $jurnal_created->id;
+        $debet['perkiraan']  = 1.1300;
+        $debet['debet']      = $so_to_invoice->details_so->sum('nominal_total');
+        $debet['kredit']     = 0;
+        $debet['status']     = 'Y';
+        $debet['created_by'] = Auth::user()->nama_user;
+        $debet['created_at'] = now();
+        $debet['updated_at'] = now();
+
+        TransaksiAkuntansiJurnalDetails::create($debet);
+
+        //CREATE JURNAL KAS KELUAR DETAILS: KREDIT
+        $kredit['id_header']  = $jurnal_created->id;
+        $kredit['perkiraan']  = 4.1000;
+        $kredit['debet']      = 0;
+        $kredit['kredit']     = $so_to_invoice->details_so->sum('nominal_total');
+        $kredit['status']     = 'Y';
+        $kredit['created_by'] = Auth::user()->nama_user;
+        $kredit['created_at'] = now();
+        $kredit['updated_at'] = now();
+
+        TransaksiAkuntansiJurnalDetails::create($kredit);
+
+        //CREATE DETAILS INVOICE
         foreach($so_to_invoice->details_so as $s){
 
             $stok_ready = MasterStokGudang::where('part_no', $s->part_no)->value('stok');

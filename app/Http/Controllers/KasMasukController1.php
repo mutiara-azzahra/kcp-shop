@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\KasMasukHeader;
 use App\Models\KasMasukDetails;
+use App\Models\TransferMasukHeader;
+use App\Models\TransferMasukDetails;
 use App\Models\MasterKodeRak;
 use App\Models\MasterOutlet;
 use App\Models\MasterPerkiraan;
@@ -93,71 +95,108 @@ class KasMasukController extends Controller
 
         $newKas                 = new KasMasukHeader();
         $newKas->no_kas_masuk   = KasMasukHeader::no_kas_masuk();
-        
-        $request->merge([
-            'terima_dari'       => $request->terima_dari,
-            'keterangan'        => $request->keterangan,
-            'no_bg'             => $request->no_bg,
-            'jatuh_tempo_bg'    => $request->jatuh_tempo_bg,
-            'no_kas_masuk'      => $newKas->no_kas_masuk,
-            'status'            => 'O',
-            'created_by'        => Auth::user()->nama_user
-        ]);
 
-        $created = KasMasukHeader::create($request->all());
+        $id_transfer            = TransferMasukHeader::id_transfer();
 
-        //KAS MASUK DEBET
-        KasMasukDetails::create([
-            'no_kas_masuk'  => $request->no_kas_masuk,
-            'perkiraan'     => 1.1101,
-            'akuntansi_to'  => 'D',
-            'total'         => $request->nominal,
-            'created_at'    => NOW(),
-            'created_by'    => Auth::user()->nama_user
-        ]);
+        $outlet = MasterOutlet::where('kd_outlet', $request->kd_outlet)->first();
 
-        //KAS MASUK DEBET
-        KasMasukDetails::create([
-            'no_kas_masuk'  => $request->no_kas_masuk,
-            'perkiraan'     => 2.1702,
-            'akuntansi_to'  => 'K',
-            'total'         => $request->nominal,
-            'created_at'    => NOW(),
-            'created_by'    => Auth::user()->nama_user
-        ]);
+        $area_outlet = '';
 
-        //JURNAL HEADER KAS MASUK CASH
-        $data['trx_date']   = now();
-        $data['trx_from']   = $request->no_kas_masuk;
-        $data['keterangan'] = $request->keterangan;
-        $data['trx_from']   = $request->no_kas_masuk;
-        $data['created_at'] = NOW();
-        $data['created_by'] = Auth::user()->nama_user;
-        $data['updated_at'] = NOW();
+        if($outlet->kode_prp == 6300){
+            $area_outlet = 'KS';
+        } else {
+            $area_outlet = 'KT';
+        }
 
-        $created = TransaksiAkuntansiJurnalHeader::create($data);
+        $nominal  = str_replace(',', '', $request->nominal);
 
-        //DEBET
-        $debet['id_header']  = $created->id;
-        $debet['perkiraan']  = 1.1101;
-        $debet['debet']      = $request->nominal;
-        $debet['kredit']     = 0;
-        $debet['created_at'] = NOW();
-        $debet['created_by'] = Auth::user()->nama_user;
-        $debet['updated_at'] = NOW();
+        //PEMBAYARAN VIA KAS
+        if($request->pembayaran_via == 'CASH'){
 
-        $created = TransaksiAkuntansiJurnalDetails::create($debet);
+            $request->merge([
+                'no_kas_masuk'      => $newKas->no_kas_masuk,
+                'kd_area'           => $area_outlet,
+                'kd_outlet'         => $request->kd_outlet,
+                'nominal'           => $nominal,
+                'pembayaran_via'    => $request->pembayaran_via,
+                'terima_dari'       => $request->terima_dari,
+                'keterangan'        => $request->keterangan,
+                'flag_kas_manual'   => 'Y',
+                'jatuh_tempo_bg'    => $request->jatuh_tempo_bg,
+                'status'            => 'O',
+                'created_by'        => Auth::user()->nama_user
+            ]);
 
-        //KREDIT
-        $kredit['id_header']  = $created->id;
-        $kredit['perkiraan']  = 2.1702;
-        $kredit['debet']      = 0;
-        $kredit['kredit']     = $request->nominal;
-        $kredit['created_at'] = NOW();
-        $kredit['created_by'] = Auth::user()->nama_user;
-        $kredit['updated_at'] = NOW();
+            $created = KasMasukHeader::create($request->all());
 
-        $created = TransaksiAkuntansiJurnalDetails::create($kredit);
+            //KAS MASUK DEBET
+            KasMasukDetails::create([
+                'no_kas_masuk'  => $request->no_kas_masuk,
+                'perkiraan'     => 1.1101,
+                'akuntansi_to'  => 'D',
+                'total'         => $nominal,
+                'created_at'    => NOW(),
+            ]);
+
+            //KAS MASUK DEBET
+            KasMasukDetails::create([
+                'no_kas_masuk'  => $request->no_kas_masuk,
+                'perkiraan'     => 2.1702,
+                'akuntansi_to'  => 'K',
+                'total'         => $nominal,
+                'created_at'    => NOW(),
+            ]);
+
+        } elseif ($request->pembayaran_via == 'TRANSFER') {
+
+            $request->merge([
+                'no_kas_masuk'        => $newKas->no_kas_masuk,
+                'id_transfer'         => $id_transfer,
+                'kd_area'             => $area_outlet,
+                'kd_outlet'           => $request->kd_outlet,
+                'nominal'             => $nominal,
+                'pembayaran_via'      => $request->pembayaran_via,
+                'flag_transfer_masuk' => 'Y',
+                'bank'                => $request->bank,
+                'terima_dari'         => $request->terima_dari,
+                'keterangan'          => $request->keterangan,
+                'trx_date'            => now(),
+                'status'              => 'O',
+                'created_by'          => Auth::user()->nama_user
+            ]);
+
+            $created = KasMasukHeader::create($request->all()); 
+
+            //CREATE TO TRANSFER MASUK
+            $transfer_masuk                  = new TransferMasukHeader();
+            $transfer_masuk->id_transfer     = $created->id_transfer;
+            $transfer_masuk->status_transfer = 'IN';
+            $transfer_masuk->bank            = $request->bank;
+            $transfer_masuk->keterangan      = $request->kd_outlet;
+            $transfer_masuk->flag_by_toko    = 'Y';
+            $transfer_masuk->flag_kas_ar     = 'N';
+            $transfer_masuk->tanggal_bank    = now();
+            $transfer_masuk->save();
+
+        } elseif ($request->pembayaran_via == 'BG') {
+
+            $request->merge([
+                'no_kas_masuk'        => $newKas->no_kas_masuk,
+                'no_bg'               => $request->no_bg,
+                'kd_area'             => $area_outlet,
+                'kd_outlet'           => $outlet->nm_outlet,
+                'nominal'             => $nominal,
+                'pembayaran_via'      => $request->pembayaran_via,
+                'jatuh_tempo_bg'      => $request->jatuh_tempo_bg,
+                'terima_dari'         => $request->terima_dari,
+                'keterangan'          => $request->keterangan,
+                'trx_date'            => now(),
+                'status'              => 'O',
+                'created_by'          => Auth::user()->nama_user
+            ]);
+
+            $created = KasMasukHeader::create($request->all());
+        }
 
         if ($created){
             return redirect()->route('kas-masuk.index')->with('success','Kas masuk berhasil ditambahkan');
@@ -194,14 +233,14 @@ class KasMasukController extends Controller
 
         $update_header = KasMasukHeader::where('no_kas_masuk', $no_kas_masuk)
             ->update([
-            'status'        => 'C',
+            'status'        => 'O',
             'updated_at'    => NOW(),
             'updated_by'    => Auth::user()->nama_user
         ]);
 
         $update_details = KasMasukDetails::where('no_kas_masuk', $no_kas_masuk)
             ->update([
-            'status'        => 'C',
+            'status'        => 'O',
             'updated_at'    => NOW(),
             'updated_by'    => Auth::user()->nama_user
         ]);
