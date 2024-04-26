@@ -98,6 +98,7 @@
                                     <td class="text-center">
                                         <div class="form-group col-12">
                                             <input type="hidden" name="no_keluar" value="{{ $kas_keluar->no_keluar }}">
+                                            <input type="hidden" name="id_header" value="{{ $jurnal_header }}">
                                             <input type="text" name="total" class="form-control">
                                         </div>
                                     </td>

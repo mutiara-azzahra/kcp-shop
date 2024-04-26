@@ -10,6 +10,8 @@ use Config;
 use Carbon\Carbon;
 use App\Models\TransaksiKasKeluarHeader;
 use App\Models\TransaksiKasKeluarDetails;
+use App\Models\TransaksiAkuntansiJurnalHeader;
+use App\Models\TransaksiAkuntansiJurnalDetails;
 use App\Models\MasterPerkiraan;
 
 
@@ -51,7 +53,6 @@ class KasKeluarController extends Controller
 
         $created = TransaksiKasKeluarHeader::create($request->all());
 
-
         //CREATE JURNAL KAS KELUAR
         $jurnal = [
             'trx_date'      => NOW(),
@@ -64,19 +65,19 @@ class KasKeluarController extends Controller
             'created_by'    => Auth::user()->nama_user,
         ];
 
-        $jurnal_created = TransaksiPembayaranPiutangHeader::create($jurnal);
+        $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
 
         if ($created){
-            return redirect()->route('kas-keluar.details', ['no_keluar' => $newKeluar->no_keluar])->with('success', 'Bukti bayar baru berhasil ditambahkan');
+            return redirect()->route('kas-keluar.details', ['no_keluar' => $newKeluar->no_keluar , 'id_header' => $jurnal_created->id])->with('success', 'Bukti bayar baru berhasil ditambahkan');
         } else{
             return redirect()->route('kas-keluar.index')->with('danger','Kas Keluar baru gagal ditambahkan');
         }
     }
 
-    public function details($no_keluar){
+    public function details($no_keluar, $id_header){
         
-        $perkiraan = MasterPerkiraan::where('status', 'AKTIF')->get();
-
+        $jurnal_header  = $id_header;
+        $perkiraan  = MasterPerkiraan::where('status', 'AKTIF')->get();
         $kas_keluar = TransaksiKasKeluarHeader::where('no_keluar', $no_keluar)->first();
 
         if (!$kas_keluar) {
@@ -88,7 +89,7 @@ class KasKeluarController extends Controller
 
         $balancing = $balance_debet - $balance_kredit;
 
-        return view('kas-keluar.details', compact('kas_keluar', 'perkiraan', 'balancing'));
+        return view('kas-keluar.details', compact('kas_keluar', 'perkiraan', 'balancing','jurnal_header'));
     }
 
 
@@ -99,6 +100,7 @@ class KasKeluarController extends Controller
             'perkiraan'    => 'required',
             'akuntansi_to' => 'required',
             'total'        => 'required',
+            'id_header'    => 'required',
         ]);
         
         $perkiraan = MasterPerkiraan::findOrFail($request['perkiraan']);
@@ -110,6 +112,19 @@ class KasKeluarController extends Controller
             'total'         => $request['total'],
             'created_at'    => NOW(),
         ]);
+
+        //CREATE JURNAL KAS KELUAR DETAILS
+        $jurnal = [
+            'id_header'     => NOW(),
+            'perkiraan'     => $created->no_keluar,
+            'debet'         => $request->keterangan,
+            'kredit'        => $request->pembayaran,
+            'created_at'    => NOW(),
+            'updated_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user,
+        ];
+
+        $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
             
         return redirect()->route('kas-keluar.details' , ['no_keluar' => $request->no_keluar])->with('success','Data kas keluar baru berhasil ditambahkan!');
     
