@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\MasterOutlet;
 use App\Models\TransaksiInvoiceHeader;
 use App\Models\TransaksiPembayaranPiutangHeader;
+use App\Models\TransaksiAkuntansiJurnalHeader;
 
 class AccountReceivableController extends Controller
 {

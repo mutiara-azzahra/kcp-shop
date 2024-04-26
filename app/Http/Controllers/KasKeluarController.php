@@ -33,22 +33,38 @@ class KasKeluarController extends Controller
 
         $request -> validate([
             'trx_date'   => 'required',
-            'keterangan'          => 'required',
+            'keterangan' => 'required',
         ]);
 
         $newKeluar              = new TransaksiKasKeluarHeader();
         $newKeluar->no_keluar   = TransaksiKasKeluarHeader::no_keluar();
         
         $request->merge([
-            'no_keluar'         => $newKeluar->no_keluar,
-            'trx_date'          => $request->trx_date,
-            'pembayaran'        => $request->pembayaran,
-            'keterangan'        => $request->keterangan,
-            'status'            => 'O',
-            'created_by'        => Auth::user()->nama_user
+            'no_keluar'     => $newKeluar->no_keluar,
+            'trx_date'      => $request->trx_date,
+            'pembayaran'    => $request->pembayaran,
+            'keterangan'    => $request->keterangan,
+            'catatan'       => $request->catatan,
+            'status'        => 'O',
+            'created_by'    => Auth::user()->nama_user
         ]);
 
         $created = TransaksiKasKeluarHeader::create($request->all());
+
+
+        //CREATE JURNAL KAS KELUAR
+        $jurnal = [
+            'trx_date'      => NOW(),
+            'trx_from'      => $created->no_keluar,
+            'keterangan'    => $request->keterangan,
+            'catatan'       => $request->pembayaran,
+            'kategori'      => 'KAS_KELUAR',
+            'created_at'    => NOW(),
+            'updated_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user,
+        ];
+
+        $jurnal_created = TransaksiPembayaranPiutangHeader::create($jurnal);
 
         if ($created){
             return redirect()->route('kas-keluar.details', ['no_keluar' => $newKeluar->no_keluar])->with('success', 'Bukti bayar baru berhasil ditambahkan');

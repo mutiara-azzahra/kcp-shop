@@ -52,7 +52,7 @@
                             <td class="text-left">{{ $p->no_keluar }}</td>
                             <td class="text-left">{{ $p->pembayaran }}</td>
                             <td class="text-left">{{ $p->keterangan }}</td>
-                            <td class="text-right">{{ number_format($p->details_keluar->where('akuntansi_to', 'D')->sum('total'), 0, ',', '.') }}</td>
+                            <td class="text-right">{{ number_format($p->details_keluar->where('akuntansi_to', 'D')->sum('total'), 0, ',', ',') }}</td>
                             <td class="text-center">
                                 <form action="{{ route('kas-keluar.update', $p->id) }}" method="GET" id="form_selesai_{{ $p->id }}" data-selesai="{{ $p->id }}">
                                     @csrf
