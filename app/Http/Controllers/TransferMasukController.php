@@ -14,6 +14,8 @@ use App\Models\MasterOutlet;
 use App\Models\MasterBank;
 use App\Models\TransferMasukHeader;
 use App\Models\TransferMasukDetails;
+use App\Models\TransaksiAkuntansiJurnalHeader;
+use App\Models\TransaksiAkuntansiJurnalDetails;
 
 class TransferMasukController extends Controller
 {
@@ -73,8 +75,22 @@ class TransferMasukController extends Controller
     
         $created = TransferMasukHeader::create($requestData);
 
+        //CREATE JURNAL TRANSFER MASUK
+        $jurnal = [
+            'trx_date'      => NOW(),
+            'trx_from'      => $created->id_transfer,
+            'keterangan'    => $request->keterangan,
+            'catatan'       => $request->keterangan,
+            'kategori'      => 'TRANSFER_MASUK',
+            'created_at'    => NOW(),
+            'updated_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user,
+        ];
+
+        $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
+
         if ($created) {
-            return redirect()->route('transfer-masuk.details', ['id_transfer' => $newTransfer->id_transfer])
+            return redirect()->route('transfer-masuk.details', ['id_transfer' => $newTransfer->id_transfer , 'id_jurnal' => $jurnal_created->id])
                 ->with('success', 'Transfer masuk berhasil ditambahkan. Tambahkan Details');
         } else {
             return redirect()->route('transfer-masuk.index')->with('danger', 'Transfer masuk gagal ditambahkan');
@@ -112,20 +128,35 @@ class TransferMasukController extends Controller
             'total'        => 'required',
         ]);
     
-        $perkiraan = MasterPerkiraan::findOrFail($request['perkiraan']);
-    
         TransferMasukDetails::create([
-            'id_transfer'   => $request['id_transfer'],
-            'perkiraan'     => $perkiraan->id_perkiraan,
-            'sub_perkiraan' => $perkiraan->sub_perkiraan,
-            'akuntansi_to'  => $request['akuntansi_to'],
-            'total'         => $request['total'],
+            'id_transfer'   => $request->id_transfer,
+            'perkiraan'     => $request->perkiraan,
+            'akuntansi_to'  => $request->akuntansi_to,
+            'total'         => $request->toal,
             'created_by'    => Auth::user()->nama_user,
             'created_at'    => now()
         ]);
 
-            
-        return redirect()->route('transfer-masuk.details', ['id_transfer' => $request['id_transfer']])
+        //CREATE JURNAL TRANSFER KELUAR DETAILS
+        $value['id_header'] = $request->id_header;
+        $value['perkiraan'] = $request->perkiraan;
+
+        if ($request->akuntansi_to == 'D') {
+            $value['debet'] = $request->total;
+            $value['kredit'] = 0;
+        } else {
+            $value['debet'] = 0;
+            $value['kredit'] = $request->total;
+        }
+
+        $value['status'] = 'Y';
+        $value['created_by'] = Auth::user()->nama_user;
+        $value['created_at'] = now();
+        $value['updated_at'] = now();
+
+        TransaksiAkuntansiJurnalDetails::create($value);
+
+        return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id' => $jurnal_created->id])
             ->with('success','Data detail transfer baru berhasil ditambahkan!');
     }
 
