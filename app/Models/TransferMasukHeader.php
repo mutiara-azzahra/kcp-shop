@@ -26,7 +26,10 @@ class TransferMasukHeader extends Model
         'flag_kas_ar',
         'flag_batal',
         'flag_batal_date',
-        'created_at', 'updated_at', 'created_by', 'updated_by'
+        'created_at',
+        'updated_at',
+        'created_by',
+        'updated_by'
     ];
 
     public static function id_transfer()
@@ -70,5 +73,10 @@ class TransferMasukHeader extends Model
     public function jurnal_header()
     {
         return $this->belongsTo(TransaksiAkuntansiJurnalHeader::class, 'no_keluar', 'trx_from');
+    }
+
+    public function outlet()
+    {
+        return $this->belongsTo(MasterOutlet::class, 'keterangan', 'ke');
     }
 }

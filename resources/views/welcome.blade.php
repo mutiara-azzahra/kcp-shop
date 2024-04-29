@@ -371,11 +371,6 @@
                           </a>
                       </li>
                       <li class="nav-item">
-                          <a href="{{ route('rincian-tagihan.index')}}" class="nav-link">
-                            <p>Terima Rincian Tagihan</p>
-                          </a>
-                      </li>
-                      <li class="nav-item">
                           <a href="{{ route('piutang-toko.index')}}" class="nav-link">
                             <p>Piutang Toko</p>
                           </a>
