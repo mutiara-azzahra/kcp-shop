@@ -156,7 +156,7 @@ class TransferMasukController extends Controller
 
         TransaksiAkuntansiJurnalDetails::create($value);
 
-        return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id' => $jurnal_created->id])
+        return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id_header' => $jurnal_created->id])
             ->with('success','Data detail transfer baru berhasil ditambahkan!');
     }
 
