@@ -71,10 +71,10 @@
                                 <tr>
                                     <td class="text-center">
                                         <div class="form-group col-12">
-                                            <select name="perkiraan" class="form-control mr-2 my-select">     
+                                            <select name="id_perkiraan" class="form-control mr-2 my-select">     
                                                 <option value="">-- Pilih Perkiraan --</option>
                                                 @foreach($perkiraan as $s)
-                                                    <option value="{{ $s->perkiraan }}">{{ $s->id_perkiraan }} - {{ $s->nm_perkiraan }} </option>
+                                                    <option value="{{ $s->id_perkiraan }}">{{ $s->id_perkiraan }} - {{ $s->nm_perkiraan }} </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -125,7 +125,7 @@
                             @foreach($jurnal_header->details as $i)
                             <tr>
                                 <td class="text-left">
-                                    {{ $i->details_perkiraan->id_perkiraan }} - {{ $i->details_perkiraan->nm_sub_perkiraan }}
+                                    {{ $i->details_perkiraan->id_perkiraan }} - {{ $i->details_perkiraan->nm_perkiraan }}
                                 </td>
                                 <td class="text-right">
                                     {{ number_format($i->debet, 0, ',', '.') }}

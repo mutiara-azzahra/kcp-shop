@@ -56,8 +56,8 @@
                                 <td></td>
                                 <td class="text-center">{{ $d->perkiraan }}</td>
                                 <td class="text-left">{{ $d->details_perkiraan->nm_perkiraan }}</td>
-                                <td class="text-right">{{ $d->debet }}</td>
-                                <td class="text-right">{{ $d->kredit }}</td>
+                                <td class="text-right">{{ number_format($d->debet, 0, ',', ',') }}</td>
+                                <td class="text-right">{{ number_format($d->kredit, 0, ',', ',') }}</td>
                             </tr>
                             @endforeach
                             

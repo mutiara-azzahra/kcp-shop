@@ -71,15 +71,13 @@ class JurnalPembukuanController extends Controller
 
         $request->validate([
             'id_header'    => 'required',
-            'perkiraan'    => 'required',
+            'id_perkiraan' => 'required',
             'akuntansi_to' => 'required',
             'total'        => 'required',
         ]);
 
-        $perkiraan = MasterPerkiraan::findOrFail($request->perkiraan);
-
         $value['id_header'] = $request->id_header;
-        $value['perkiraan'] = $perkiraan->id_perkiraan;
+        $value['perkiraan'] = $request->id_perkiraan;
 
         if ($request->akuntansi_to == 'D') {
             $value['debet'] = $request->total;
