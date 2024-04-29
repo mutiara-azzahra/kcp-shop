@@ -56,7 +56,7 @@
                                 KREDIT
                                 @endif
                             </td>
-                            <td class="text-left">{{ $p->saldo }}</td>
+                            <td class="text-right">{{ number_format($p->saldo, 0, ',', ',') }}</td>
                             <td class="text-center"> 
                                 <form action="{{ route('master-perkiraan.nonaktif', $p->id) }}" method="GET" id="form_nonaktif_{{ $p->id }}" data-nonaktif="{{ $p->id }}">                                       
                                     @csrf
