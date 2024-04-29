@@ -66,4 +66,9 @@ class TransferMasukHeader extends Model
     {
         return $this->hasOne(KasMasukHeader::class, 'id_transfer', 'id_transfer');
     }
+
+    public function jurnal_header()
+    {
+        return $this->belongsTo(TransaksiAkuntansiJurnalHeader::class, 'no_keluar', 'trx_from');
+    }
 }

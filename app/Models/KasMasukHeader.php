@@ -82,4 +82,9 @@ class KasMasukHeader extends Model
     {
         return $this->hasOne(MasterOutlet::class, 'kd_outlet', 'kd_outlet');
     }
+
+    public function jurnal_header()
+    {
+        return $this->belongsTo(TransaksiAkuntansiJurnalHeader::class, 'no_keluar', 'trx_from');
+    }
 }

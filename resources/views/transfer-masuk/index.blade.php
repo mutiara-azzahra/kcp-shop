@@ -51,7 +51,7 @@
                         <td class="text-left">{{ $p->keterangan }}</td>
                         <td class="text-right">{{ number_format($p->details->where('akuntansi_to', 'D')->sum('total'), 0, '.', ',') }}</td>
                         <td class="text-center">
-                            <a class="btn btn-info btn-sm" href="{{ route('transfer-masuk.details', ['id_transfer' => $p->id_transfer, 'id_header']) }}"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-info btn-sm" href="{{ route('transfer-masuk.details', ['id_transfer' => $p->id_transfer, 'id_header' => $p->id ]) }}"><i class="fas fa-eye"></i></a>
                         </td>
                     </tr>
                     @endforeach
