@@ -97,8 +97,9 @@ class TransferMasukController extends Controller
         }
     }
 
-    public function details($id_transfer){
+    public function details($id_transfer, $id_header){
 
+        $jurnal_header  = $id_header;
         $perkiraan  = MasterPerkiraan::where('status', 'AKTIF')->get();
 
         $transfer   = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
@@ -108,7 +109,8 @@ class TransferMasukController extends Controller
 
         $balancing  = $balance_debet - $balance_kredit;
 
-        return view('transfer-masuk.details', compact('transfer', 'balancing', 'perkiraan'));
+
+        return view('transfer-masuk.details', compact('transfer', 'balancing', 'perkiraan', 'jurnal_header'));
     }
 
     public function validasi_data($id_transfer){
@@ -132,7 +134,7 @@ class TransferMasukController extends Controller
             'id_transfer'   => $request->id_transfer,
             'perkiraan'     => $request->perkiraan,
             'akuntansi_to'  => $request->akuntansi_to,
-            'total'         => $request->toal,
+            'total'         => $request->total,
             'created_by'    => Auth::user()->nama_user,
             'created_at'    => now()
         ]);
@@ -154,9 +156,9 @@ class TransferMasukController extends Controller
         $value['created_at'] = now();
         $value['updated_at'] = now();
 
-        TransaksiAkuntansiJurnalDetails::create($value);
+        $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
 
-        return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id_header' => $jurnal_created->id])
+        return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id_header' => $jurnal_created->id_header])
             ->with('success','Data detail transfer baru berhasil ditambahkan!');
     }
 

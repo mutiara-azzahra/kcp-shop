@@ -5,7 +5,7 @@
     <div class="row mt-2">
         <div class="col-lg-12 pb-3">
              <div class="float-left">
-                <h4>Details Transfer Masuk</h4>
+                <h4>Detail Transfer Masuk</h4>
             </div>
             <div class="float-right p-1">
                 <a class="btn btn-success" href="{{ route('transfer-masuk.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
@@ -99,7 +99,8 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="form-group col-12">
-                                            <input type="hidden" name="id_transfer" value="{{ $transfer->id_transfer  }}">
+                                            <input type="hidden" name="id_transfer" value="{{ $transfer->id_transfer }}">
+                                            <input type="hidden" name="id_header" value="{{ $jurnal_header }}">
                                             <input type="text" name="total" class="form-control">
                                         </div>
                                     </td>
@@ -135,7 +136,7 @@
                             @foreach($transfer->details as $i)
                             <tr>
                                 <td class="text-left">
-                                    {{ $i->details_perkiraan }} - {{ $i->details_perkiraan }}
+                                    {{ $i->details_perkiraan->id_perkiraan }} - {{ $i->details_perkiraan->nm_perkiraan }}
                                 </td>
                                 <td class="text-center">
                                     @if($i->akuntansi_to == 'D')
