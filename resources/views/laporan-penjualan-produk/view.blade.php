@@ -45,7 +45,7 @@
                         <tr>
                             <td class="text-center">{{ $i }}</td>
                             <td class="text-center">{{ App\Models\MasterSubProduk::where('sub_produk', $i)->value('keterangan') }}</td>
-                            <td class="text-right">{{ $group->sum('nominal_total') }}</td>
+                            <td class="text-right">{{ number_format($group->sum('nominal_total'), 0, ',', ',') }}</td>
                         </tr>
                     @endforeach
                     </tbody>

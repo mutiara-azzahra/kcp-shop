@@ -43,12 +43,11 @@
                         <tr>
                             <td class="text-center">{{ $nama_produk }}</td>
                             <td class="text-left">{{ $partNumber }}</td>
-                            <td class="text-left">{{ $partNumber }}</td>
                             <td class="text-right">
                                 @php
                                     $sumNominalTotal = $invoicesIchidai->where('part_no', $partNumber)->sum('nominal_total');
                                 @endphp
-                                {{ $sumNominalTotal }}
+                                {{ number_format($sumNominalTotal, 0, ',', ',') }}
                             </td>
                         </tr>
                     @endforeach
