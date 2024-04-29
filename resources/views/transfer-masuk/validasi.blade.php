@@ -54,9 +54,13 @@
                         <td class="text-left">{{ $p->bank }}</td>
                         <td class="text-left">{{ $p->keterangan }}</td>
                         <td class="text-center">
-                            <a class="btn btn-success btn-sm" href="{{ route('transfer-masuk.validasi-data', $p->id_transfer ) }}">
-                                <i class="fas fa-check"></i>
-                            </a>
+                            <form action="{{ route('transfer-masuk.validasi-data', $p->id_transfer) }}" method="POST" id="form_validasi_{{ $p->id }}" data-id="{{ $p->id }}">
+
+                                @csrf
+                                @method('POST')
+                                
+                                <a class="btn btn-warning btn-sm" onclick="Validasi('{{$p->id}}')"><i class="fas fa-check"></i></a>
+                            </form>
                         </td>
                     </tr>
                     @endforeach
@@ -76,6 +80,26 @@ function printAndRefresh(url){
     
     window.location.reload();
 } 
-</script>
+
+    //VALIDASI
+
+    Validasi = (id)=>{
+        Swal.fire({
+            title: 'Apa anda yakin validasi data ini?',
+            text:  "Data tidak dapat kembali" ,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6' ,
+            cancelButtonColor: 'red' ,
+            confirmButtonText: 'validasi data' ,
+            cancelButtonText: 'batal' ,
+            reverseButtons: false
+            }).then((result) => {
+                if (result.value) {
+                    document.getElementById('form_validasi_' + id).submit();
+                }
+        })
+    }
+
+</script>   
 
 @endsection
