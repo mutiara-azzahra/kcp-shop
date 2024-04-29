@@ -11,7 +11,7 @@
                 <a class="btn btn-success" href="{{ route('transfer-masuk.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
             </div>
             <div class="float-right p-1">
-                <a class="btn btn-info" href="{{ route('transfer-masuk.edit', $transfer->id_transfer) }}"><i class="fas fa-edit"></i> Ubah</a>
+                <a class="btn btn-info" href="{{ route('transfer-masuk.edit', ['id_transfer' => $transfer->id_transfer, 'id_header' => $jurnal_header]) }}"><i class="fas fa-edit"></i> Ubah</a>
             </div>
         </div>
     </div>

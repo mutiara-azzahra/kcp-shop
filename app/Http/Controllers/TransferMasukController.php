@@ -50,8 +50,6 @@ class TransferMasukController extends Controller
             'keterangan'        => 'required',
             'status_transfer'   => 'required',
         ]);
-
-        $outlet = MasterOutlet::where('kd_outlet', $request->kd_outlet)->first();
     
         $newTransfer              = new TransferMasukHeader();
         $newTransfer->id_transfer = TransferMasukHeader::id_transfer();
@@ -64,12 +62,19 @@ class TransferMasukController extends Controller
             $flag_by_toko = ($request->dari_toko == 1) ? 'Y' : 'N';
         }
     
+        $outlet = '';
+
+        if($request->dari_toko == 2){
+            $outlet = MasterOutlet::where('kd_outlet', $request->kd_outlet)->value('kd_outlet');
+        }
+
+
         $requestData = [
             'id_transfer'       => $newTransfer->id_transfer,
             'status_transfer'   => $status_transfer,
             'tanggal_bank'      => $request->tanggal_bank,
             'bank'              => $request->bank,
-            'kd_outlet'         => $outlet->kd_outlet,
+            'kd_outlet'         => $outlet,
             'flag_by_toko'      => $flag_by_toko,
             'keterangan'        => $request->keterangan,
             'status'            => 'O',
@@ -165,18 +170,19 @@ class TransferMasukController extends Controller
             ->with('success','Data detail transfer baru berhasil ditambahkan!');
     }
 
-    public function edit($id_transfer){
+    public function edit($id_transfer, $id_header){
 
         $transfer_masuk   = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
+        $header_jurnal    = $id_header;
         $check      = KasMasukHeader::where('id_transfer', $id_transfer)->first();
         $kas_masuk  = KasMasukHeader::all();
         $outlet     = MasterOutlet::where('status', 'Y')->get();
         $all_bank   = MasterBank::where('status', 'Y')->get();
 
-        return view('transfer-masuk.edit', compact('transfer_masuk', 'outlet', 'kas_masuk','check', 'all_bank'));
+        return view('transfer-masuk.edit', compact('transfer_masuk', 'outlet', 'kas_masuk','check', 'all_bank', 'header_jurnal'));
     }
 
-    public function store_validasi($id_transfer)
+    public function store_validasi($id_transfer, $id_header)
     {
 
         TransferMasukHeader::where('id_transfer', $id_transfer)->update([
@@ -184,8 +190,6 @@ class TransferMasukController extends Controller
             'updated_at'         => NOW(),
             'updated_by'         => Auth::user()->nama_user
         ]);
-
-        $tf_validated = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
         
         // CREATE KAS MASUK
         $newKas                 = new KasMasukHeader();
@@ -241,7 +245,7 @@ class TransferMasukController extends Controller
         }
     }
 
-    public function store_transfer(Request $request, $id)
+    public function update(Request $request, $id)
     {
 
         $request->validate([
@@ -250,9 +254,15 @@ class TransferMasukController extends Controller
             'keterangan'    => 'required',
         ]);
 
-        $updated = TransferMasukHeader::where('id', $id)->update([
+        $updated = TransferMasukHeader::where('id_transfer', $id)->update([
                 'bank'          => $request->bank,
                 'tanggal_bank'  => $request->tanggal_bank,
+                'keterangan'    => $request->keterangan,
+                'updated_at'    => NOW(),
+                'updated_by'    => Auth::user()->nama_user
+            ]);
+
+        $update_jurnal = TransaksiAkuntansiJurnalHeader::where('id', $request->id_header)->update([
                 'keterangan'    => $request->keterangan,
                 'updated_at'    => NOW(),
                 'updated_by'    => Auth::user()->nama_user

@@ -8,7 +8,7 @@
                 <h4>Ubah Transfer Masuk</h4>
             </div>
             <div class="float-right">
-                <a class="btn btn-success m-1" href="{{ route('transfer-masuk.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
+                <a class="btn btn-success m-1" href="{{ route('transfer-masuk.details', ['id_transfer' => $transfer_masuk->id_transfer, 'id_header' => $header_jurnal]) }}"><i class="fas fa-arrow-left"></i> Kembali</a>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
     <div class="card" style="padding: 10px;">
         <div class="card-body">
             <div class="col-lg-12">
-            <form action="{{ route('transfer-masuk.store-transfer', ['id' => $transfer_masuk->id]) }}" method="POST">
+            <form action="{{ route('transfer-masuk.update', ['id_transfer' => $transfer_masuk->id_transfer, 'id_header' => $header_jurnal]) }}" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
@@ -56,6 +56,7 @@
                         <div class="form-group">
                             <strong>Keterangan</strong>
                             <input type="text" name="keterangan" class="form-control" value="{{ $transfer_masuk->keterangan }}">
+                            <input type="hidden" name="id_header" value="{{ $header_jurnal }}">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
