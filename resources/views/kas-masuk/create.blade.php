@@ -90,7 +90,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                         <div class="float-right">
-                            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Simpan Data</button>                            
+                            <button type="submit" class="btn btn-warning"><i class="fas fa-save"></i> Simpan Data</button>                            
                         </div>
                     </div>
                 </div>

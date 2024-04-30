@@ -91,10 +91,12 @@ class KasMasukController extends Controller
             'nominal'                   => 'required',
         ]);
 
+
         $newKas                 = new KasMasukHeader();
         $newKas->no_kas_masuk   = KasMasukHeader::no_kas_masuk();
         
         $request->merge([
+            'nominal'           => str_replace(',', '', $request->nominal),
             'terima_dari'       => $request->terima_dari,
             'keterangan'        => $request->keterangan,
             'no_bg'             => $request->no_bg,
@@ -111,7 +113,7 @@ class KasMasukController extends Controller
             'no_kas_masuk'  => $request->no_kas_masuk,
             'perkiraan'     => 1.1101,
             'akuntansi_to'  => 'D',
-            'total'         => $request->nominal,
+            'total'         => str_replace(',', '', $request->nominal),
             'created_at'    => NOW(),
             'created_by'    => Auth::user()->nama_user
         ]);
@@ -121,43 +123,45 @@ class KasMasukController extends Controller
             'no_kas_masuk'  => $request->no_kas_masuk,
             'perkiraan'     => 2.1702,
             'akuntansi_to'  => 'K',
-            'total'         => $request->nominal,
+            'total'         => str_replace(',', '', $request->nominal),
             'created_at'    => NOW(),
             'created_by'    => Auth::user()->nama_user
         ]);
 
-        //JURNAL HEADER KAS MASUK CASH
-        $data['trx_date']   = now();
-        $data['trx_from']   = $request->no_kas_masuk;
-        $data['keterangan'] = $request->keterangan;
-        $data['trx_from']   = $request->no_kas_masuk;
-        $data['created_at'] = NOW();
-        $data['created_by'] = Auth::user()->nama_user;
-        $data['updated_at'] = NOW();
+        //CREATE JURNAL KAS MASUK HEADER
+        $jurnal = [
+            'trx_date'      => NOW(),
+            'trx_from'      => $request->no_kas_masuk,
+            'keterangan'    => $request->keterangan,
+            'catatan'       => $request->terima_dari,
+            'kategori'      => 'KAS_MASUK',
+            'created_at'    => NOW(),
+            'updated_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user,
+        ];
 
-        $created = TransaksiAkuntansiJurnalHeader::create($data);
+        $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
 
-        //DEBET
-        $debet['id_header']  = $created->id;
-        $debet['perkiraan']  = 1.1101;
-        $debet['debet']      = $request->nominal;
-        $debet['kredit']     = 0;
-        $debet['created_at'] = NOW();
-        $debet['created_by'] = Auth::user()->nama_user;
-        $debet['updated_at'] = NOW();
+        //CREATE JURNAL KAS MASUK DETAILS
+        $value['id_header'] = $jurnal_created->id;
 
-        $created = TransaksiAkuntansiJurnalDetails::create($debet);
+        if ($request->akuntansi_to == 'D') {
+            $value['perkiraan'] = 1.1101;
+            $value['debet'] = str_replace(',', '', $request->nominal);
+            
+            $value['kredit'] = 0;
+        } else {
+            $value['perkiraan'] = 2.1702;
+            $value['debet'] = 0;
+            $value['kredit'] = str_replace(',', '', $request->nominal);
+        }
 
-        //KREDIT
-        $kredit['id_header']  = $created->id;
-        $kredit['perkiraan']  = 2.1702;
-        $kredit['debet']      = 0;
-        $kredit['kredit']     = $request->nominal;
-        $kredit['created_at'] = NOW();
-        $kredit['created_by'] = Auth::user()->nama_user;
-        $kredit['updated_at'] = NOW();
+        $value['status'] = 'Y';
+        $value['created_by'] = Auth::user()->nama_user;
+        $value['created_at'] = now();
+        $value['updated_at'] = now();
 
-        $created = TransaksiAkuntansiJurnalDetails::create($kredit);
+        $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
 
         if ($created){
             return redirect()->route('kas-masuk.index')->with('success','Kas masuk berhasil ditambahkan');
