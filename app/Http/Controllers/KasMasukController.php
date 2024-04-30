@@ -91,14 +91,15 @@ class KasMasukController extends Controller
             'nominal'                   => 'required',
         ]);
 
+        $outlet = MasterOutlet::where('kd_outlet', $request->kd_outlet)->first();
 
         $newKas                 = new KasMasukHeader();
         $newKas->no_kas_masuk   = KasMasukHeader::no_kas_masuk();
         
         $request->merge([
             'nominal'           => str_replace(',', '', $request->nominal),
-            'terima_dari'       => $request->terima_dari,
-            'keterangan'        => $request->keterangan,
+            'terima_dari'       => $outlet->nm_outlet,
+            'keterangan'        => 'Pembayaran dari toko ' . $outlet->kd_outlet . '/'. $outlet->nm_outlet,
             'no_bg'             => $request->no_bg,
             'jatuh_tempo_bg'    => $request->jatuh_tempo_bg,
             'no_kas_masuk'      => $newKas->no_kas_masuk,
@@ -144,18 +145,20 @@ class KasMasukController extends Controller
 
         //CREATE JURNAL KAS MASUK DETAILS
         $value['id_header'] = $jurnal_created->id;
+        $value['perkiraan'] = 1.1101;
+        $value['debet'] = str_replace(',', '', $request->nominal);
+        $value['status'] = 'Y';
+        $value['created_by'] = Auth::user()->nama_user;
+        $value['created_at'] = now();
+        $value['updated_at'] = now();
 
-        if ($request->akuntansi_to == 'D') {
-            $value['perkiraan'] = 1.1101;
-            $value['debet'] = str_replace(',', '', $request->nominal);
-            
-            $value['kredit'] = 0;
-        } else {
-            $value['perkiraan'] = 2.1702;
-            $value['debet'] = 0;
-            $value['kredit'] = str_replace(',', '', $request->nominal);
-        }
+        $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
+        
 
+        $value['id_header'] = $jurnal_created->id;
+        $value['perkiraan'] = 2.1702;
+        $value['debet'] = 0;
+        $value['kredit'] = str_replace(',', '', $request->nominal);
         $value['status'] = 'Y';
         $value['created_by'] = Auth::user()->nama_user;
         $value['created_at'] = now();

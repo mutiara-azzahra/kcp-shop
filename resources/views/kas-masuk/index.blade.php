@@ -128,7 +128,7 @@
                         <td class="text-center">
                             <form action="{{ route('kas-masuk.delete', $p->id) }}" method="POST" id="form_delete_{{ $p->id }}" data-id="{{ $p->id }}">
                                 
-                                <a class="btn btn-info btn-sm" href="{{ route('kas-masuk.details', $p->no_kas_masuk) }}" target="_blank"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-info btn-sm" href="{{ route('kas-masuk.details', ['no_kas_masuk' => $p->no_kas_masuk  , 'id_jurnal' => $p->jurnal_header->id]) }}" target="_blank"><i class="fas fa-eye"></i></a>
                                 <a class="btn btn-warning btn-sm" href="{{ route('kas-masuk.cetak', $p->no_kas_masuk) }}" target="_blank"><i class="fas fa-print"></i></a>
 
                                 @csrf

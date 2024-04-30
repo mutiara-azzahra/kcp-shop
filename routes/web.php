@@ -419,7 +419,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/kas-masuk', [KasMasukController::class, 'index'])->name('kas-masuk.index');
     Route::get('/kas-masuk/bukti-bayar', [KasMasukController::class, 'bukti_bayar'])->name('kas-masuk.bukti-bayar');
     Route::get('/kas-masuk/bayar-manual', [KasMasukController::class, 'bayar_manual'])->name('kas-masuk.bayar-manual');
-    Route::get('/kas-masuk/bayar-manual/details/{no_kas_masuk}', [KasMasukController::class, 'details'])->name('kas-masuk.details');
+    Route::get('/kas-masuk/bayar-manual/details/{no_kas_masuk}/{id_jurnal}', [KasMasukController::class, 'details'])->name('kas-masuk.details');
     Route::post('/kas-masuk/store-bukti-bayar', [KasMasukController::class, 'store_bukti_bayar'])->name('kas-masuk.store-bukti-bayar');
     Route::post('/kas-masuk/store', [KasMasukController::class, 'store'])->name('kas-masuk.store');
     Route::post('/kas-masuk/store-details', [KasMasukController::class, 'store_details'])->name('kas-masuk.store-details');
