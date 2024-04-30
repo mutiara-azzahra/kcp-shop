@@ -170,20 +170,18 @@ class KasMasukController extends Controller
 
         $request->validate([
             'no_kas_masuk' => 'required',
-            'perkiraan'    => 'required',
+            'id_perkiraan' => 'required',
             'akuntansi_to' => 'required',
             'total'        => 'required',
         ]);
     
-        $perkiraan = MasterPerkiraan::findOrFail($request['perkiraan']);
-    
         KasMasukDetails::create([
-            'no_kas_masuk'  => $request['no_kas_masuk'],
-            'perkiraan'     => $perkiraan->id_perkiraan,
-            'sub_perkiraan' => $perkiraan->sub_perkiraan,
-            'akuntansi_to'  => $request['akuntansi_to'],
-            'total'         => $request['total'],
+            'no_kas_masuk'  => $request->no_kas_masuk,
+            'perkiraan'     => $request->id_perkiraan,
+            'akuntansi_to'  => $request->akuntansi_to,
+            'total'         => $request->total,
             'created_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user,
         ]);
             
         return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $request->no_kas_masuk])->with('success','Data kas masuk baru berhasil ditambahkan!');
