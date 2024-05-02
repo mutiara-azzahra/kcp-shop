@@ -64,7 +64,7 @@
                                     @method('DELETE')
                                 </form>
 
-                                <a class="btn btn-info btn-sm" href="{{ route('kas-keluar.detail', [ 'no_keluar' => $p->no_keluar , 'id_header' => $p->jurnal_header->id])}}"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-info btn-sm" href="{{ route('kas-keluar.details', [ 'no_keluar' => $p->no_keluar , 'id_header' => $p->jurnal_header->id])}}"><i class="fas fa-eye"></i></a>
                                 <a class="btn btn-success btn-sm" onclick="Selesai('{{ $p->id }}')"><i class="fas fa-check"></i></a>
                                 <a class="btn btn-danger btn-sm" onclick="Delete('{{ $p->id }}')"><i class="fas fa-times"></i></a>
                             </td>
