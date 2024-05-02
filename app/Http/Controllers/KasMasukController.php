@@ -301,15 +301,11 @@ class KasMasukController extends Controller
         try {
 
             //PENGURANG DARI SALDO MASTER PART
-
             $kas = KasMasukHeader::findOrFail($id);
 
             foreach($kas->details as $i){
-
                 $saldo_perkiraan = MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->value('saldo');
-
                 MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->update(['saldo' => $saldo_perkiraan - $i->total ]);
-
             }
 
             //HAPUS KAS MASUK
