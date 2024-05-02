@@ -300,6 +300,19 @@ class KasMasukController extends Controller
     {
         try {
 
+            //PENGURANG DARI SALDO MASTER PART
+
+            $kas = KasMasukHeader::findOrFail($id);
+
+            foreach($kas->details as $i){
+
+                $saldo_perkiraan = MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->value('saldo');
+
+                MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->update(['saldo' => $saldo_perkiraan - $i->total ]);
+
+            }
+
+            //HAPUS KAS MASUK
             $kas_masuk = KasMasukHeader::findOrFail($id);
             $kas_masuk->delete();
 
@@ -308,10 +321,8 @@ class KasMasukController extends Controller
             //HAPUS JURNAL HEADER  DAN DETAILS
             $header_jurnal = $kas_masuk->jurnal_header->first();
             $header_jurnal->delete();
+            $header_jurnal->details()->delete();
 
-            $details_jurnal = $header_jurnal->details;
-            $header_jurnal->delete();
-            
             return redirect()->route('kas-masuk.index')->with('success', 'Data kas masuk berhasil dihapus!');
 
         } catch (\Exception $e) {
