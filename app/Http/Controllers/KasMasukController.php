@@ -112,24 +112,24 @@ class KasMasukController extends Controller
         $created = KasMasukHeader::create($request->all());
 
         //KAS MASUK DEBET
-        $detail_debet = KasMasukDetails::create([
-            'no_kas_masuk'  => $request->no_kas_masuk,
-            'perkiraan'     => 1.1101,
-            'akuntansi_to'  => 'D',
-            'total'         => str_replace(',', '', $request->nominal),
-            'created_at'    => NOW(),
-            'created_by'    => Auth::user()->nama_user
-        ]);
+        $debit['no_kas_masuk'] = $request->no_kas_masuk;
+        $debit['perkiraan']    = 1.1101;
+        $debit['akuntansi_to'] = 'D';
+        $debit['total']        = str_replace(',', '', $request->nominal);
+        $debit['created_at']   = NOW();
+        $debit['created_by']   = Auth::user()->nama_user;
+
+        $kas_debit = KasMasukDetails::create($debit);
 
         //KAS MASUK DEBET
-        $detail_kredit = KasMasukDetails::create([
-            'no_kas_masuk'  => $request->no_kas_masuk,
-            'perkiraan'     => 2.1702,
-            'akuntansi_to'  => 'K',
-            'total'         => str_replace(',', '', $request->nominal),
-            'created_at'    => NOW(),
-            'created_by'    => Auth::user()->nama_user
-        ]);
+        $kredit['no_kas_masuk'] = $request->no_kas_masuk;
+        $kredit['perkiraan']    = 2.1702;
+        $kredit['akuntansi_to'] = 'K';
+        $kredit['total']        = str_replace(',', '', $request->nominal);
+        $kredit['created_at']   = NOW();
+        $kredit['created_by']   = Auth::user()->nama_user;
+
+        $kas_kredit = KasMasukDetails::create($kredit);
 
         //CREATE JURNAL KAS MASUK HEADER
         $jurnal = [
@@ -150,25 +150,25 @@ class KasMasukController extends Controller
         $jurnal_debet['perkiraan']    = 1.1101;
         $jurnal_debet['debet']        = str_replace(',', '', $request->nominal);
         $jurnal_debet['kredit']       = 0;
-        $jurnal_debet['id_referensi'] = $detail_debet->id;
+        $jurnal_debet['id_referensi'] = $kas_debit->id;
         $jurnal_debet['status']       = 'Y';
         $jurnal_debet['created_by']   = Auth::user()->nama_user;
         $jurnal_debet['created_at']   = now();
         $jurnal_debet['updated_at']   = now();
 
-        $jurnal_created = TransaksiAkuntansiJurnalDetails::create($jurnal_debet);
+        $jurnal_debet_created = TransaksiAkuntansiJurnalDetails::create($jurnal_debet);
 
         $jurnal_kredit['id_header']    = $jurnal_created->id;
         $jurnal_kredit['perkiraan']    = 2.1702;
         $jurnal_kredit['debet']        = 0;
         $jurnal_kredit['kredit']       = str_replace(',', '', $request->nominal);
-        $jurnal_kredit['id_referensi'] = $detail_kredit->id;
+        $jurnal_kredit['id_referensi'] = $kas_kredit->id;
         $jurnal_kredit['status']       = 'Y';
         $jurnal_kredit['created_by']   = Auth::user()->nama_user;
         $jurnal_kredit['created_at']   = now();
         $jurnal_kredit['updated_at']   = now();
 
-        $jurnal_created = TransaksiAkuntansiJurnalDetails::create($jurnal_kredit);
+        $jurnal_kredit_created = TransaksiAkuntansiJurnalDetails::create($jurnal_kredit);
 
         if ($created){
             return redirect()->route('kas-masuk.index')->with('success','Kas masuk berhasil ditambahkan');
