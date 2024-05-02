@@ -151,7 +151,7 @@ class KasMasukController extends Controller
         $saldo_kredit = MasterPerkiraan::where('id_perkiraan', 2.1702)->value('saldo');
 
         MasterPerkiraan::where('id_perkiraan', 1.1101)->update(['saldo' => $saldo_debit + str_replace(',', '', $request->nominal)]);
-        MasterPerkiraan::where('id_perkiraan', 2.1702)->update(['saldo' => $saldo_kredit - str_replace(',', '', $request->nominal)]);
+        MasterPerkiraan::where('id_perkiraan', 2.1702)->update(['saldo' => $saldo_kredit + str_replace(',', '', $request->nominal)]);
 
         //CREATE JURNAL KAS MASUK HEADER
         $jurnal = [
@@ -254,7 +254,7 @@ class KasMasukController extends Controller
 
             $jurnal_kredit = MasterPerkiraan::where('id_perkiraan', $request->id_perkiraan)->value('saldo');
 
-            MasterPerkiraan::where('id_perkiraan', $request->id_perkiraan)->update(['saldo' => $jurnal_kredit - $request->total]);
+            MasterPerkiraan::where('id_perkiraan', $request->id_perkiraan)->update(['saldo' => $jurnal_kredit + $request->total]);
 
         }
             
