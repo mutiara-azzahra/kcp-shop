@@ -37,7 +37,7 @@
                     <tr>
                         <th class="text-left">Bulan</th>
                         <td>:</td>
-                        <td class="text-left">{{ $monthName }} 2023</td>
+                        <td class="text-left">{{ $monthName }} {{ $tahun }}</td>
                     </tr>
                 </table>
             </div>

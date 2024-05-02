@@ -36,10 +36,12 @@ class MonitoringController extends Controller
         $awal   = $request->tanggal_awal;
         $akhir  = $request->tanggal_akhir;
 
+        $tanggal_akhir  = Carbon::parse($akhir)->addDay();
         $tanggal_awal   = Carbon::parse($awal)->startOfDay();
-        $tanggal_akhir  = Carbon::parse($akhir)->endOfDay();
         $bulan          = Carbon::parse($awal)->month;
         $tahun          = Carbon::parse($awal)->year;
+        $next_tahun     = $tahun + 1;
+
         $monthName      = Carbon::parse($awal)->month($bulan)->format('F');
 
         $dataTargetTahun = TargetSales::where('tahun', $tahun)->where('bulan', 12)->first();
@@ -72,62 +74,62 @@ class MonitoringController extends Controller
 
             $getActualSales1 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-01-01')
-                ->where('created_at', '<=', $tahun.'-01-'.Carbon::createFromDate($tahun, 1, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $tahun.'-02-01')
                 ->get();
 
             $getActualSales2 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-02-01')
-                ->where('created_at', '<=', $tahun.'-02-'.Carbon::createFromDate($tahun, 2, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $tahun.'-03-01')
                 ->get();
             
             $getActualSales3 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-03-01')
-                ->where('created_at', '<=', $tahun.'-03-'.Carbon::createFromDate($tahun, 3, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $tahun.'-04-01')
                 ->get();
 
             $getActualSales4 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-04-01')
-                ->where('created_at', '<=', $tahun.'-04-'.Carbon::createFromDate($tahun, 4, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $tahun.'-05-01')
                 ->get();
 
             $getActualSales5 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-05-01')
-                ->where('created_at', '<=', $tahun.'-05-'.Carbon::createFromDate($tahun, 5, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $tahun.'-06-01')
                 ->get();
 
             $getActualSales6 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-06-01')
-                ->where('created_at', '<=', $tahun.'-06-'.Carbon::createFromDate($tahun, 6, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $tahun.'-07-01')
                 ->get();
             
             $getActualSales7 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-07-01')
-                ->where('created_at', '<=', $tahun.'-07-'.Carbon::createFromDate($tahun, 7, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $tahun.'-08-01')
                 ->get();
 
             $getActualSales8 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-08-01')
-                ->where('created_at', '<=', $tahun.'-08-'.Carbon::createFromDate($tahun, 8, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $tahun.'-09-01')
                 ->get();
 
             $getActualSales9 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-09-01')
-                ->where('created_at', '<=', $tahun.'-09-'.Carbon::createFromDate($tahun, 9, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $tahun.'-10-01')
                 ->get();
             
             $getActualSales10 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-10-01')
-                ->where('created_at', '<=', $tahun.'-10-'.Carbon::createFromDate($tahun, 10, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $tahun.'-11-01')
                 ->get();
 
             $getActualSales11 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-11-01')
-                ->where('created_at', '<=', $tahun.'-11-'.Carbon::createFromDate($tahun, 11, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $tahun.'-12-01')
                 ->get();
             
             $getActualSales12 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-12-01')
-                ->where('created_at', '<=', $tahun.'-12-'.Carbon::createFromDate($tahun, 12, 1)->endOfMonth()->format('d'))
+                ->where('created_at', '<=', $next_tahun.'-01-01')
                 ->get();
 
             foreach ($getActualSales1 as $invoice) {
@@ -140,7 +142,7 @@ class MonitoringController extends Controller
                 $sum3 += $invoice->details_invoice()->sum('nominal_total');
             }
             foreach ($getActualSales4 as $invoice) {
-                $sum4 += $invoice->details_invoice()->sum('nominal_total');
+                $sum4 += $invoice->details_invoice->sum('nominal_total');
             }
             foreach ($getActualSales5 as $invoice) {
                 $sum5 += $invoice->details_invoice()->sum('nominal_total');
@@ -278,18 +280,18 @@ class MonitoringController extends Controller
             $target_s_acl_dec = number_format($getTargetProdukSales->where('kode_produk', 'ACL')->where('tahun', $tahun)->where('bulan', 12)->value('nominal'), 0, ',', ',');
 
             //VIEW ACHIEVEMENT SALES BY PRODUK
-            $ach_s_jan = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-01-'.Carbon::createFromDate($tahun, 1, 1)->endOfMonth()->format('d'))->get();
-            $ach_s_feb = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-02-'.Carbon::createFromDate($tahun, 2, 1)->endOfMonth()->format('d'))->get();
-            $ach_s_mar = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-03-'.Carbon::createFromDate($tahun, 3, 1)->endOfMonth()->format('d'))->get();
-            $ach_s_apr = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-04-'.Carbon::createFromDate($tahun, 4, 1)->endOfMonth()->format('d'))->get();
-            $ach_s_may = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-05-'.Carbon::createFromDate($tahun, 5, 1)->endOfMonth()->format('d'))->get();
-            $ach_s_jun = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-06-'.Carbon::createFromDate($tahun, 6, 1)->endOfMonth()->format('d'))->get();
-            $ach_s_jul = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-07-'.Carbon::createFromDate($tahun, 7, 1)->endOfMonth()->format('d'))->get();
-            $ach_s_aug = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-08-'.Carbon::createFromDate($tahun, 8, 1)->endOfMonth()->format('d'))->get();
-            $ach_s_sep = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-09-'.Carbon::createFromDate($tahun, 9, 1)->endOfMonth()->format('d'))->get();
-            $ach_s_oct = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-10-'.Carbon::createFromDate($tahun, 10, 1)->endOfMonth()->format('d'))->get();
-            $ach_s_nov = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-11-'.Carbon::createFromDate($tahun, 11, 1)->endOfMonth()->format('d'))->get();
-            $ach_s_dec = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $tahun.'-12-'.Carbon::createFromDate($tahun, 12, 1)->endOfMonth()->format('d'))->get();
+            $ach_s_jan = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->get();
+            $ach_s_feb = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->get();
+            $ach_s_mar = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-04-01')->get();
+            $ach_s_apr = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-05-01')->get();
+            $ach_s_may = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-06-01')->get();
+            $ach_s_jun = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-07-01')->get();
+            $ach_s_jul = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-08-01')->get();
+            $ach_s_aug = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-09-01')->get();
+            $ach_s_sep = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-10-01')->get();
+            $ach_s_oct = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-11-01')->get();
+            $ach_s_nov = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-12-01')->get();
+            $ach_s_dec = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $next_tahun.'-01-01')->get();
 
             //ACHIEVEMENT SALES ICHIDAI
             $achIchS01 = 0;
@@ -877,18 +879,18 @@ class MonitoringController extends Controller
             $target_dec = number_format($getTargetActual->where('tahun', $tahun)->where('bulan', 12)->value('nominal'), 0, ',', ',');
 
             //ACTUAL EACH MONTH
-            $jan = number_format($getActual->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-01-'.Carbon::createFromDate($tahun, 1, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $feb = number_format($getActual->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-02-'.Carbon::createFromDate($tahun, 2, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $mar = number_format($getActual->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-03-'.Carbon::createFromDate($tahun, 3, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $apr = number_format($getActual->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-04-'.Carbon::createFromDate($tahun, 4, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $may = number_format($getActual->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-05-'.Carbon::createFromDate($tahun, 5, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jun = number_format($getActual->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-06-'.Carbon::createFromDate($tahun, 6, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jul = number_format($getActual->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-07-'.Carbon::createFromDate($tahun, 7, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $agu = number_format($getActual->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-08-'.Carbon::createFromDate($tahun, 8, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $sep = number_format($getActual->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-09-'.Carbon::createFromDate($tahun, 9, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $oct = number_format($getActual->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-10-'.Carbon::createFromDate($tahun, 10, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $nov = number_format($getActual->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-11-'.Carbon::createFromDate($tahun, 11, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $dec = number_format($getActual->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $tahun.'-12-'.Carbon::createFromDate($tahun, 12, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ','); 
+            $jan = number_format($getActual->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->sum('nominal_total'), 0, ',', ',');
+            $feb = number_format($getActual->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->sum('nominal_total'), 0, ',', ',');
+            $mar = number_format($getActual->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-04-01')->sum('nominal_total'), 0, ',', ',');
+            $apr = number_format($getActual->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-05-01')->sum('nominal_total'), 0, ',', ',');
+            $may = number_format($getActual->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-06-01')->sum('nominal_total'), 0, ',', ',');
+            $jun = number_format($getActual->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-07-01')->sum('nominal_total'), 0, ',', ',');
+            $jul = number_format($getActual->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-08-01')->sum('nominal_total'), 0, ',', ',');
+            $agu = number_format($getActual->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-09-01')->sum('nominal_total'), 0, ',', ',');
+            $sep = number_format($getActual->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-10-01')->sum('nominal_total'), 0, ',', ',');
+            $oct = number_format($getActual->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-11-01')->sum('nominal_total'), 0, ',', ',');
+            $nov = number_format($getActual->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-12-01')->sum('nominal_total'), 0, ',', ',');
+            $dec = number_format($getActual->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $next_tahun.'-01-01')->sum('nominal_total'), 0, ',', ','); 
             
             $getTargetProduk = TargetSpvProduk::where('spv', $spv)->get();
 
@@ -967,18 +969,19 @@ class MonitoringController extends Controller
                     })
                 ->get();
 
-            $jan_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-01-'.Carbon::createFromDate($tahun, 1, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $feb_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-02-'.Carbon::createFromDate($tahun, 2, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $mar_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-03-'.Carbon::createFromDate($tahun, 3, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $apr_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-04-'.Carbon::createFromDate($tahun, 4, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $may_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-05-'.Carbon::createFromDate($tahun, 5, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jun_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-06-'.Carbon::createFromDate($tahun, 6, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jul_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-07-'.Carbon::createFromDate($tahun, 7, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $agu_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-08-'.Carbon::createFromDate($tahun, 8, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $sep_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-09-'.Carbon::createFromDate($tahun, 9, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $oct_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-10-'.Carbon::createFromDate($tahun, 10, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $nov_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-11-'.Carbon::createFromDate($tahun, 11, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $dec_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $tahun.'-12-'.Carbon::createFromDate($tahun, 12, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
+            $jan_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->sum('nominal_total'), 0, ',', ',');
+            $feb_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->sum('nominal_total'), 0, ',', ',');
+            $mar_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-04-01')->sum('nominal_total'), 0, ',', ',');
+            $apr_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-05-01')->sum('nominal_total'), 0, ',', ',');
+            $may_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-06-01')->sum('nominal_total'), 0, ',', ',');
+            $jun_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-07-01')->sum('nominal_total'), 0, ',', ',');
+            $jul_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-08-01')->sum('nominal_total'), 0, ',', ',');
+            $agu_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-09-01')->sum('nominal_total'), 0, ',', ',');
+            $sep_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-10-01')->sum('nominal_total'), 0, ',', ',');
+            $oct_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-11-01')->sum('nominal_total'), 0, ',', ',');
+            $nov_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-12-01')->sum('nominal_total'), 0, ',', ',');
+            $dec_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $next_tahun.'-01-01')->sum('nominal_total'), 0, ',', ',');
+
 
             //BRIO
             $getActualBrio = TransaksiInvoiceDetails::whereIn('part_no', function ($query) {
@@ -988,18 +991,18 @@ class MonitoringController extends Controller
                     })
                 ->get();
 
-            $jan_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-01-'.Carbon::createFromDate($tahun, 1, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $feb_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-02-'.Carbon::createFromDate($tahun, 2, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $mar_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-03-'.Carbon::createFromDate($tahun, 3, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $apr_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-04-'.Carbon::createFromDate($tahun, 4, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $may_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-05-'.Carbon::createFromDate($tahun, 5, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jun_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-06-'.Carbon::createFromDate($tahun, 6, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jul_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-07-'.Carbon::createFromDate($tahun, 7, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $agu_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-08-'.Carbon::createFromDate($tahun, 8, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $sep_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-09-'.Carbon::createFromDate($tahun, 9, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $oct_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-10-'.Carbon::createFromDate($tahun, 10, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $nov_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-11-'.Carbon::createFromDate($tahun, 11, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $dec_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $tahun.'-12-'.Carbon::createFromDate($tahun, 12, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
+            $jan_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->sum('nominal_total'), 0, ',', ',');
+            $feb_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->sum('nominal_total'), 0, ',', ',');
+            $mar_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-04-01')->sum('nominal_total'), 0, ',', ',');
+            $apr_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-05-01')->sum('nominal_total'), 0, ',', ',');
+            $may_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-06-01')->sum('nominal_total'), 0, ',', ',');
+            $jun_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-07-01')->sum('nominal_total'), 0, ',', ',');
+            $jul_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-08-01')->sum('nominal_total'), 0, ',', ',');
+            $agu_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-09-01')->sum('nominal_total'), 0, ',', ',');
+            $sep_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-10-01')->sum('nominal_total'), 0, ',', ',');
+            $oct_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-11-01')->sum('nominal_total'), 0, ',', ',');
+            $nov_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-12-01')->sum('nominal_total'), 0, ',', ',');
+            $dec_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $next_tahun.'-01-01')->sum('nominal_total'), 0, ',', ','); 
         
             //ACCU
             $getActualAccu = TransaksiInvoiceDetails::whereIn('part_no', function ($query) {
@@ -1009,18 +1012,18 @@ class MonitoringController extends Controller
                     })
                 ->get();
 
-            $jan_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-01-'.Carbon::createFromDate($tahun, 1, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $feb_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-02-'.Carbon::createFromDate($tahun, 2, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $mar_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-03-'.Carbon::createFromDate($tahun, 3, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $apr_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-04-'.Carbon::createFromDate($tahun, 4, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $may_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-05-'.Carbon::createFromDate($tahun, 5, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jun_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-06-'.Carbon::createFromDate($tahun, 6, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jul_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-07-'.Carbon::createFromDate($tahun, 7, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $agu_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-08-'.Carbon::createFromDate($tahun, 8, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $sep_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-09-'.Carbon::createFromDate($tahun, 9, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $oct_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-10-'.Carbon::createFromDate($tahun, 10, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $nov_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-11-'.Carbon::createFromDate($tahun, 11, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $dec_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $tahun.'-12-'.Carbon::createFromDate($tahun, 12, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
+            $jan_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->sum('nominal_total'), 0, ',', ',');
+            $feb_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->sum('nominal_total'), 0, ',', ',');
+            $mar_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-04-01')->sum('nominal_total'), 0, ',', ',');
+            $apr_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-05-01')->sum('nominal_total'), 0, ',', ',');
+            $may_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-06-01')->sum('nominal_total'), 0, ',', ',');
+            $jun_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-07-01')->sum('nominal_total'), 0, ',', ',');
+            $jul_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-08-01')->sum('nominal_total'), 0, ',', ',');
+            $agu_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-09-01')->sum('nominal_total'), 0, ',', ',');
+            $sep_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-10-01')->sum('nominal_total'), 0, ',', ',');
+            $oct_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-11-01')->sum('nominal_total'), 0, ',', ',');
+            $nov_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-12-01')->sum('nominal_total'), 0, ',', ',');
+            $dec_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $next_tahun.'-01-01')->sum('nominal_total'), 0, ',', ','); 
         
             //COOLANT
             $getActualCoolant = TransaksiInvoiceDetails::whereIn('part_no', function ($query) {
@@ -1030,18 +1033,18 @@ class MonitoringController extends Controller
                     })
                 ->get();
 
-            $jan_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-01-'.Carbon::createFromDate($tahun, 1, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $feb_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-02-'.Carbon::createFromDate($tahun, 2, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $mar_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-03-'.Carbon::createFromDate($tahun, 3, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $apr_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-04-'.Carbon::createFromDate($tahun, 4, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $may_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-05-'.Carbon::createFromDate($tahun, 5, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jun_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-06-'.Carbon::createFromDate($tahun, 6, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jul_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-07-'.Carbon::createFromDate($tahun, 7, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $agu_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-08-'.Carbon::createFromDate($tahun, 8, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $sep_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-09-'.Carbon::createFromDate($tahun, 9, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $oct_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-10-'.Carbon::createFromDate($tahun, 10, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $nov_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-11-'.Carbon::createFromDate($tahun, 11, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $dec_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $tahun.'-12-'.Carbon::createFromDate($tahun, 12, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
+            $jan_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->sum('nominal_total'), 0, ',', ',');
+            $feb_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->sum('nominal_total'), 0, ',', ',');
+            $mar_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-04-01')->sum('nominal_total'), 0, ',', ',');
+            $apr_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-05-01')->sum('nominal_total'), 0, ',', ',');
+            $may_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-06-01')->sum('nominal_total'), 0, ',', ',');
+            $jun_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-07-01')->sum('nominal_total'), 0, ',', ',');
+            $jul_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-08-01')->sum('nominal_total'), 0, ',', ',');
+            $agu_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-09-01')->sum('nominal_total'), 0, ',', ',');
+            $sep_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-10-01')->sum('nominal_total'), 0, ',', ',');
+            $oct_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-11-01')->sum('nominal_total'), 0, ',', ',');
+            $nov_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-12-01')->sum('nominal_total'), 0, ',', ',');
+            $dec_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $next_tahun.'-01-01')->sum('nominal_total'), 0, ',', ','); 
             
 
             //PENTIL
@@ -1052,18 +1055,18 @@ class MonitoringController extends Controller
                     })
                 ->get();
 
-            $jan_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-01-'.Carbon::createFromDate($tahun, 1, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $feb_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-02-'.Carbon::createFromDate($tahun, 2, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $mar_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-03-'.Carbon::createFromDate($tahun, 3, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $apr_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-04-'.Carbon::createFromDate($tahun, 4, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $may_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-05-'.Carbon::createFromDate($tahun, 5, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jun_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-06-'.Carbon::createFromDate($tahun, 6, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $jul_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-07-'.Carbon::createFromDate($tahun, 7, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $agu_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-08-'.Carbon::createFromDate($tahun, 8, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $sep_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-09-'.Carbon::createFromDate($tahun, 9, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $oct_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-10-'.Carbon::createFromDate($tahun, 10, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $nov_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-11-'.Carbon::createFromDate($tahun, 11, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
-            $dec_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $tahun.'-12-'.Carbon::createFromDate($tahun, 12, 1)->endOfMonth()->format('d'))->sum('nominal_total'), 0, ',', ',');
+            $jan_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->sum('nominal_total'), 0, ',', ',');
+            $feb_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->sum('nominal_total'), 0, ',', ',');
+            $mar_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-04-01')->sum('nominal_total'), 0, ',', ',');
+            $apr_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-05-01')->sum('nominal_total'), 0, ',', ',');
+            $may_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-06-01')->sum('nominal_total'), 0, ',', ',');
+            $jun_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-07-01')->sum('nominal_total'), 0, ',', ',');
+            $jul_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-08-01')->sum('nominal_total'), 0, ',', ',');
+            $agu_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-09-01')->sum('nominal_total'), 0, ',', ',');
+            $sep_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-10-01')->sum('nominal_total'), 0, ',', ',');
+            $oct_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-11-01')->sum('nominal_total'), 0, ',', ',');
+            $nov_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-12-01')->sum('nominal_total'), 0, ',', ',');
+            $dec_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $next_tahun.'-01-01')->sum('nominal_total'), 0, ',', ',');
 
             return view('monitoring.sales', compact('target', 'tahun', 'monthName','spv', 'getActual','getTarget', 'getTargetActual', 'getTargetBulanan',
             'selisih', 'pencapaian_persen', 'targetSpv', 

@@ -13,7 +13,7 @@
         </div>
         <div class="col-lg-12 pb-3">
             <div class="float-left">
-                <h6>{{ $monthName }} 2023</h6>
+                <h6>{{ $monthName }}</h6>
             </div>
         </div>
     </div>
