@@ -306,9 +306,12 @@ class KasMasukController extends Controller
             $details_kas_masuk = KasMasukDetails::where('no_kas_masuk', $kas_masuk->no_kas_masuk)->delete();
 
             //HAPUS JURNAL HEADER  DAN DETAILS
-            $header_jurnal = $detail_kas_masuk->header->jurnal_header->delete();
-            $details_jurnal = $detail_kas_masuk->header->jurnal_header->details->delete();
+            $header_jurnal = $kas_masuk->jurnal_header->first();
+            $header_jurnal->delete();
 
+            $details_jurnal = $header_jurnal->details;
+            $header_jurnal->delete();
+            
             return redirect()->route('kas-masuk.index')->with('success', 'Data kas masuk berhasil dihapus!');
 
         } catch (\Exception $e) {

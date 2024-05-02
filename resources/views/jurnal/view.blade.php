@@ -48,7 +48,7 @@
                         <tr>
                             <td class="text-center" style="background-color: #89CFF0; color:black">{{ $i->trx_date }}</td>
                             <td class="text-center" style="background-color: #89CFF0; color:black">{{ $i->trx_from }}</td>
-                            <td class="text-center" style="background-color: #89CFF0; color:black" colspan="4">{{ $i->keterangan }}</td>
+                            <td class="text-left" style="background-color: #89CFF0; color:black" colspan="4">{{ $i->keterangan }}</td>
                             
                             @foreach ($i->details as $d)
                             <tr>
