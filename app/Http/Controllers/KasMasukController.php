@@ -58,8 +58,23 @@ class KasMasukController extends Controller
 
         $created = KasMasukHeader::create($request->all());
 
+        //JURNAL
+        $jurnal = [
+            'trx_date'      => NOW(),
+            'trx_from'      => $created->no_kas_masuk,
+            'keterangan'    => $request->keterangan,
+            'catatan'       => $request->terima_dari,
+            'kategori'      => 'KAS_MASUK',
+            'created_at'    => NOW(),
+            'updated_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user,
+        ];
+
+        $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
+
         if ($created){
-            return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $newKas->no_kas_masuk])->with('success', 'Bukti bayar baru berhasil ditambahkan');
+            return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $newKas->no_kas_masuk, 'id_jurnal' => $jurnal_created->id])->
+                with('success', 'Bukti bayar baru berhasil ditambahkan');
         } else{
             return redirect()->route('kas-masuk.index')->with('danger','Bukti bayar baru gagal ditambahkan');
         }
@@ -121,7 +136,7 @@ class KasMasukController extends Controller
 
         $kas_debit = KasMasukDetails::create($debit);
 
-        //KAS MASUK DEBET
+        //KAS MASUK KREDIT
         $kredit['no_kas_masuk'] = $request->no_kas_masuk;
         $kredit['perkiraan']    = 2.1702;
         $kredit['akuntansi_to'] = 'K';
@@ -185,21 +200,25 @@ class KasMasukController extends Controller
             'akuntansi_to' => 'required',
             'total'        => 'required',
         ]);
-    
-        $created_details = KasMasukDetails::create([
-            'no_kas_masuk'  => $request->no_kas_masuk,
-            'perkiraan'     => $request->id_perkiraan,
-            'akuntansi_to'  => $request->akuntansi_to,
-            'total'         => $request->total,
-            'created_at'    => NOW(),
-            'created_by'    => Auth::user()->nama_user,
-        ]);
+
+
+        dd($request->all());
+
+        //KAS MASUK DETAILS
+        $detail['no_kas_masuk'] = $request->no_kas_masuk;
+        $detail['perkiraan']    = $request->id_perkiraan;
+        $detail['akuntansi_to'] = $request->akuntansi_to;
+        $detail['total']        = $request->total;
+        $detail['created_at']   = NOW();
+        $detail['created_by']   = Auth::user()->nama_user;
+
+        $created_details = KasMasukDetails::create($detail);
 
         //JURNAL DETAILS
 
         if($request->akuntansi_to == 'D'){
 
-            $value['id_header']    = $request->id_header;
+            $value['id_header']    = $id_jurnal;
             $value['perkiraan']    = $request->id_perkiraan;
             $value['debet']        = $request->total;
             $value['kredit']       = 0;
@@ -213,7 +232,7 @@ class KasMasukController extends Controller
 
         } elseif($request->akuntansi_to == 'K'){
 
-            $value['id_header']    = $request->id_header;
+            $value['id_header']    = $id_jurnal;
             $value['perkiraan']    = $request->id_perkiraan;
             $value['debet']        = 0;
             $value['kredit']       = $request->total;
@@ -227,7 +246,7 @@ class KasMasukController extends Controller
 
         }
             
-        return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $request->no_kas_masuk, 'id_jurnal' => $request->id_header ])
+        return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $request->no_kas_masuk, 'id_jurnal' => $request->id_jurnal ])
             ->with('success','Data kas masuk baru berhasil ditambahkan!');
     }
 
