@@ -201,9 +201,6 @@ class KasMasukController extends Controller
             'total'        => 'required',
         ]);
 
-
-        dd($request->all());
-
         //KAS MASUK DETAILS
         $detail['no_kas_masuk'] = $request->no_kas_masuk;
         $detail['perkiraan']    = $request->id_perkiraan;
@@ -218,7 +215,7 @@ class KasMasukController extends Controller
 
         if($request->akuntansi_to == 'D'){
 
-            $value['id_header']    = $id_jurnal;
+            $value['id_header']    = $request->id_jurnal;
             $value['perkiraan']    = $request->id_perkiraan;
             $value['debet']        = $request->total;
             $value['kredit']       = 0;
@@ -232,7 +229,7 @@ class KasMasukController extends Controller
 
         } elseif($request->akuntansi_to == 'K'){
 
-            $value['id_header']    = $id_jurnal;
+            $value['id_header']    = $request->id_jurnal;
             $value['perkiraan']    = $request->id_perkiraan;
             $value['debet']        = 0;
             $value['kredit']       = $request->total;
