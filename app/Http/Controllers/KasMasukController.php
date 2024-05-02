@@ -146,6 +146,13 @@ class KasMasukController extends Controller
 
         $kas_kredit = KasMasukDetails::create($kredit);
 
+        //STORE NOMINAL PERKIRAAN KAS MASUK
+        $saldo_debit = MasterPerkiraan::where('id_perkiraan', 1.1101)->value('saldo');
+        $saldo_kredit = MasterPerkiraan::where('id_perkiraan', 2.1702)->value('saldo');
+
+        MasterPerkiraan::where('id_perkiraan', 1.1101)->update(['saldo' => $saldo_debit + str_replace(',', '', $request->nominal)]);
+        MasterPerkiraan::where('id_perkiraan', 2.1702)->update(['saldo' => $saldo_kredit - str_replace(',', '', $request->nominal)]);
+
         //CREATE JURNAL KAS MASUK HEADER
         $jurnal = [
             'trx_date'      => NOW(),
@@ -227,6 +234,10 @@ class KasMasukController extends Controller
 
             $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
 
+            $jurnal_debit = MasterPerkiraan::where('id_perkiraan', $request->id_perkiraan)->value('saldo');
+
+            MasterPerkiraan::where('id_perkiraan', $request->id_perkiraan)->update(['saldo' => $jurnal_debit + $request->total]);
+
         } elseif($request->akuntansi_to == 'K'){
 
             $value['id_header']    = $request->id_jurnal;
@@ -240,6 +251,10 @@ class KasMasukController extends Controller
             $value['updated_at']   = now();
 
             $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
+
+            $jurnal_kredit = MasterPerkiraan::where('id_perkiraan', $request->id_perkiraan)->value('saldo');
+
+            MasterPerkiraan::where('id_perkiraan', $request->id_perkiraan)->update(['saldo' => $jurnal_kredit - $request->total]);
 
         }
             
@@ -290,17 +305,15 @@ class KasMasukController extends Controller
 
             $details_kas_masuk = KasMasukDetails::where('no_kas_masuk', $kas_masuk->no_kas_masuk)->delete();
 
+            //HAPUS JURNAL HEADER  DAN DETAILS
+            $header_jurnal = $detail_kas_masuk->header->jurnal_header->delete();
+            $details_jurnal = $detail_kas_masuk->header->jurnal_header->details->delete();
 
-            $jurnal_detail = $detail_kas_keluar->header_keluar->jurnal_header->details->where('perkiraan', $detail_kas_keluar->perkiraan)->first();
-            $jurnal_detail->delete();
-
-            $id_header = $detail_kas_keluar->header_keluar->jurnal_header->id;
-
-            return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $kas_masuk->no_kas_masuk])->with('success', 'Data kas masuk berhasil dihapus!');
+            return redirect()->route('kas-masuk.index')->with('success', 'Data kas masuk berhasil dihapus!');
 
         } catch (\Exception $e) {
 
-            return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $kas_masuk->no_kas_masuk])->with('danger', 'Terjadi kesalahan saat menghapus data Kas masuk.');
+            return redirect()->route('kas-masuk.index')->with('danger', 'Terjadi kesalahan saat menghapus data Kas masuk.');
         }
     }
 
@@ -315,6 +328,11 @@ class KasMasukController extends Controller
             //HAPUS DETAIL JURNAL
             $detail_jurnal = $detail_kas_masuk->header->jurnal_header->details->where('id_referensi', $id)->first();
             $detail_jurnal->delete();
+
+            //PENGURANG DARI SALDO MASTER PART
+            $jurnal_debit = MasterPerkiraan::where('id_perkiraan', $detail_jurnal->perkiraan)->value('saldo');
+
+            MasterPerkiraan::where('id_perkiraan', $detail_jurnal->perkiraan)->update(['saldo' => $jurnal_debit - $detail_jurnal->debet - $detail_jurnal->kredit ]);
 
             return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $detail_kas_masuk->no_kas_masuk, 'id_jurnal' => $detail_jurnal->id_header ])->with('success', 'Data kas masuk berhasil dihapus!');
 
