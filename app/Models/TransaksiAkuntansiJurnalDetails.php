@@ -17,6 +17,7 @@ class TransaksiAkuntansiJurnalDetails extends Model
         'perkiraan',
         'debet',
         'kredit',
+        'id_referensi',
         'status',
         'created_at',
         'created_by',

@@ -20,4 +20,9 @@ class KasMasukDetails extends Model
     {
         return $this->belongsTo(MasterPerkiraan::class, 'perkiraan', 'id_perkiraan');
     }
+
+    public function details_jurnal()
+    {
+        return $this->hasOne(TransaksiAkuntansiJurnalDetails::class, 'id', 'id_referensi');
+    }
 }
