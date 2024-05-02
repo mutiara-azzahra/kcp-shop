@@ -308,14 +308,19 @@ class KasMasukController extends Controller
     {
         try {
 
+            //HAPUS DETAIL KAS MASUK
             $detail_kas_masuk = KasMasukDetails::findOrFail($id);
             $detail_kas_masuk->delete();
 
-            return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $detail_kas_masuk->no_kas_masuk])->with('success', 'Data kas masuk berhasil dihapus!');
+            //HAPUS DETAIL JURNAL
+            $detail_jurnal = $detail_kas_masuk->header->jurnal_header->details->where('id_referensi', $id)->first();
+            $detail_jurnal->delete();
+
+            return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $detail_kas_masuk->no_kas_masuk, 'id_jurnal' => $detail_jurnal->id_header ])->with('success', 'Data kas masuk berhasil dihapus!');
 
         } catch (\Exception $e) {
 
-            return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $detail_kas_masuk->no_kas_masuk])->with('danger', 'Terjadi kesalahan saat menghapus data Kas masuk.');
+            return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $detail_kas_masuk->no_kas_masuk, 'id_jurnal' => $detail_jurnal->id_header ])->with('danger', 'Terjadi kesalahan saat menghapus data Kas masuk.');
         }
     }
 

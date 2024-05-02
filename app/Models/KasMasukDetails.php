@@ -25,4 +25,9 @@ class KasMasukDetails extends Model
     {
         return $this->hasOne(TransaksiAkuntansiJurnalDetails::class, 'id', 'id_referensi');
     }
+
+    public function header()
+    {
+        return $this->hasOne(KasMasukHeader::class, 'no_kas_masuk', 'no_kas_masuk');
+    }
 }
