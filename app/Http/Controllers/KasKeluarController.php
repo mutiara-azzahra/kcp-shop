@@ -102,15 +102,15 @@ class KasKeluarController extends Controller
             'total'        => 'required',
             'id_header'    => 'required',
         ]);
-    
-        TransaksiKasKeluarDetails::create([
-            'no_keluar'     => $request->no_keluar,
-            'perkiraan'     => $request->perkiraan,
-            'akuntansi_to'  => $request->akuntansi_to,
-            'total'         => $request->total,
-            'created_at'    => NOW(),
-            'created_by'    => Auth::user()->nama_user
-        ]);
+
+        $keluar['no_keluar']    = $request->no_keluar;
+        $keluar['perkiraan']    = $request->perkiraan;
+        $keluar['akuntansi_to'] = $request->akuntansi_to;
+        $keluar['total']        = $request->total;
+        $keluar['created_at']   = NOW();
+        $keluar['created_by']   = Auth::user()->nama_user;
+
+        $kas_keluar = TransaksiKasKeluarDetails::create($keluar);
 
         //CREATE JURNAL KAS KELUAR DETAILS
         $value['id_header'] = $request->id_header;
@@ -124,10 +124,11 @@ class KasKeluarController extends Controller
             $value['kredit'] = $request->total;
         }
 
-        $value['status'] = 'Y';
-        $value['created_by'] = Auth::user()->nama_user;
-        $value['created_at'] = now();
-        $value['updated_at'] = now();
+        $value['id_referensi'] = $kas_keluar->id;
+        $value['status']       = 'Y';
+        $value['created_by']   = Auth::user()->nama_user;
+        $value['created_at']   = now();
+        $value['updated_at']   = now();
 
         TransaksiAkuntansiJurnalDetails::create($value);
             
