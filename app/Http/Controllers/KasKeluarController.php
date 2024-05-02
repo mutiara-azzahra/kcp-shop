@@ -148,6 +148,14 @@ class KasKeluarController extends Controller
     {
         try {
 
+            //PENGURANG DARI SALDO MASTER PART
+            $kas = TransaksiKasKeluarHeader::findOrFail($id);
+
+            foreach($kas->details_keluar as $i){
+                $saldo_perkiraan = MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->value('saldo');
+                MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->update(['saldo' => $saldo_perkiraan - $i->total ]);
+            }
+
             $header_kas_keluar = TransaksiKasKeluarHeader::findOrFail($id);
             $header_kas_keluar->delete();
 
