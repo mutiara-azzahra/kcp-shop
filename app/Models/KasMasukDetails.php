@@ -13,9 +13,7 @@ class KasMasukDetails extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [ 
-        'no_kas_masuk', 'perkiraan', 'sub_perkiraan','akuntansi_to', 'total',
-        'status','created_at', 'created_by', 'updated_at',
-        'updated_by'
+        'no_kas_masuk', 'perkiraan', 'sub_perkiraan','akuntansi_to', 'total','id_referensi','status','created_at', 'created_by', 'updated_at','updated_by'
     ];
 
     public function details_perkiraan()

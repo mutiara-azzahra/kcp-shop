@@ -184,7 +184,7 @@ class KasMasukController extends Controller
             'total'        => 'required',
         ]);
     
-        KasMasukDetails::create([
+        $created_details = KasMasukDetails::create([
             'no_kas_masuk'  => $request->no_kas_masuk,
             'perkiraan'     => $request->id_perkiraan,
             'akuntansi_to'  => $request->akuntansi_to,
@@ -197,27 +197,29 @@ class KasMasukController extends Controller
 
         if($request->akuntansi_to == 'D'){
 
-            $value['id_header']  = $request->id_header;
-            $value['perkiraan']  = $request->id_perkiraan;
-            $value['debet']      = $request->total;
-            $value['kredit']     = 0;
-            $value['status']     = 'Y';
-            $value['created_by'] = Auth::user()->nama_user;
-            $value['created_at'] = now();
-            $value['updated_at'] = now();
+            $value['id_header']    = $request->id_header;
+            $value['perkiraan']    = $request->id_perkiraan;
+            $value['debet']        = $request->total;
+            $value['kredit']       = 0;
+            $value['id_referensi'] = $created_details->id;
+            $value['status']       = 'Y';
+            $value['created_by']   = Auth::user()->nama_user;
+            $value['created_at']   = now();
+            $value['updated_at']   = now();
 
             $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
 
         } elseif($request->akuntansi_to == 'K'){
 
-            $value['id_header']  = $request->id_header;
-            $value['perkiraan']  = $request->id_perkiraan;
-            $value['debet']      = 0;
-            $value['kredit']     = $request->total;
-            $value['status']     = 'Y';
-            $value['created_by'] = Auth::user()->nama_user;
-            $value['created_at'] = now();
-            $value['updated_at'] = now();
+            $value['id_header']    = $request->id_header;
+            $value['perkiraan']    = $request->id_perkiraan;
+            $value['debet']        = 0;
+            $value['kredit']       = $request->total;
+            $value['id_referensi'] = $created_details->id;
+            $value['status']       = 'Y';
+            $value['created_by']   = Auth::user()->nama_user;
+            $value['created_at']   = now();
+            $value['updated_at']   = now();
 
             $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
 
