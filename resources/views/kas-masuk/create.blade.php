@@ -52,7 +52,6 @@
                             <select name="pembayaran_via" class="form-control my-select" >
                                 <option value="">--Pilih Pembayaran--</option>
                                 <option value="CASH">CASH</option>
-                                <option value="TRANSFER">TRANSFER</option>
                                 <option value="BG">BG</option>
                             </select>
                         </div>
@@ -61,19 +60,6 @@
                         <div class="form-group">
                             <strong>Nominal</strong>
                             <input type="text" id="nominal" name="nominal" class="form-control" placeholder="0">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <strong>Pilih Bank</strong>
-                            <select name="bank" class="form-control my-select">
-                                <option value="">--Pilih Bank--</option>
-                                <option value="BRI">BRI</option>
-                                <option value="BNI">BNI</option>
-                                <option value="BCA">BCA</option>
-                                <option value="DANAMON">DANAMON</option>
-                                <option value="MANDIRI">MANDIRI</option>
-                            </select>
                         </div>
                     </div>
                     <div class="col-md-12">
