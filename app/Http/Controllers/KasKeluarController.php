@@ -112,6 +112,10 @@ class KasKeluarController extends Controller
 
         $kas_keluar = TransaksiKasKeluarDetails::create($keluar);
 
+        //PENAMBAHAN SALDO PERKIRAAN
+        $saldo = MasterPerkiraan::where('id_perkiraan', $request->perkiraan)->value('saldo');
+        MasterPerkiraan::where('id_perkiraan', $request->perkiraan)->update(['saldo' => $saldo + $request->total]);
+
         //CREATE JURNAL KAS KELUAR DETAILS
         $value['id_header'] = $request->id_header;
         $value['perkiraan'] = $request->perkiraan;
@@ -179,6 +183,12 @@ class KasKeluarController extends Controller
         try {
 
             $detail_kas_keluar = TransaksiKasKeluarDetails::findOrFail($id);
+
+            dd($detail_kas_keluar);
+
+            $saldo_perkiraan = MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->value('saldo');
+            MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->update(['saldo' => $saldo_perkiraan - $i->total ]);
+
             $detail_kas_keluar->delete();
 
             $detail_jurnal = $detail_kas_keluar->header_keluar->jurnal_header->details->where('id_referensi', $id)->first();
