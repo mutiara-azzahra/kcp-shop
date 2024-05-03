@@ -131,6 +131,10 @@ class KasKeluarController extends Controller
         $value['updated_at']   = now();
 
         TransaksiAkuntansiJurnalDetails::create($value);
+
+        $jurnal_keluar = MasterPerkiraan::where('id_perkiraan', $request->perkiraan)->value('saldo');
+
+        MasterPerkiraan::where('id_perkiraan', $request->id_perkiraan)->update(['saldo' => $jurnal_keluar + $request->total]);
             
         return redirect()->route('kas-keluar.details' , ['no_keluar' => $request->no_keluar, 'id_header' => $request->id_header ])->with('success','Data kas keluar baru berhasil ditambahkan!');
     
@@ -153,6 +157,7 @@ class KasKeluarController extends Controller
 
             foreach($kas->details_keluar as $i){
                 $saldo_perkiraan = MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->value('saldo');
+
                 MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->update(['saldo' => $saldo_perkiraan - $i->total ]);
             }
 
