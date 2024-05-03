@@ -34,6 +34,6 @@ class TransaksiAkuntansiJurnalHeader extends Model
 
     public function kas_keluar_header()
     {
-        return $this->hasOne(KasKeluarHeader::class, 'trx_from', 'no_keluar');
+        return $this->hasOne(TransaksiKasKeluarHeader::class, 'trx_from', 'no_keluar');
     }
 }

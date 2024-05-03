@@ -166,6 +166,13 @@ class KasKeluarController extends Controller
             }
 
             $header_kas_keluar = TransaksiKasKeluarHeader::findOrFail($id);
+
+            //HAPUS JURNAL HEADER  DAN DETAILS
+            $header_jurnal = $header_kas_keluar->jurnal_header->first();
+            $header_jurnal->delete();
+            $header_jurnal->details()->delete();
+
+            //HAPUS KAS KELUAR, DETAILS
             $header_kas_keluar->delete();
 
             $details_kas_keluar = TransaksiKasKeluarDetails::where('no_keluar', $header_kas_keluar->no_keluar)->delete();
@@ -184,10 +191,9 @@ class KasKeluarController extends Controller
 
             $detail_kas_keluar = TransaksiKasKeluarDetails::findOrFail($id);
 
-            dd($detail_kas_keluar);
+            $saldo_perkiraan = MasterPerkiraan::where('id_perkiraan', $detail_kas_keluar->perkiraan)->value('saldo');
 
-            $saldo_perkiraan = MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->value('saldo');
-            MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->update(['saldo' => $saldo_perkiraan - $i->total ]);
+            MasterPerkiraan::where('id_perkiraan', $detail_kas_keluar->perkiraan)->update(['saldo' => $saldo_perkiraan - $detail_kas_keluar->total ]);
 
             $detail_kas_keluar->delete();
 
