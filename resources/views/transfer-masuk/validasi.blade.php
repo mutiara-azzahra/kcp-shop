@@ -79,7 +79,7 @@ function printAndRefresh(url){
 
     Validasi = (id)=>{
         Swal.fire({
-            title: 'Apa anda yakin validasi data ini?',
+            title: 'Apa anda yakin validasi data transfer ini?',
             text:  "Data tidak dapat kembali" ,
             showCancelButton: true,
             confirmButtonColor: '#3085d6' ,
