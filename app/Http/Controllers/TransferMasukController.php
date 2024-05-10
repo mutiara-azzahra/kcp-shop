@@ -117,7 +117,6 @@ class TransferMasukController extends Controller
 
         $balancing  = $balance_debet - $balance_kredit;
 
-
         return view('transfer-masuk.details', compact('transfer', 'balancing', 'perkiraan', 'jurnal_header'));
     }
 
@@ -147,22 +146,32 @@ class TransferMasukController extends Controller
             'created_at'    => now()
         ]);
 
+        $transfer['id_transfer']  = $request->id_transfer;
+        $transfer['perkiraan']    = $request->perkiraan;
+        $transfer['akuntansi_to'] = $request->akuntansi_to;
+        $transfer['total']        = $request->total;
+        $transfer['created_at']   = NOW();
+        $transfer['created_by']   = Auth::user()->nama_user;
+
+        $detail_keluar = KasMasukDetails::create($transfer);
+
         //CREATE JURNAL TRANSFER KELUAR DETAILS
         $value['id_header'] = $request->id_header;
         $value['perkiraan'] = $request->perkiraan;
 
         if ($request->akuntansi_to == 'D') {
-            $value['debet'] = $request->total;
+            $value['debet']  = $request->total;
             $value['kredit'] = 0;
         } else {
-            $value['debet'] = 0;
+            $value['debet']  = 0;
             $value['kredit'] = $request->total;
         }
 
-        $value['status'] = 'Y';
-        $value['created_by'] = Auth::user()->nama_user;
-        $value['created_at'] = now();
-        $value['updated_at'] = now();
+        $value['id_referensi'] = $detail_keluar->id;
+        $value['status']       = 'Y';
+        $value['created_by']   = Auth::user()->nama_user;
+        $value['created_at']   = now();
+        $value['updated_at']   = now();
 
         $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
 
@@ -174,10 +183,10 @@ class TransferMasukController extends Controller
 
         $transfer_masuk   = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
         $header_jurnal    = $id_header;
-        $check      = KasMasukHeader::where('id_transfer', $id_transfer)->first();
-        $kas_masuk  = KasMasukHeader::all();
-        $outlet     = MasterOutlet::where('status', 'Y')->get();
-        $all_bank   = MasterBank::where('status', 'Y')->get();
+        $check            = KasMasukHeader::where('id_transfer', $id_transfer)->first();
+        $kas_masuk        = KasMasukHeader::all();
+        $outlet           = MasterOutlet::where('status', 'Y')->get();
+        $all_bank         = MasterBank::where('status', 'Y')->get();
 
         return view('transfer-masuk.edit', compact('transfer_masuk', 'outlet', 'kas_masuk','check', 'all_bank', 'header_jurnal'));
     }
