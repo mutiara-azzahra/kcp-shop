@@ -122,6 +122,7 @@ class TransferMasukController extends Controller
 
         $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
 
+        //KAS MASUK
         $newKas                 = new KasMasukHeader();
         $newKas->no_kas_masuk   = KasMasukHeader::no_kas_masuk();
         
