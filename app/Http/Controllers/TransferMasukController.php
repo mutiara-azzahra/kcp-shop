@@ -84,6 +84,16 @@ class TransferMasukController extends Controller
             $outlet = $request->kd_outlet;
         }
 
+        $outlet     = MasterOutlet::where('kd_outlet', $request->kd_outlet)->first();
+        
+        $kd_area = '';
+
+        if($outlet->kode_prp == 6300){
+            $kd_area = 'KS';
+        } else {
+            $kd_area = 'KT';
+        }
+
         $requestData = [
             'id_transfer'       => $newTransfer->id_transfer,
             'status_transfer'   => $status_transfer,
@@ -111,6 +121,21 @@ class TransferMasukController extends Controller
         ];
 
         $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
+
+        $newKas                 = new KasMasukHeader();
+        $newKas->no_kas_masuk   = KasMasukHeader::no_kas_masuk();
+        
+        $kas = [
+            'no_kas_masuk'              => $newKas->no_kas_masuk,
+            'id_transfer'               => $created->id_transfer,
+            'kd_area'                   => $outlet,
+            'kd_outlet'                 => $request->kd_outlet,
+            'pembayaran_via'            => $request->keterangan,
+            'status'                    => 'O',
+            'created_by'                => Auth::user()->nama_user
+        ];
+
+        $created = KasMasukHeader::create($kas);
 
         if ($created) {
             return redirect()->route('transfer-masuk.details', ['id_transfer' => $newTransfer->id_transfer , 'id_header' => $jurnal_created->id])
@@ -174,6 +199,18 @@ class TransferMasukController extends Controller
         $value['updated_at']   = now();
 
         $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
+
+        $kas = KasMasukHeader::where('id_transfer', $request->id_transfer)->first();
+
+        //KAS MASUK DETAILS
+        $detail['no_kas_masuk'] = $kas->no_kas_masuk;
+        $detail['perkiraan']    = $request->perkiraan;
+        $detail['akuntansi_to'] = $request->akuntansi_to;
+        $detail['total']        = str_replace(',', '', $request->total);
+        $detail['created_at']   = NOW();
+        $detail['created_by']   = Auth::user()->nama_user;
+
+        $created_details = KasMasukDetails::create($detail);
 
         return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id_header' => $jurnal_created->id_header])
             ->with('success','Data detail transfer baru berhasil ditambahkan!');
