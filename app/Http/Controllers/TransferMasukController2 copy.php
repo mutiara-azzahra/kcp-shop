@@ -45,15 +45,6 @@ class TransferMasukController extends Controller
         return view('transfer-masuk.validasi', compact('tf_kas'));
     }
 
-    public function validasi_data($id_transfer){
-
-        $tf_kas = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
-
-        $kas_masuk = $tf_kas->kas_masuk;
-
-        return view('transfer-masuk.view', compact('kas_masuk'));
-    }
-
     public function store(Request $request){
 
         $request->validate([
@@ -135,6 +126,95 @@ class TransferMasukController extends Controller
         $balancing  = $balance_debet - $balance_kredit;
 
         return view('transfer-masuk.details', compact('transfer', 'balancing', 'perkiraan', 'jurnal_header'));
+    }
+
+    public function validasi_data($id_transfer){
+
+        $transfer   = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
+        $outlet     = MasterOutlet::where('kd_outlet', $transfer->kd_outlet)->first();
+        
+        $kd_area = '';
+
+        if($outlet->kode_prp == 6300){
+            $kd_area = 'KS';
+        } else {
+            $kd_area = 'KT';
+        }
+
+        // CREATE KAS MASUK DAN DETAILS
+        $newKas                 = new KasMasukHeader();
+        $newKas->no_kas_masuk   = KasMasukHeader::no_kas_masuk();
+
+        $header = [
+            'no_kas_masuk'              => $newKas->no_kas_masuk,
+            'pembayaran_via'            => 'TRANSFER',
+            'nominal'                   => $transfer->details->where('akuntansi_to', 'D')->sum('total'),
+            'id_transfer'               => $transfer->id_transfer,
+            'tanggal_rincian_tagihan'   => $transfer->created_at,
+            'kd_area'                   => $kd_area,
+            'kd_outlet'                 => $transfer->kd_outlet,
+            'status'                    => 'O',
+            'created_by'                => Auth::user()->nama_user
+        ];
+
+        $created = KasMasukHeader::create($header);
+
+        //CREATE JURNAL KAS MASUK HEADER
+        $jurnal = [
+            'trx_date'      => NOW(),
+            'trx_from'      => $created->no_kas_masuk,
+            'keterangan'    => 'Pembayaran A/N ' . $outlet->nm_outlet,
+            'catatan'       => $outlet->nm_outlet,
+            'kategori'      => 'KAS_MASUK',
+            'created_at'    => NOW(),
+            'updated_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user,
+        ];
+
+        $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
+
+        foreach($transfer->details as $i){
+
+             $detail_keluar = KasMasukDetails::create([
+                'no_kas_masuk' => $created->no_kas_masuk,
+                'perkiraan'    => $i->perkiraan,
+                'akuntansi_to' => $i->akuntansi_to,
+                'total'        => $i->total,
+                'created_at'   => now(), 
+                'created_by'   => Auth::user()->nama_user,
+            ]);
+
+            $id_detail_keluar = $detail_keluar->id;
+
+            //CREATE JURNAL KAS MASUK DETAILS
+            $create_jurnal['id_header']    = $jurnal_created->id;
+            $create_jurnal['perkiraan']    = $i->perkiraan;
+            $create_jurnal['debet']       = $i->total;
+            $create_jurnal['kredit']      = 0;
+            $create_jurnal['id_referensi'] = $detail_keluar->id;
+            $create_jurnal['status']       = 'Y';
+            $create_jurnal['created_by']   = Auth::user()->nama_user;
+            $create_jurnal['created_at']   = now();
+            $create_jurnal['updated_at']   = now();
+
+            $jurnal_created = TransaksiAkuntansiJurnalDetails::create($create_jurnal);
+
+            //CREATE JURNAL KAS MASUK DETAILS
+            $create_jurnal['id_header']    = $jurnal_created->id;
+            $create_jurnal['perkiraan']    = $i->perkiraan;
+            $create_jurnal['debet']        = $i->total;
+            $create_jurnal['kredit']       = 0;
+            $create_jurnal['id_referensi'] = $detail_keluar->id;
+            $create_jurnal['status']       = 'Y';
+            $create_jurnal['created_by']   = Auth::user()->nama_user;
+            $create_jurnal['created_at']   = now();
+            $create_jurnal['updated_at']   = now();
+
+            $jurnal_created = TransaksiAkuntansiJurnalDetails::create($create_jurnal);
+
+        }
+
+        return redirect()->route('transfer-masuk.validasi')->with('success','Data transfer masuk berhasil divalidasi!');
     }
 
     public function store_details(Request $request){
