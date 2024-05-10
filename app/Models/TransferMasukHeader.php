@@ -67,7 +67,7 @@ class TransferMasukHeader extends Model
 
     public function kas_masuk()
     {
-        return $this->hasOne(KasMasukHeader::class, 'id_transfer', 'id_transfer');
+        return $this->hasMany(KasMasukHeader::class, 'id_transfer', 'id_transfer');
     }
 
     public function jurnal_header()
@@ -77,6 +77,6 @@ class TransferMasukHeader extends Model
 
     public function outlet()
     {
-        return $this->belongsTo(MasterOutlet::class, 'keterangan', 'ke');
+        return $this->belongsTo(MasterOutlet::class, 'kd_outlet', 'kd_outlet');
     }
 }

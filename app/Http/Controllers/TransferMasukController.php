@@ -47,11 +47,9 @@ class TransferMasukController extends Controller
 
     public function validasi_data($id_transfer){
 
-        $tf_kas = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
+        $transfer = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
 
-        $kas_masuk = $tf_kas->kas_masuk;
-
-        return view('transfer-masuk.view', compact('kas_masuk'));
+        return view('transfer-masuk.view', compact('transfer'));
     }
 
     public function store(Request $request){
@@ -196,45 +194,13 @@ class TransferMasukController extends Controller
     public function store_validasi($id_transfer)
     {
 
-        //VALIDASI SEBAGAI KAS MASUK
-        // TransferMasukHeader::where('id_transfer', $id_transfer)->update([
-        //     'flag_kas_ar'        => 'Y',
-        //     'updated_at'         => NOW(),
-        //     'updated_by'         => Auth::user()->nama_user
-        // ]);
-
-        dd('test');
-
-        $transfer = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
-
-        dd($transfer);
-        
-        // CREATE KAS MASUK
-        $newKas                 = new KasMasukHeader();
-        $newKas->no_kas_masuk   = KasMasukHeader::no_kas_masuk();
-        
-        $request->merge([
-            'id_transfer'               => $tf_validated->id_transfer,
-            'tanggal_rincian_tagihan'   => $tf_validated->created_at,
-            'kd_area'                   => $tf_validated->created_at,
-            'kd_outlet'                 => $request->keterangan,
-            'no_bg'                     => $request->no_bg,
-            'jatuh_tempo_bg'            => $request->jatuh_tempo_bg,
-            'no_kas_masuk'              => $newKas->no_kas_masuk,
-            'status'                    => 'O',
-            'created_by'                => Auth::user()->nama_user
+       // VALIDASI SEBAGAI KAS MASUK
+        TransferMasukHeader::where('id_transfer', $id_transfer)->update([
+            'flag_kas_ar'        => 'Y',
+            'status'             => 'C',
+            'updated_at'         => NOW(),
+            'updated_by'         => Auth::user()->nama_user
         ]);
-
-        $created = KasMasukHeader::create($request->all());
-
-        // $transfer['id_transfer']  = $request->id_transfer;
-        // $transfer['perkiraan']    = $request->perkiraan;
-        // $transfer['akuntansi_to'] = $request->akuntansi_to;
-        // $transfer['total']        = $request->total;
-        // $transfer['created_at']   = NOW();
-        // $transfer['created_by']   = Auth::user()->nama_user;
-
-        // $detail_keluar = KasMasukDetails::create($transfer);
 
         return redirect()->route('transfer-masuk.index')->with('success', 'Transfer masuk baru berhasil ditambahkan kedalam kas masuk');
     }

@@ -14,6 +14,7 @@
                 <button type="submit" class="btn btn-warning m-1">
                     <i class="fas fa-check"></i> Selesai Validasi
                 </button>
+                <a class="btn btn-success m-1" href="{{ route('transfer-masuk.edit') }}"><i class="fas fa-arrow-left"></i> Ubah</a>
                 <a class="btn btn-success m-1" href="{{ route('transfer-masuk.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
             </form>
             </div>
@@ -35,27 +36,22 @@
             <div class="col-lg-8 p-1">
                 <table class="table table-borderless">
                     <tr>
-                        <th class="text-left">Tgl. Rincian Tagihan</th>
-                        <td>:</td>
-                        <td class="text-left"><b>{{ $transfer->tanggal_bank }}</b></td>
-                    </tr>
-                    <tr>
                         <th class="text-left">No. Transfer</th>
                         <td>:</td>
                         <td class="text-left"><b>{{ $transfer->id_transfer }}</b></td>
                     </tr>
                     <tr>
-                        <th class="text-left">Bank</th>
+                        <th class="text-left">Transfer Via</th>
                         <td>:</td>
                         <td class="text-left"><b>{{ $transfer->bank }}</b></td>
                     </tr>
                     <tr>
-                        <th class="text-left">Toko</th>
+                        <th class="text-left">Keterangan</th>
                         <td>:</td>
-                        <td class="text-left"><b>[{{ $transfer->kd_outlet }}] {{ $transfer->outlet->nm_outlet }}</b></td>
+                        <td class="text-left"><b>{{ $transfer->keterangan }}</b></td>
                     </tr>
                     <tr>
-                        <th class="text-left">Nominal Bank</th>
+                        <th class="text-left">Nominal</th>
                         <td>:</td>
                         <td class="text-left"><b>{{ number_format($transfer->details->where('akuntansi_to', 'D')->sum('total'), 0, ',', ',') }}</b></td>
                     </tr>
@@ -70,12 +66,11 @@
                 <table class="table table-hover table-bordered table-sm bg-light table-striped" id="example2">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
-                            <th class="text-center">Tgl. Rincian Tagihan</th>
+                            <th class="text-center">No. Kas Masuk</th>
                             <th class="text-center">Kode Toko</th>
                             <th class="text-center">Toko</th>
                             <th class="text-center">Pembayaran Via</th>
                             <th class="text-center">Nominal</th>
-                            <th class="text-center">Pemotongan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,7 +85,6 @@
                             <td class="text-left">{{ $k->outlet->nm_outlet }}</td>
                             <td class="text-center">{{ $k->pembayaran_via }}</td>
                             <td class="text-right">{{ number_format($k->nominal, 0, ',', ',') }}</td>
-                            <td class="text-center">{{ $k->flag_kas_manual }}</td>
                         </tr>
                         @endforeach
 
