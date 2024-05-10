@@ -21,8 +21,12 @@ class TransferMasukController extends Controller
 {
     public function index(){
 
-        $tf_masuk           = TransferMasukHeader::where('status_transfer', 'IN')->where('flag_kas_ar', 'N')->orderBy('created_at', 'desc')->get();
-        $tf_masuk_validated = TransferMasukHeader::where('flag_kas_ar', 'Y')->orderBy('created_at', 'desc')->get();
+        $tf_masuk           = TransferMasukHeader::where('status_transfer', 'IN')->where('flag_kas_ar', 'N')
+            ->where('flag_by_toko', 'Y')
+            ->orderBy('created_at', 'desc')->get();
+
+        $tf_masuk_validated = TransferMasukHeader::where('status', 'C')
+            ->orderBy('created_at', 'desc')->get();
 
         return view('transfer-masuk.index', compact('tf_masuk', 'tf_masuk_validated'));
     }
@@ -56,10 +60,15 @@ class TransferMasukController extends Controller
     
         $status_transfer = '';
         $flag_by_toko = '';
+        $status = 'O';
     
         if ($request->status_transfer == 1) {
             $status_transfer = 'IN';
             $flag_by_toko = ($request->dari_toko == 1) ? 'Y' : 'N';
+        }
+
+        if ($flag_by_toko == 'N'){
+            $status = 'C';
         }
     
         $outlet = '';
@@ -77,7 +86,7 @@ class TransferMasukController extends Controller
             'kd_outlet'         => $outlet,
             'flag_by_toko'      => $flag_by_toko,
             'keterangan'        => $request->keterangan,
-            'status'            => 'O',
+            'status'            => $status,
             'created_by'        => Auth::user()->nama_user
         ];
     
@@ -141,7 +150,7 @@ class TransferMasukController extends Controller
             'id_transfer'  => $request->id_transfer,
             'perkiraan'    => $request->perkiraan,
             'akuntansi_to' => $request->akuntansi_to,
-            'total'        => $request->total,
+            'total'        => str_replace(',', '', $request->total),
             'created_by'   => Auth::user()->nama_user,
             'created_at'   => now()
         ];
@@ -153,11 +162,11 @@ class TransferMasukController extends Controller
         $value['perkiraan'] = $request->perkiraan;
 
         if ($request->akuntansi_to == 'D') {
-            $value['debet']  = $request->total;
+            $value['debet']  = str_replace(',', '', $request->total);
             $value['kredit'] = 0;
         } else {
             $value['debet']  = 0;
-            $value['kredit'] = $request->total;
+            $value['kredit'] = str_replace(',', '', $request->total);
         }
 
         $value['id_referensi'] = $detail_created->id;

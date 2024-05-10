@@ -101,7 +101,7 @@
                                         <div class="form-group col-12">
                                             <input type="hidden" name="id_transfer" value="{{ $transfer->id_transfer }}">
                                             <input type="hidden" name="id_header" value="{{ $jurnal_header }}">
-                                            <input type="text" name="total" class="form-control">
+                                            <input type="text" id="nominal" name="total" class="form-control">
                                         </div>
                                     </td>
                                 </tr>
@@ -183,7 +183,6 @@
     <script>
         
     //HAPUS
-
     Hapus = (id)=>{
         Swal.fire({
             title: 'Apa anda yakin menghapus data detail transfer masuk ini?',
@@ -201,6 +200,18 @@
         })
     }
 
-</script>     
+    //delimiter nominal
+    function formatNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    document.getElementById('nominal').addEventListener('input', function() {
+     
+        let valueWithoutCommas = this.value.replace(/,/g, '');
+        let formattedValue = formatNumberWithCommas(valueWithoutCommas);
+        
+        this.value = formattedValue;
+    });
+</script>
 
 @endsection
