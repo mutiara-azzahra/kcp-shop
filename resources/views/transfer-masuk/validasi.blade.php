@@ -44,13 +44,7 @@
                     @foreach($tf_kas as $p)
                     <tr>
                         <td class="text-left">{{ $p->id_transfer }}</td>
-                        <td class="text-center">
-                            @if($p->kas_masuk == null)
-
-                            @else
-                            {{ $p->kas_masuk->kd_outlet }}
-                            @endif
-                        </td>
+                        <td class="text-center">{{ $p->kd_outlet }}</td>
                         <td class="text-left">{{ $p->bank }}</td>
                         <td class="text-left">{{ $p->keterangan }}</td>
                         <td class="text-center">

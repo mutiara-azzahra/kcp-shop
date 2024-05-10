@@ -73,10 +73,9 @@ class TransferMasukController extends Controller
     
         $outlet = '';
 
-        if($request->dari_toko == 2){
-            $outlet = MasterOutlet::where('kd_outlet', $request->kd_outlet)->value('kd_outlet');
+        if($request->dari_toko == 1){
+            $outlet = $request->kd_outlet;
         }
-
 
         $requestData = [
             'id_transfer'       => $newTransfer->id_transfer,
