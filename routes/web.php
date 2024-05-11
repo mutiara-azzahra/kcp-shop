@@ -419,7 +419,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/kas-masuk', [KasMasukController::class, 'index'])->name('kas-masuk.index');
     Route::get('/kas-masuk/bukti-bayar', [KasMasukController::class, 'bukti_bayar'])->name('kas-masuk.bukti-bayar');
     Route::get('/kas-masuk/bayar-manual', [KasMasukController::class, 'bayar_manual'])->name('kas-masuk.bayar-manual');
-    Route::get('/kas-masuk/bayar-manual/details/{no_kas_masuk}/{id_jurnal}', [KasMasukController::class, 'details'])->name('kas-masuk.details');
+    Route::get('/kas-masuk/bayar-manual/details/{no_kas_masuk}', [KasMasukController::class, 'details'])->name('kas-masuk.details');
     Route::post('/kas-masuk/store-bukti-bayar', [KasMasukController::class, 'store_bukti_bayar'])->name('kas-masuk.store-bukti-bayar');
     Route::post('/kas-masuk/store', [KasMasukController::class, 'store'])->name('kas-masuk.store');
     Route::post('/kas-masuk/store-details', [KasMasukController::class, 'store_details'])->name('kas-masuk.store-details');
@@ -473,6 +473,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/transfer-masuk/details/{id_transfer}/{id_header}', [TransferMasukController::class, 'details'])->name('transfer-masuk.details');
     Route::post('/transfer-masuk/store-details', [TransferMasukController::class, 'store_details'])->name('transfer-masuk.store-details');
     Route::post('/transfer-masuk/store-validasi/{id_transfer}', [TransferMasukController::class, 'store_validasi'])->name('transfer-masuk.store-validasi');
+    Route::post('/transfer-masuk/store-update', [TransferMasukController::class, 'store_update'])->name('transfer-masuk.store-update');
     Route::get('/transfer-masuk/edit/{id_transfer}/{id_header}', [TransferMasukController::class, 'edit'])->name('transfer-masuk.edit');
     Route::get('/transfer-masuk/cetak/{id_transfer}', [TransferMasukController::class, 'cetak'])->name('transfer-masuk.cetak');
     Route::post('/transfer-masuk/update/{id_transfer}/{id_header}', [TransferMasukController::class, 'update'])->name('transfer-masuk.update');

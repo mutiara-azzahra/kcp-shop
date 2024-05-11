@@ -99,7 +99,7 @@ class TransferMasukController extends Controller
             'status_transfer'   => $status_transfer,
             'tanggal_bank'      => $request->tanggal_bank,
             'bank'              => $request->bank,
-            'kd_outlet'         => $outlet,
+            'kd_outlet'         => $request->kd_outlet,
             'flag_by_toko'      => $flag_by_toko,
             'keterangan'        => $request->keterangan,
             'status'            => $status,
@@ -129,7 +129,7 @@ class TransferMasukController extends Controller
         $kas = [
             'no_kas_masuk'              => $newKas->no_kas_masuk,
             'id_transfer'               => $created->id_transfer,
-            'kd_area'                   => $outlet,
+            'kd_area'                   => $kd_area,
             'kd_outlet'                 => $request->kd_outlet,
             'pembayaran_via'            => $request->keterangan,
             'status'                    => 'O',
@@ -214,6 +214,22 @@ class TransferMasukController extends Controller
         $created_details = KasMasukDetails::create($detail);
 
         return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id_header' => $jurnal_created->id_header])
+            ->with('success','Data detail transfer baru berhasil ditambahkan!');
+    }
+
+    public function store_update(Request $request){
+
+        dd($request->all());
+
+        $request->validate([
+            'tanggal_bank'      => 'required',
+            'bank'              => 'required',
+            'dari_toko'         => 'required',
+            'keterangan'        => 'required',
+            'status_transfer'   => 'required',
+        ]);
+
+    return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id_header' => $jurnal_created->id_header])
             ->with('success','Data detail transfer baru berhasil ditambahkan!');
     }
 
