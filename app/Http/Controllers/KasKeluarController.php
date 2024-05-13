@@ -132,7 +132,6 @@ class KasKeluarController extends Controller
 
         $value['id_referensi'] = $kas_keluar->id;
         $value['status']       = 'Y';
-        $value['id_referensi'] = $request->id_header;
         $value['created_by']   = Auth::user()->nama_user;
         $value['created_at']   = now();
         $value['updated_at']   = now();
@@ -161,21 +160,19 @@ class KasKeluarController extends Controller
 
             foreach($kas->details_keluar as $i){
                 $saldo_perkiraan = MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->value('saldo');
-
                 MasterPerkiraan::where('id_perkiraan', $i->perkiraan)->update(['saldo' => $saldo_perkiraan - $i->total ]);
             }
 
-            $header_kas_keluar = TransaksiKasKeluarHeader::findOrFail($id);
+            //DELETE DETAILS KAS KELUAR
+            $header_kas_keluar  = TransaksiKasKeluarHeader::findOrFail($id);
+            $details_kas_keluar = $header_kas_keluar->details_keluar;
+            $details_kas_keluar->delete();
 
             //HAPUS JURNAL HEADER  DAN DETAILS
-            $header_jurnal = $header_kas_keluar->jurnal_header->first();
+            $header_jurnal  = $header_kas_keluar->jurnal_header->first();
+            $details_jurnal = $header_jurnal->details;
+            $details_jurnal->delete();
             $header_jurnal->delete();
-            $header_jurnal->details->delete();
-
-            //HAPUS KAS KELUAR, DETAILS
-            $header_kas_keluar->delete();
-
-            $details_kas_keluar = TransaksiKasKeluarDetails::where('no_keluar', $header_kas_keluar->no_keluar)->delete();
 
             return redirect()->route('kas-keluar.index')->with('success', 'Data kas keluar berhasil dihapus!');
 
@@ -191,14 +188,15 @@ class KasKeluarController extends Controller
 
             $detail_kas_keluar = TransaksiKasKeluarDetails::findOrFail($id);
 
+            dd($detail_kas_keluar->header_keluar->jurnal_header->details)->where('id_referensi', $id)->first();
+
             $saldo_perkiraan = MasterPerkiraan::where('id_perkiraan', $detail_kas_keluar->perkiraan)->value('saldo');
-
             MasterPerkiraan::where('id_perkiraan', $detail_kas_keluar->perkiraan)->update(['saldo' => $saldo_perkiraan - $detail_kas_keluar->total ]);
-
-            $detail_kas_keluar->delete();
 
             $detail_jurnal = $detail_kas_keluar->header_keluar->jurnal_header->details->where('id_referensi', $id)->first();
             $detail_jurnal->delete();
+            $detail_kas_keluar->delete();
+            
 
             return redirect()->route('kas-keluar.details', ['no_keluar' => $detail_kas_keluar->no_keluar , 'id_header' => $detail_jurnal->id_header ])->with('success', 'Data kas keluar berhasil dihapus!');
 
