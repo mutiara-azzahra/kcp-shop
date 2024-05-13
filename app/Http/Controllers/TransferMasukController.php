@@ -21,7 +21,7 @@ class TransferMasukController extends Controller
 {
     public function index(){
 
-        $tf_masuk           = TransferMasukHeader::where('status_transfer', 'IN')->where('flag_kas_ar', 'N')
+        $tf_masuk   = TransferMasukHeader::where('status_transfer', 'IN')->where('flag_kas_ar', 'N')
             ->where('flag_by_toko', 'Y')
             ->orderBy('created_at', 'desc')->get();
 
@@ -39,8 +39,6 @@ class TransferMasukController extends Controller
     }
 
     public function validasi(){
-
-        
 
         $tf_kas = TransferMasukHeader::where('status_transfer', 'IN')->orderBy('id_transfer', 'desc')->get();
 

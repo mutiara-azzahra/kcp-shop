@@ -24,7 +24,9 @@ class TransferKeluarController extends Controller
 
     public function create(){
 
-        return view('transfer-keluar.create');
+        $perkiraan  = MasterPerkiraan::where('status', 'AKTIF')->get();
+
+        return view('transfer-keluar.create', compact('perkiraan'));
     }
 
     public function validasi(){
@@ -60,6 +62,20 @@ class TransferKeluarController extends Controller
         ];
     
         $created = TransferMasukHeader::create($requestData);
+
+        //CREATE JURNAL TRANSFER KELUAR
+        $jurnal = [
+            'trx_date'      => NOW(),
+            'trx_from'      => $created->id_transfer,
+            'keterangan'    => $request->keterangan,
+            'catatan'       => $request->keterangan,
+            'kategori'      => 'TRANSFER_KELUAR',
+            'created_at'    => NOW(),
+            'updated_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user,
+        ];
+
+        $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
     
         if ($created) {
             return redirect()->route('transfer-keluar.details', ['id_transfer' => $newTransfer->id_transfer])
@@ -73,7 +89,7 @@ class TransferKeluarController extends Controller
     public function details($id_transfer){
 
         $perkiraan  = MasterPerkiraan::where('status', 'AKTIF')->get();
-        $transfer  = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
+        $transfer   = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
 
         $balance_debet  = $transfer->details->where('akuntansi_to', 'D')->sum('total');
         $balance_kredit = $transfer->details->where('akuntansi_to', 'K')->sum('total');
