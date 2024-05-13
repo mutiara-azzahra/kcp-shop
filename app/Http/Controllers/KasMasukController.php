@@ -182,7 +182,7 @@ class KasMasukController extends Controller
         $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
 
         $value['id_header']    = $jurnal_created->id;
-        $value['perkiraan']    = 1.1101;
+        $value['perkiraan']    = 2.1702;
         $value['kredit']       = str_replace(',', '', $request->nominal);
         $value['debet']        = 0;
         $value['status']       = 'Y';

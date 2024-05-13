@@ -36,27 +36,27 @@
                     <tr>
                         <th class="text-left">Tgl. Transaksi</th>
                         <td>:</td>
-                        <td class="text-left"><b>{{ $kas_masuk->tanggal_rincian_tagihan }}</b></td>
+                        <td class="text-left">{{ Carbon\Carbon::parse($kas_masuk->tanggal_rincian_tagihan)->format('d-m-Y') }}</td>
                     </tr>
                     <tr>
                         <th class="text-left">No. Kas Masuk</th>
                         <td>:</td>
-                        <td class="text-left"><b>{{ $kas_masuk->no_kas_masuk }}</b></td>
+                        <td class="text-left">{{ $kas_masuk->no_kas_masuk }}</td>
                     </tr>
                     <tr>
                         <th class="text-left">Nominal</th>
                         <td>:</td>
-                        <td class="text-left"><b>{{ $kas_masuk->nominal }}</b></td>
+                        <td class="text-left">{{ number_format($kas_masuk->nominal, 0, ',', ',') }}</td>
                     </tr>
                     <tr>
                         <th class="text-left">Terima Dari</th>
                         <td>:</td>
-                        <td class="text-left"><b>{{ $kas_masuk->terima_dari }}</b></td>
+                        <td class="text-left">{{ $kas_masuk->terima_dari }}</td>
                     </tr>
                     <tr>
                         <th class="text-left">Keterangan</th>
                         <td>:</td>
-                        <td class="text-left"><b>{{ $kas_masuk->keterangan }}</b></td>
+                        <td class="text-left">{{ $kas_masuk->keterangan }}</td>
                     </tr>
                 </table>
             </div>
