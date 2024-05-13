@@ -40,6 +40,8 @@ class TransferMasukController extends Controller
 
     public function validasi(){
 
+        
+
         $tf_kas = TransferMasukHeader::where('status_transfer', 'IN')->orderBy('id_transfer', 'desc')->get();
 
         return view('transfer-masuk.validasi', compact('tf_kas'));
@@ -219,14 +221,17 @@ class TransferMasukController extends Controller
 
     public function store_update(Request $request){
 
-        dd($request->all());
 
         $request->validate([
-            'tanggal_bank'      => 'required',
-            'bank'              => 'required',
-            'dari_toko'         => 'required',
-            'keterangan'        => 'required',
-            'status_transfer'   => 'required',
+            'tanggal_rincian_tagihan' => 'required',
+            'nominal_kas'             => 'required',
+        ]);
+
+        KasMasukHeader::where('id_transfer', $request->id_transfer)->update([
+            'tanggal_rincian_tagihan' => $request->tanggal_rincian_tagihan,
+            'nominal'       => str_replace(',', '', $request->nominal_kas),
+            'updated_at'    => NOW(),
+            'updated_by'     => NOW()
         ]);
 
     return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id_header' => $jurnal_created->id_header])

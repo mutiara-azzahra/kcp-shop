@@ -67,7 +67,7 @@ class TransferMasukHeader extends Model
 
     public function kas_masuk()
     {
-        return $this->hasMany(KasMasukHeader::class, 'id_transfer', 'id_transfer');
+        return $this->hasOne(KasMasukHeader::class, 'id_transfer', 'id_transfer');
     }
 
     public function jurnal_header()

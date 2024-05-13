@@ -32,7 +32,6 @@
 
     <div class="card" style="padding: 10px;">
         <div class="card-body">
-
             <form method="POST" action="{{ route('transfer-masuk.store-update') }}">
                     @csrf
                     @method('POST')
@@ -42,41 +41,54 @@
                         <tr>
                             <th class="text-left">Tgl. Rincian Tagihan</th>
                             <td>:</td>
-                            <td class="text-left"><b>{{ $transfer->tanggal_bank }}</b></td>
+                            @if(isset($transfer->kas_masuk->tanggal_rincian_tagihan))
+                            <td class="text-left">{{ Carbon\Carbon::parse($transfer->kas_masuk->tanggal_rincian_tagihan)->format('d-m-Y') }}</td>
+                            @else
+                            <td class="text-left"><input type="date" name="tanggal_rincian_tagihan" class="form-control"></td>
+                            @endif
+
                         </tr>
                         <tr>
                             <th class="text-left">No. Transfer</th>
                             <td>:</td>
-                            <td class="text-left"><b>{{ $transfer->id_transfer }}</b></td>
+                            <td class="text-left">{{ $transfer->id_transfer }}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Bank</th>
                             <td>:</td>
-                            <td class="text-left"><b>{{ $transfer->bank }}</b></td>
+                            <td class="text-left">{{ $transfer->bank }}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Toko</th>
                             <td>:</td>
-                            <td class="text-left"><b>[{{ $transfer->kd_outlet }}] {{ $transfer->outlet->nm_outlet }}</b></td>
+                            <td class="text-left">[{{ $transfer->kd_outlet }}] {{ $transfer->outlet->nm_outlet }}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Nominal</th>
                             <td>:</td>
-                            <td class="text-left"><input type="text" name="nominal_kas" class="form-control" placeholder="0"></td>
+                            @if(isset($transfer->kas_masuk->nominal))
+                            <td class="text-left">{{ number_format($transfer->kas_masuk->nominal, 0, ',', ',') }}</td>
+                            @else
+                            <td class="text-left"><input type="text" id="nominal" name="nominal_kas" class="form-control" placeholder="0"></td>
                             <input type="hidden" name="id_transfer" class="form-control" value="{{$transfer->id_transfer}}">
+                            @endif
                         </tr>
                         <tr>
                             <th class="text-left">Nominal Bank</th>
                             <td>:</td>
-                            <td class="text-left"><b>{{ number_format($transfer->details->where('akuntansi_to', 'D')->sum('total'), 0, ',', ',') }}</b></td>
+                            <td class="text-left">{{ number_format($transfer->details->where('akuntansi_to', 'D')->sum('total'), 0, ',', ',') }}</td>
                         </tr>
                     </table>
                 </div>
+                @if(isset($transfer->kas_masuk->nominal))
+
+                @else
                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                     <div class="float-right">
                         <button type="submit" class="btn btn-warning"><i class="fas fa-save"></i> Simpan Data</button>                            
                     </div>
                 </div>
+                @endif
             </form>
         </div>
     </div>
@@ -99,18 +111,14 @@
                         @php
                         $no=1;
                         @endphp
-
-                        @foreach($transfer->kas_masuk as $k)
                         <tr>
-                            <td class="text-left">{{ $k->no_kas_masuk }}</td>
-                            <td class="text-center">{{ $k->kd_outlet }}</td>
-                            <td class="text-left">{{ $k->outlet->nm_outlet }}</td>
-                            <td class="text-center">{{ $k->pembayaran_via }}</td>
-                            <td class="text-right">{{ number_format($k->nominal, 0, ',', ',') }}</td>
-                            <td class="text-center">{{ $k->flag_kas_manual }}</td>
+                            <td class="text-left">{{ $transfer->kas_masuk->no_kas_masuk }}</td>
+                            <td class="text-center">{{ $transfer->kas_masuk->kd_outlet }}</td>
+                            <td class="text-left">{{ $transfer->kas_masuk->outlet->nm_outlet }}</td>
+                            <td class="text-center">{{ $transfer->kas_masuk->pembayaran_via }}</td>
+                            <td class="text-right">{{ number_format($transfer->kas_masuk->nominal, 0, ',', ',') }}</td>
+                            <td class="text-center">{{ $transfer->kas_masuk->flag_kas_manual }}</td>
                         </tr>
-                        @endforeach
-
                     </tbody>
                 </table>
             </div>
@@ -120,5 +128,19 @@
 @endsection
 
 @section('script')
+
+<script>
+    function formatNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    document.getElementById('nominal').addEventListener('input', function() {
+     
+        let valueWithoutCommas = this.value.replace(/,/g, '');
+        let formattedValue = formatNumberWithCommas(valueWithoutCommas);
+        
+        this.value = formattedValue;
+    });
+</script>
 
 @endsection
