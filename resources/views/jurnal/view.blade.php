@@ -63,6 +63,12 @@
                             
                         </tr>
                     @endforeach
+
+                    <tr>
+                        <td class="text-center" style="background-color:#e6e866; color:black" colspan="4"><b>TOTAL</b></td>
+                        <td class="text-right" style="background-color:#e6e866; color:black"><b>{{ number_format($sum_debet, 0, ',', ',') }}</b></td>
+                        <td class="text-right" style="background-color:#e6e866; color:black"><b>{{ number_format($sum_kredit, 0, ',', ',') }}</b></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
