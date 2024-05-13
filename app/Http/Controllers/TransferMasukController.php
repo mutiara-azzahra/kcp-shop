@@ -185,7 +185,7 @@ class TransferMasukController extends Controller
 
         $detail_created = TransferMasukDetails::create($jurnal_detail);
 
-        //CREATE JURNAL TRANSFER KELUAR DETAILS
+        //CREATE JURNAL TRANSFER MASUK DETAILS
         $value['id_header'] = $request->id_header;
         $value['perkiraan'] = $request->perkiraan;
 
@@ -216,6 +216,10 @@ class TransferMasukController extends Controller
         $detail['created_by']   = Auth::user()->nama_user;
 
         $created_details = KasMasukDetails::create($detail);
+
+        $saldo = MasterPerkiraan::where('id_perkiraan', $detail_kas_masuk->perkiraan)->value('saldo');
+
+        MasterPerkiraan::where('id_perkiraan', $detail_kas_masuk->perkiraan)->update(['saldo' => $saldo - $detail_kas_masuk->total]);
 
         return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id_header' => $jurnal_created->id_header])
             ->with('success','Data detail transfer baru berhasil ditambahkan!');
