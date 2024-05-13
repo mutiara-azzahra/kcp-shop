@@ -60,6 +60,18 @@ class KasMasukController extends Controller
 
         $created = KasMasukHeader::create($request->all());
 
+        //CREATE JURNAL HEADER
+        $jurnal = [
+            'trx_date'      => NOW(),
+            'trx_from'      => $created->no_kas_masuk,
+            'keterangan'    => $request->keterangan,
+            'catatan'       => $request->terima_dari,
+            'kategori'      => 'KAS_MASUK',
+            'created_at'    => NOW(),
+            'updated_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user,
+        ];
+
         if ($created){
             return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $newKas->no_kas_masuk])->
                 with('success', 'Bukti bayar baru berhasil ditambahkan');
@@ -205,11 +217,31 @@ class KasMasukController extends Controller
         $detail['no_kas_masuk'] = $request->no_kas_masuk;
         $detail['perkiraan']    = $request->id_perkiraan;
         $detail['akuntansi_to'] = $request->akuntansi_to;
-        $detail['total']        = $request->total;
+        $detail['total']        = str_replace(',', '', $request->total);
         $detail['created_at']   = NOW();
         $detail['created_by']   = Auth::user()->nama_user;
 
         $created_details = KasMasukDetails::create($detail);
+
+        $jurnal_header = KasMasukHeader::where('trx_from', $request->no_kas_masuk)->first();
+
+        //CREATE JURNAL KAS MASUK DETAILS
+        $value['id_header']    = $jurnal_header->id;
+        $value['perkiraan']    = $request->id_perkiraan;
+
+        if( $request->akuntansi_to == 'D'){
+            $value['debet']        = str_replace(',', '', $request->total);
+            $value['kredit']       = 0;
+        } else{
+            $value['kredit']       = str_replace(',', '', $request->total);
+            $value['debet']        = 0;
+        }
+        $value['status']       = 'Y';
+        $value['created_by']   = Auth::user()->nama_user;
+        $value['created_at']   = now();
+        $value['updated_at']   = now();
+
+        $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
             
         return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $request->no_kas_masuk])
             ->with('success','Data kas masuk baru berhasil ditambahkan!');

@@ -100,7 +100,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="form-group col-12">
-                                            <input type="hidden" name="no_kas_masuk" value="{{ $kas_masuk->no_kas_masuk }}">
+                                            <input type="hidden" id="nominal" name="no_kas_masuk" value="{{ $kas_masuk->no_kas_masuk }}">
                                             <input type="text" name="total" class="form-control">
                                         </div>
                                     </td>
@@ -184,7 +184,6 @@
 <script>
 
     //HAPUS
-
     Hapus = (id)=>{
         Swal.fire({
             title: 'Apa anda yakin menghapus data detail kas masuk ini?',
@@ -201,6 +200,19 @@
                 }
         })
     }
+
+    //NOMINAL
+    function formatNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    document.getElementById('nominal').addEventListener('input', function() {
+     
+        let valueWithoutCommas = this.value.replace(/,/g, '');
+        let formattedValue = formatNumberWithCommas(valueWithoutCommas);
+        
+        this.value = formattedValue;
+    });
 
 </script>    
 
