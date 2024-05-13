@@ -133,7 +133,9 @@ class TransferMasukController extends Controller
             'id_transfer'               => $created->id_transfer,
             'kd_area'                   => $kd_area,
             'kd_outlet'                 => $request->kd_outlet,
-            'pembayaran_via'            => $request->keterangan,
+            'terima_dari'               => $outlet->nm_outlet,
+            'keterangan'                => 'Pembayaran dari Toko ' . $outlet->kd_outlet . '/'. $outlet->nm_outlet ,
+            'pembayaran_via'            => 'TRANSFER',
             'status'                    => 'O',
             'created_by'                => Auth::user()->nama_user
         ];

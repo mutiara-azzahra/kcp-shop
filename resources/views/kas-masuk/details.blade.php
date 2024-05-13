@@ -44,6 +44,11 @@
                         <td class="text-left"><b>{{ $kas_masuk->no_kas_masuk }}</b></td>
                     </tr>
                     <tr>
+                        <th class="text-left">Nominal</th>
+                        <td>:</td>
+                        <td class="text-left"><b>{{ $kas_masuk->nominal }}</b></td>
+                    </tr>
+                    <tr>
                         <th class="text-left">Terima Dari</th>
                         <td>:</td>
                         <td class="text-left"><b>{{ $kas_masuk->terima_dari }}</b></td>

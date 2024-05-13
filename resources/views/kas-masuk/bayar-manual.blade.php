@@ -56,6 +56,12 @@
                             <input type="text" name="keterangan" class="form-control" placeholder="Isi keterangan">
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <strong>Nominal</strong>
+                            <input type="text" id="nominal" name="nominal" class="form-control" placeholder="0">
+                        </div>
+                    </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                         <div class="float-right">
                             <button type="submit" class="btn btn-warning"><i class="fas fa-save"></i> Simpan Data</button>                            
@@ -71,5 +77,19 @@
 @endsection
 
 @section('script')
+
+<script>
+    function formatNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    document.getElementById('nominal').addEventListener('input', function() {
+     
+        let valueWithoutCommas = this.value.replace(/,/g, '');
+        let formattedValue = formatNumberWithCommas(valueWithoutCommas);
+        
+        this.value = formattedValue;
+    });
+</script>
 
 @endsection

@@ -11,6 +11,8 @@ use App\Models\KasMasukDetails;
 use App\Models\MasterKodeRak;
 use App\Models\MasterOutlet;
 use App\Models\MasterPerkiraan;
+use App\Models\TransaksiAkuntansiJurnalHeader;
+use App\Models\TransaksiAkuntansiJurnalDetails;
 
 class KasMasukController extends Controller
 {
@@ -40,15 +42,17 @@ class KasMasukController extends Controller
         $request -> validate([
             'tanggal_rincian_tagihan'   => 'required',
             'pembayaran_via'            => 'required',
+            'nominal'                   => 'required',
         ]);
 
         $newKas                 = new KasMasukHeader();
         $newKas->no_kas_masuk   = KasMasukHeader::no_kas_masuk();
 
         $request->merge([
+            'no_kas_masuk'      => $newKas->no_kas_masuk,
+            'nominal'           => str_replace(',', '', $request->nominal),
             'terima_dari'       => $request->terima_dari,
             'keterangan'        => $request->keterangan,
-            'no_kas_masuk'      => $newKas->no_kas_masuk,
             'status'            => 'O',
             'flag_kas_manual'   => 'Y',
             'created_by'        => Auth::user()->nama_user
@@ -92,10 +96,19 @@ class KasMasukController extends Controller
 
         $outlet = MasterOutlet::where('kd_outlet', $request->kd_outlet)->first();
 
+        $kd_area = '';
+
+        if($outlet->kode_prp == 6300){
+            $kd_area = 'KS';
+        } else {
+            $kd_area = 'KT';
+        }
+
         $newKas                 = new KasMasukHeader();
         $newKas->no_kas_masuk   = KasMasukHeader::no_kas_masuk();
         
         $request->merge([
+            'kd_area'           => $kd_area,
             'nominal'           => str_replace(',', '', $request->nominal),
             'terima_dari'       => $outlet->nm_outlet,
             'keterangan'        => 'Pembayaran dari toko ' . $outlet->kd_outlet . '/'. $outlet->nm_outlet,
@@ -127,6 +140,43 @@ class KasMasukController extends Controller
         $kredit['created_by']   = Auth::user()->nama_user;
 
         $kas_kredit = KasMasukDetails::create($kredit);
+
+        //CREATE JURNAL KAS MASUK
+        $jurnal = [
+            'trx_date'      => NOW(),
+            'trx_from'      => $request->no_kas_masuk,
+            'keterangan'    => 'Pembayaran dari toko ' . $outlet->kd_outlet . '/'. $outlet->nm_outlet,
+            'catatan'       => $outlet->nm_outlet,
+            'kategori'      => 'KAS_MASUK',
+            'created_at'    => NOW(),
+            'updated_at'    => NOW(),
+            'created_by'    => Auth::user()->nama_user,
+        ];
+
+        $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
+
+        //CREATE JURNAL KAS MASUK DETAILS
+        $value['id_header']    = $jurnal_created->id;
+        $value['perkiraan']    = 1.1101;
+        $value['debet']        = str_replace(',', '', $request->nominal);
+        $value['kredit']       = 0;
+        $value['status']       = 'Y';
+        $value['created_by']   = Auth::user()->nama_user;
+        $value['created_at']   = now();
+        $value['updated_at']   = now();
+
+        $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
+
+        $value['id_header']    = $jurnal_created->id;
+        $value['perkiraan']    = 1.1101;
+        $value['kredit']        = str_replace(',', '', $request->nominal);
+        $value['debet']       = 0;
+        $value['status']       = 'Y';
+        $value['created_by']   = Auth::user()->nama_user;
+        $value['created_at']   = now();
+        $value['updated_at']   = now();
+
+        $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
 
         //STORE NOMINAL PERKIRAAN KAS MASUK
         $saldo_debit = MasterPerkiraan::where('id_perkiraan', 1.1101)->value('saldo');
