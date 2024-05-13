@@ -434,7 +434,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/kas-keluar', [KasKeluarController::class, 'index'])->name('kas-keluar.index');
     Route::get('/kas-keluar/create', [KasKeluarController::class, 'create'])->name('kas-keluar.create');
     Route::post('/kas-keluar/store', [KasKeluarController::class, 'store'])->name('kas-keluar.store');
-    Route::get('/kas-keluar/details/{no_keluar}/{id_header}', [KasKeluarController::class, 'details'])->name('kas-keluar.details');
+    Route::get('/kas-keluar/details/{no_keluar}', [KasKeluarController::class, 'details'])->name('kas-keluar.details');
     Route::post('/kas-keluar/store-details', [KasKeluarController::class, 'store_details'])->name('kas-keluar.store-details');
     Route::post('/kas-keluar/store-selesai', [KasKeluarController::class, 'store_kas_keluar'])->name('kas-keluar.store-selesai');
     Route::get('/kas-keluar/show/{no_keluar}', [KasKeluarController::class, 'show'])->name('kas-keluar.show');

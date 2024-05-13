@@ -98,8 +98,8 @@
                                     <td class="text-center">
                                         <div class="form-group col-12">
                                             <input type="hidden" name="no_keluar" value="{{ $kas_keluar->no_keluar }}">
-                                            <input type="hidden" name="id_header" value="{{ $jurnal_header }}">
-                                            <input type="text" name="total" class="form-control">
+                                            <input type="hidden" name="id_header" value="{{ $kas_keluar->jurnal_header->id }}">
+                                            <input type="text" id="nominal" name="total" class="form-control">
                                         </div>
                                     </td>
                                 </tr>
@@ -107,7 +107,7 @@
                         </table>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                             <div class="float-right">
-                                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Simpan Data</button>                           
+                                <button type="submit" class="btn btn-warning"><i class="fas fa-save"></i> Simpan Data</button>                           
                             </div>
                         </div>
                     </div>
@@ -182,7 +182,6 @@
 <script>
 
     //HAPUS
-
     Hapus = (id)=>{
         Swal.fire({
             title: 'Apa anda yakin menghapus data detail kas masuk ini?',
@@ -200,6 +199,18 @@
         })
     }
 
+    //Nominal
+    function formatNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    document.getElementById('nominal').addEventListener('input', function() {
+     
+        let valueWithoutCommas = this.value.replace(/,/g, '');
+        let formattedValue = formatNumberWithCommas(valueWithoutCommas);
+        
+        this.value = formattedValue;
+    });
 
 </script>    
 

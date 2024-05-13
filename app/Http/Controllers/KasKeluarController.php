@@ -47,8 +47,10 @@ class KasKeluarController extends Controller
             'pembayaran'    => $request->pembayaran,
             'keterangan'    => $request->keterangan,
             'catatan'       => $request->catatan,
+            'amount_total'  => str_replace(',', '', $request->nominal),
             'status'        => 'O',
-            'created_by'    => Auth::user()->nama_user
+            'created_by'    => Auth::user()->nama_user,
+            'created_at'    => now()
         ]);
 
         $created = TransaksiKasKeluarHeader::create($request->all());
@@ -68,15 +70,15 @@ class KasKeluarController extends Controller
         $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
 
         if ($created){
-            return redirect()->route('kas-keluar.details', ['no_keluar' => $newKeluar->no_keluar , 'id_header' => $jurnal_created->id])->with('success', 'Bukti bayar baru berhasil ditambahkan');
+            return redirect()->route('kas-keluar.details', ['no_keluar' => $newKeluar->no_keluar])
+                ->with('success', 'Bukti bayar baru berhasil ditambahkan');
         } else{
             return redirect()->route('kas-keluar.index')->with('danger','Kas Keluar baru gagal ditambahkan');
         }
     }
 
-    public function details($no_keluar, $id_header){
+    public function details($no_keluar){
         
-        $jurnal_header  = $id_header;
         $perkiraan      = MasterPerkiraan::where('status', 'AKTIF')->get();
         $kas_keluar     = TransaksiKasKeluarHeader::where('no_keluar', $no_keluar)->first();
 
@@ -89,7 +91,7 @@ class KasKeluarController extends Controller
 
         $balancing = $balance_debet - $balance_kredit;
 
-        return view('kas-keluar.details', compact('kas_keluar', 'perkiraan', 'balancing','jurnal_header'));
+        return view('kas-keluar.details', compact('kas_keluar', 'perkiraan', 'balancing'));
     }
 
 
@@ -106,7 +108,7 @@ class KasKeluarController extends Controller
         $keluar['no_keluar']    = $request->no_keluar;
         $keluar['perkiraan']    = $request->perkiraan;
         $keluar['akuntansi_to'] = $request->akuntansi_to;
-        $keluar['total']        = $request->total;
+        $keluar['total']        = str_replace(',', '', $request->total);
         $keluar['created_at']   = NOW();
         $keluar['created_by']   = Auth::user()->nama_user;
 
@@ -114,33 +116,31 @@ class KasKeluarController extends Controller
 
         //PENAMBAHAN SALDO PERKIRAAN
         $saldo = MasterPerkiraan::where('id_perkiraan', $request->perkiraan)->value('saldo');
-        MasterPerkiraan::where('id_perkiraan', $request->perkiraan)->update(['saldo' => $saldo + $request->total]);
+        MasterPerkiraan::where('id_perkiraan', $request->perkiraan)->update(['saldo' => $saldo + str_replace(',', '', $request->total)]);
 
         //CREATE JURNAL KAS KELUAR DETAILS
         $value['id_header'] = $request->id_header;
         $value['perkiraan'] = $request->perkiraan;
 
         if ($request->akuntansi_to == 'D') {
-            $value['debet'] = $request->total;
+            $value['debet']  = str_replace(',', '', $request->total);
             $value['kredit'] = 0;
         } else {
-            $value['debet'] = 0;
-            $value['kredit'] = $request->total;
+            $value['debet']  = 0;
+            $value['kredit'] = str_replace(',', '', $request->total);
         }
 
         $value['id_referensi'] = $kas_keluar->id;
         $value['status']       = 'Y';
+        $value['id_referensi'] = $request->id_header;
         $value['created_by']   = Auth::user()->nama_user;
         $value['created_at']   = now();
         $value['updated_at']   = now();
 
         TransaksiAkuntansiJurnalDetails::create($value);
-
-        $jurnal_keluar = MasterPerkiraan::where('id_perkiraan', $request->perkiraan)->value('saldo');
-
-        MasterPerkiraan::where('id_perkiraan', $request->id_perkiraan)->update(['saldo' => $jurnal_keluar + $request->total]);
             
-        return redirect()->route('kas-keluar.details' , ['no_keluar' => $request->no_keluar, 'id_header' => $request->id_header ])->with('success','Data kas keluar baru berhasil ditambahkan!');
+        return redirect()->route('kas-keluar.details' , ['no_keluar' => $request->no_keluar])
+            ->with('success','Data kas keluar baru berhasil ditambahkan!');
     
     }
 
@@ -170,7 +170,7 @@ class KasKeluarController extends Controller
             //HAPUS JURNAL HEADER  DAN DETAILS
             $header_jurnal = $header_kas_keluar->jurnal_header->first();
             $header_jurnal->delete();
-            $header_jurnal->details()->delete();
+            $header_jurnal->details->delete();
 
             //HAPUS KAS KELUAR, DETAILS
             $header_kas_keluar->delete();
