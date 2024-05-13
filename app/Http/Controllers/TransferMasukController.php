@@ -141,16 +141,15 @@ class TransferMasukController extends Controller
         $created = KasMasukHeader::create($kas);
 
         if ($created) {
-            return redirect()->route('transfer-masuk.details', ['id_transfer' => $newTransfer->id_transfer , 'id_header' => $jurnal_created->id])
+            return redirect()->route('transfer-masuk.details', ['id_transfer' => $newTransfer->id_transfer])
                 ->with('success', 'Transfer masuk berhasil ditambahkan. Tambahkan Details');
         } else {
             return redirect()->route('transfer-masuk.index')->with('danger', 'Transfer masuk gagal ditambahkan');
         }
     }
 
-    public function details($id_transfer, $id_header){
+    public function details($id_transfer){
 
-        $jurnal_header  = $id_header;
         $perkiraan  = MasterPerkiraan::where('status', 'AKTIF')->get();
 
         $transfer   = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
@@ -160,7 +159,7 @@ class TransferMasukController extends Controller
 
         $balancing  = $balance_debet - $balance_kredit;
 
-        return view('transfer-masuk.details', compact('transfer', 'balancing', 'perkiraan', 'jurnal_header'));
+        return view('transfer-masuk.details', compact('transfer', 'balancing', 'perkiraan'));
     }
 
     public function store_details(Request $request){
@@ -183,8 +182,10 @@ class TransferMasukController extends Controller
 
         $detail_created = TransferMasukDetails::create($jurnal_detail);
 
+        $jurnal_header = TransaksiAkuntansiJurnalHeader::where('trx_from', $detail_created->id_transfer)->first();
+
         //CREATE JURNAL TRANSFER MASUK DETAILS
-        $value['id_header'] = $request->id_header;
+        $value['id_header'] = $jurnal_header->id;
         $value['perkiraan'] = $request->perkiraan;
 
         if ($request->akuntansi_to == 'D') {
@@ -215,11 +216,11 @@ class TransferMasukController extends Controller
 
         $created_details = KasMasukDetails::create($detail);
 
-        $saldo = MasterPerkiraan::where('id_perkiraan', $detail_kas_masuk->perkiraan)->value('saldo');
+        $saldo = MasterPerkiraan::where('id_perkiraan', $request->perkiraan)->value('saldo');
 
-        MasterPerkiraan::where('id_perkiraan', $detail_kas_masuk->perkiraan)->update(['saldo' => $saldo - $detail_kas_masuk->total]);
+        MasterPerkiraan::where('id_perkiraan', $request->perkiraan)->update(['saldo' => $saldo - str_replace(',', '', $request->total)]);
 
-        return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id_header' => $jurnal_created->id_header])
+        return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer])
             ->with('success','Data detail transfer baru berhasil ditambahkan!');
     }
 
@@ -238,14 +239,13 @@ class TransferMasukController extends Controller
             'updated_by'     => NOW()
         ]);
 
-    return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer, 'id_header' => $jurnal_created->id_header])
+    return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer])
             ->with('success','Data detail transfer baru berhasil ditambahkan!');
     }
 
-    public function edit($id_transfer, $id_header){
+    public function edit($id_transfer){
 
         $transfer_masuk   = TransferMasukHeader::where('id_transfer', $id_transfer)->first();
-        $header_jurnal    = $id_header;
         $check            = KasMasukHeader::where('id_transfer', $id_transfer)->first();
         $kas_masuk        = KasMasukHeader::all();
         $outlet           = MasterOutlet::where('status', 'Y')->get();
