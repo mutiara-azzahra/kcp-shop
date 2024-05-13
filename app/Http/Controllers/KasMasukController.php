@@ -72,6 +72,8 @@ class KasMasukController extends Controller
             'created_by'    => Auth::user()->nama_user,
         ];
 
+        $jurnal_created = TransaksiAkuntansiJurnalHeader::create($jurnal);
+
         if ($created){
             return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $newKas->no_kas_masuk])->
                 with('success', 'Bukti bayar baru berhasil ditambahkan');
@@ -223,7 +225,7 @@ class KasMasukController extends Controller
 
         $created_details = KasMasukDetails::create($detail);
 
-        $jurnal_header = KasMasukHeader::where('trx_from', $request->no_kas_masuk)->first();
+        $jurnal_header = TransaksiAkuntansiJurnalHeader::where('trx_from', $request->no_kas_masuk)->first();
 
         //CREATE JURNAL KAS MASUK DETAILS
         $value['id_header']    = $jurnal_header->id;
@@ -237,6 +239,7 @@ class KasMasukController extends Controller
             $value['debet']        = 0;
         }
         $value['status']       = 'Y';
+        $value['id_referensi'] = $created_details->id;
         $value['created_by']   = Auth::user()->nama_user;
         $value['created_at']   = now();
         $value['updated_at']   = now();
@@ -297,6 +300,13 @@ class KasMasukController extends Controller
             $kas_masuk = KasMasukHeader::findOrFail($id);
             $kas_masuk->delete();
 
+            //HAPUS JURNAL
+            $jurnal = $kas_masuk->jurnal_header;
+            $jurnal->delete();
+
+            $jurnal_details = $kas_masuk->jurnal_header->details;
+            $jurnal_details->delete();
+
             $details_kas_masuk = KasMasukDetails::where('no_kas_masuk', $kas_masuk->no_kas_masuk)->delete();
 
             return redirect()->route('kas-masuk.index')->with('success', 'Data kas masuk berhasil dihapus!');
@@ -313,7 +323,16 @@ class KasMasukController extends Controller
 
             //HAPUS DETAIL KAS MASUK
             $detail_kas_masuk = KasMasukDetails::findOrFail($id);
+            $saldo = MasterPerkiraan::where('id_perkiraan', $detail_kas_masuk->perkiraan)->value('saldo');
+
+            MasterPerkiraan::where('id_perkiraan', $detail_kas_masuk->perkiraan)->update(['saldo' => $saldo + $detail_kas_masuk->total]);
+
             $detail_kas_masuk->delete();
+
+            $kas_masuk = KasMasukHeader::findOrFail($id);
+
+            $jurnal_details = $kas_masuk->jurnal_header->details->where('id_referensi', $detail_kas_masuk->id)->first();
+            $jurnal_details->delete();
 
             return redirect()->route('kas-masuk.details', ['no_kas_masuk' => $detail_kas_masuk->no_kas_masuk ])->with('success', 'Data kas masuk berhasil dihapus!');
 
