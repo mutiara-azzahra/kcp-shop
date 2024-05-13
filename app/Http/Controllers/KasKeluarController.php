@@ -188,8 +188,6 @@ class KasKeluarController extends Controller
 
             $detail_kas_keluar = TransaksiKasKeluarDetails::findOrFail($id);
 
-            dd($detail_kas_keluar->header_keluar->jurnal_header->details)->where('id_referensi', $id)->first();
-
             $saldo_perkiraan = MasterPerkiraan::where('id_perkiraan', $detail_kas_keluar->perkiraan)->value('saldo');
             MasterPerkiraan::where('id_perkiraan', $detail_kas_keluar->perkiraan)->update(['saldo' => $saldo_perkiraan - $detail_kas_keluar->total ]);
 
@@ -197,7 +195,6 @@ class KasKeluarController extends Controller
             $detail_jurnal->delete();
             $detail_kas_keluar->delete();
             
-
             return redirect()->route('kas-keluar.details', ['no_keluar' => $detail_kas_keluar->no_keluar , 'id_header' => $detail_jurnal->id_header ])->with('success', 'Data kas keluar berhasil dihapus!');
 
         } catch (\Exception $e) {
