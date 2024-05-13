@@ -12,6 +12,8 @@ use App\Models\KasMasukHeader;
 use App\Models\MasterOutlet;
 use App\Models\TransferMasukHeader;
 use App\Models\TransferMasukDetails;
+use App\Models\TransaksiAkuntansiJurnalHeader;
+use App\Models\TransaksiAkuntansiJurnalDetails;
 
 class TransferKeluarController extends Controller
 {
@@ -115,18 +117,37 @@ class TransferKeluarController extends Controller
             'akuntansi_to' => 'required',
             'total'        => 'required',
         ]);
-        
-        $perkiraan = MasterPerkiraan::findOrFail($request['perkiraan']);
-    
-        TransferMasukDetails::create([
-            'id_transfer'   => $request['id_transfer'],
-            'perkiraan'     => $perkiraan->id_perkiraan,
-            'sub_perkiraan' => $perkiraan->sub_perkiraan,
-            'akuntansi_to'  => $request['akuntansi_to'],
-            'total'         => $request['total'],
-            'created_by'    => Auth::user()->nama_user,
-            'created_at'    => now()
-        ]);
+
+        $detail['id_transfer']  = $request->id_transfer;
+        $detail['perkiraan']    = $request->perkiraan;
+        $detail['akuntansi_to'] = $request->akuntansi_to;
+        $detail['total']        = str_replace(',', '', $request->total);
+        $detail['created_by']   = Auth::user()->nama_user;
+        $detail['created_at']   = now();
+
+        $detail_created         = TransferMasukDetails::create($detail);
+
+        $data = TransaksiAkuntansiJurnalHeader::where('trx_from', $request->id_transfer)->first();
+
+        //CREATE JURNAL TRANSFER MASUK DETAILS
+        $value['id_header'] = $data->id;
+        $value['perkiraan'] = $request->perkiraan;
+
+        if ($request->akuntansi_to == 'D') {
+            $value['debet']  = str_replace(',', '', $request->total);
+            $value['kredit'] = 0;
+        } else {
+            $value['debet']  = 0;
+            $value['kredit'] = str_replace(',', '', $request->total);
+        }
+
+        $value['id_referensi'] = $detail_created->id;
+        $value['status']       = 'Y';
+        $value['created_by']   = Auth::user()->nama_user;
+        $value['created_at']   = now();
+        $value['updated_at']   = now();
+
+        $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
 
             
         return redirect()->route('transfer-keluar.details', ['id_transfer' => $request['id_transfer']])

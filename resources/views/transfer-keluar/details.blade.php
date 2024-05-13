@@ -79,7 +79,7 @@
                                             <select name="perkiraan" class="form-control mr-2 my-select">     
                                                 <option value="">-- Pilih Perkiraan --</option>
                                                 @foreach($perkiraan as $s)
-                                                    <option value="{{ $s->perkiraan }}">{{ $s->id_perkiraan }} - {{ $s->nm_perkiraan }} </option>
+                                                    <option value="{{ $s->id_perkiraan }}">{{ $s->id_perkiraan }} - {{ $s->nm_perkiraan }} </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -96,7 +96,7 @@
                                     <td class="text-center">
                                         <div class="form-group col-12">
                                             <input type="hidden" name="id_transfer" value="{{ $transfer->id_transfer  }}">
-                                            <input type="text" name="total" class="form-control">
+                                            <input type="text" id="nominal" name="total" class="form-control">
                                         </div>
                                     </td>
                                 </tr>
@@ -176,24 +176,35 @@
 
 @section('script')
 <script>
-//HAPUS
+    //HAPUS
 
-Hapus = (id)=>{
-    Swal.fire({
-        title: 'Apa anda yakin menghapus data detail transfer keluar ini?',
-        text:  "Data tidak dapat kembali" ,
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6' ,
-        cancelButtonColor: 'red' ,
-        confirmButtonText: 'hapus data' ,
-        cancelButtonText: 'batal' ,
-        reverseButtons: false
-        }).then((result) => {
-            if (result.value) {
-                document.getElementById('form_delete_' + id).submit();
-            }
-    })
-}
-    
-</script>    
+    Hapus = (id)=>{
+        Swal.fire({
+            title: 'Apa anda yakin menghapus data detail transfer keluar ini?',
+            text:  "Data tidak dapat kembali" ,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6' ,
+            cancelButtonColor: 'red' ,
+            confirmButtonText: 'hapus data' ,
+            cancelButtonText: 'batal' ,
+            reverseButtons: false
+            }).then((result) => {
+                if (result.value) {
+                    document.getElementById('form_delete_' + id).submit();
+                }
+        })
+    }
+
+    function updateData() {
+        var dariToko = document.getElementsByName('dari_toko')[0];
+        var tokoSelection = document.getElementById('toko-selection');
+
+        if (dariToko.value == '1') {
+            tokoSelection.style.display = 'block';
+        } else {
+            tokoSelection.style.display = 'none';
+        }
+    }
+</script>
+
 @endsection

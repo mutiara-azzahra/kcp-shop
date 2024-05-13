@@ -77,9 +77,9 @@
         var tokoSelection = document.getElementById('toko-selection');
 
         if (dariToko.value == '1') {
-            tokoSelection.style.display = 'block'; // Show the dropdown
+            tokoSelection.style.display = 'block';
         } else {
-            tokoSelection.style.display = 'none'; // Hide the dropdown
+            tokoSelection.style.display = 'none';
         }
     }
 </script>
