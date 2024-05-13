@@ -166,47 +166,19 @@ class TransferKeluarController extends Controller
         return view('transfer-keluar.edit', compact('transfer', 'outlet', 'kas_masuk','check'));
     }
 
-    public function store_transfer(Request $request)
-    {
-
-        $id_transfer     = $request->input('id_transfer');
-
-        $selectedItems  = $request->input('selected_items', []);
-
-        for ($i = 0; $i < count($selectedItems); $i++) {
-            $itemKasMasuk = $selectedItems[$i];
-
-            KasMasukHeader::where('no_kas_masuk', $itemKasMasuk)->update([
-                'id_transfer'        => $request->id_transfer,
-                'updated_at'         => NOW(),
-                'updated_by'         => Auth::user()->nama_user
-            ]);
-
-        }
-
-        return redirect()->route('transfer-keluar.index')->with('success', 'Transfer keluar baru berhasil ditambahkan kedalam kas keluar');
-    }
-
-    public function store_validasi($id_transfer)
-    {
-
-        TransferMasukHeader::where('id_transfer', $id_transfer)->update([
-            'flag_kas_ar'        => 'Y',
-            'updated_at'         => NOW(),
-            'updated_by'         => Auth::user()->nama_user
-        ]);
-
-        return redirect()->route('transfer-keluar.index')->with('success', 'Transfer keluar baru berhasil ditambahkan kedalam kas keluar');
-    }
-
     public function delete($id)
     {
         try {
 
-            $transfer   = TransferMasukHeader::findOrFail($id);
-            $transfer->delete();
+            $transfer         = TransferMasukHeader::findOrFail($id);
+            $jurnal_details   = $transfer->jurnal_header->details;
+            $jurnal_header    = $transfer->jurnal_header;
+            $details_transfer = $transfer->details;
 
-            $datails    = TransferMasukDetails::where('id_transfer', $transfer->id_transfer)->delete();
+            $details_transfer->delete();
+            $jurnal_details->delete();
+            $jurnal_header->delete();
+            $transfer->delete();
 
             return redirect()->route('transfer-keluar.details', ['id_transfer' => $transfer->id_transfer])->with('success', 'Data transfer keluar berhasil dihapus!');
 
@@ -221,7 +193,9 @@ class TransferKeluarController extends Controller
     {
         try {
 
-            $transfer = TransferMasukDetails::findOrFail($id);
+            $transfer   = TransferMasukDetails::findOrFail($id);
+            $jurnal     = $transfer->jurnal_header->details->where('id_referensi', $transfer->id)->first();
+            $jurnal->delete();
             $transfer->delete();
 
             return redirect()->route('transfer-keluar.details', ['id_transfer' => $transfer->id_transfer])->with('success', 'Data transfer keluar berhasil dihapus!');
