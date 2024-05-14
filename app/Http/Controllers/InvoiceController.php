@@ -62,11 +62,11 @@ class InvoiceController extends Controller
 
         // Penjualan (k) 4.1000
         $jurnal = [
-            'trx_date'      => $request->trx_date,
-            'trx_from'      => $created->no_keluar,
-            'keterangan'    => $request->keterangan,
-            'catatan'       => $request->pembayaran,
-            'kategori'      => 'KAS_KELUAR',
+            'trx_date'      => now(),
+            'trx_from'      => $header->noinv,
+            'keterangan'    => 'Penjualan : '. $header->noinv . $so_to_invoice->kd_outlet . '/' . $so_to_invoice->nm_outlet ,
+            'catatan'       => 'Penjualan',
+            'kategori'      => 'INVOICE',
             'created_at'    => NOW(),
             'updated_at'    => NOW(),
             'created_by'    => Auth::user()->nama_user,
