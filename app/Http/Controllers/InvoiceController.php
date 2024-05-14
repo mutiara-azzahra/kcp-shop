@@ -10,8 +10,11 @@ use App\Models\MasterStokGudang;
 use App\Models\TransaksiSOHeader;
 use App\Models\TransaksiInvoiceHeader;
 use App\Models\TransaksiInvoiceDetails;
+use App\Models\TransaksiAkuntansiJurnalHeader;
+use App\Models\TransaksiAkuntansiJurnalDetails;
 use App\Models\FlowStokGudang;
 use App\Models\ModalPartTerjual;
+use App\Models\MasterOutlet;
 
 class InvoiceController extends Controller
 {
