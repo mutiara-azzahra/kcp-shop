@@ -148,9 +148,9 @@ class IntransitController extends Controller
             $stok_awal_barang = FlowStokGudang::where('part_no', $itemPartNo)->orderBy('created_at', 'desc')->value('stok_akhir');
             
             if(isset($stok_awal_barang)) {
-                $stok_awal = MasterStokGudang::where('part_no', $itemPartNo)->value('stok');
-            } else{
                 $stok_awal = $stok_awal_barang;
+            } else{
+                $stok_awal = 0;
             }
 
             $value['part_no']              = $itemPartNo;
