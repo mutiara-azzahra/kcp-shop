@@ -61,7 +61,6 @@ class InvoiceController extends Controller
         //CREATE JURNAL HEADER
 
         // Penjualan (k) 4.1000
-
         $jurnal = [
             'trx_date'      => $request->trx_date,
             'trx_from'      => $created->no_keluar,
@@ -121,6 +120,28 @@ class InvoiceController extends Controller
             $details['nominal_total']      = $s->nominal_total;
 
             TransaksiInvoiceDetails::create($details);
+
+            //LIST BARANG KELUAR, KARTU STOK
+            $stok_awal_barang = FlowStokGudang::where('part_no', $s->part_no)->orderBy('created_at', 'desc')->value('stok_akhir');
+            
+            if(isset($stok_awal_barang)) {
+                $stok_awal = $stok_awal_barang;
+            } else{
+                $stok_awal = 0;
+            }
+
+            $outlet = MasterOutlet::where('kd_outlet', $so_to_invoice->kd_outlet)->first();
+
+            $value['part_no']              = $s->part_no;
+            $value['keterangan']           = $so_to_invoice->kd_outlet . '/' . $outlet->nm_outlet;
+            $value['referensi']            = $header->noinv;
+            $value['tanggal_barang_masuk'] = NOW();
+            $value['stok_awal']            = $stok_awal;
+            $value['stok_masuk']           = 0;
+            $value['stok_keluar']          = $s->qty;
+            $value['stok_akhir']           = $stok_awal + 0 - $s->qty;
+
+            FlowStokGudang::create($value);
 
         }
 
