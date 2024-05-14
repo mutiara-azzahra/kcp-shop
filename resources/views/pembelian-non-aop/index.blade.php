@@ -44,7 +44,7 @@
                             <td class="text-left">{{ $p->tanggal_nota }}</td>
                             <td class="text-left">{{ $p->customer_to }}</td>
                             <td class="text-center">{{ $p->supplier }}</td>
-                            <td class="text-right">Rp. {{ number_format($p->details_pembelian->sum('total_amount'), 0, ',', '.') }}</td>
+                            <td class="text-right">{{ number_format($p->details_pembelian->sum('total_amount'), 0, ',', ',') }}</td>
                             <td class="text-center">
                                 <a class="btn btn-info btn-sm" href="{{ route('pembelian-non-aop.pembelian-details',$p->id) }}">
                                     <i class="fas fa-eye"></i>
