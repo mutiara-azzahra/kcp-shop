@@ -7,6 +7,8 @@ use PDF;
 use Illuminate\Http\Request;
 use App\Models\StokGudang;
 use App\Models\MasterStokGudang;
+use App\Models\MasterOutlet;
+use App\Models\MasterPerkiraan;
 use App\Models\TransaksiSOHeader;
 use App\Models\TransaksiInvoiceHeader;
 use App\Models\TransaksiInvoiceDetails;
@@ -14,7 +16,7 @@ use App\Models\TransaksiAkuntansiJurnalHeader;
 use App\Models\TransaksiAkuntansiJurnalDetails;
 use App\Models\FlowStokGudang;
 use App\Models\ModalPartTerjual;
-use App\Models\MasterOutlet;
+
 
 class InvoiceController extends Controller
 {
@@ -62,8 +64,6 @@ class InvoiceController extends Controller
         $header = TransaksiInvoiceHeader::create($data);
 
         //CREATE JURNAL HEADER
-
-        // Penjualan (k) 4.1000
         $jurnal = [
             'trx_date'      => now(),
             'trx_from'      => $header->noinv,
@@ -79,7 +79,7 @@ class InvoiceController extends Controller
 
         //CREATE JURNAL KAS KELUAR DETAILS: DEBET
         $debet['id_header']  = $jurnal_created->id;
-        $debet['perkiraan']  = 1.1300;
+        $debet['perkiraan']  = '1.1300';
         $debet['debet']      = $so_to_invoice->details_so->sum('nominal_total');
         $debet['kredit']     = 0;
         $debet['status']     = 'Y';
@@ -87,11 +87,16 @@ class InvoiceController extends Controller
         $debet['created_at'] = now();
         $debet['updated_at'] = now();
 
-        TransaksiAkuntansiJurnalDetails::create($debet);
+        $created_debet = TransaksiAkuntansiJurnalDetails::create($debet);
+
+        //SALDO DEBET
+        $saldo_debet = MasterPerkiraan::where('id_perkiraan', '1.1300')->value('saldo');
+
+        MasterPerkiraan::where('id_perkiraan', '1.1300')->update(['saldo' => $saldo_debet + $created_debet->debet]);
 
         //CREATE JURNAL KAS KELUAR DETAILS: KREDIT
         $kredit['id_header']  = $jurnal_created->id;
-        $kredit['perkiraan']  = 4.1000;
+        $kredit['perkiraan']  = '4.1000';
         $kredit['debet']      = 0;
         $kredit['kredit']     = $so_to_invoice->details_so->sum('nominal_total');
         $kredit['status']     = 'Y';
@@ -99,7 +104,11 @@ class InvoiceController extends Controller
         $kredit['created_at'] = now();
         $kredit['updated_at'] = now();
 
-        TransaksiAkuntansiJurnalDetails::create($kredit);
+        $created_kredit = TransaksiAkuntansiJurnalDetails::create($kredit);
+
+        //SALDO KREDIT
+        $saldo_kredit = MasterPerkiraan::where('id_perkiraan', '4.1000')->value('saldo');
+        MasterPerkiraan::where('id_perkiraan', '4.1000')->update(['saldo' => $saldo_kredit + $created_kredit->kredit]);
 
         //CREATE DETAILS INVOICE
         foreach($so_to_invoice->details_so as $s){

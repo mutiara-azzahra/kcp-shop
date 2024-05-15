@@ -24,7 +24,7 @@ class TransaksiInvoiceDetails extends Model
 
     public function header()
     {
-        return $this->hasOne(TransaksiInvoiceHeader::class, 'noinv', 'noinv');
+        return $this->belongsTo(TransaksiInvoiceHeader::class, 'noinv', 'noinv');
     }
 
     public function nama_outlet()

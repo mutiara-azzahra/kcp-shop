@@ -51,7 +51,7 @@ class MonitoringController extends Controller
             $target = 0;
             
             $getTargetBulanan = TransaksiInvoiceHeader::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
-                ->where('user_sales', $sales)
+                ->where('user_sales', $sales)->where('flag_batal', 'N')
                 ->get();
 
             foreach ($getTargetBulanan as $invoice) {
@@ -75,61 +75,73 @@ class MonitoringController extends Controller
             $getActualSales1 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-01-01')
                 ->where('created_at', '<=', $tahun.'-02-01')
+                ->where('flag_batal', 'N')
                 ->get();
 
             $getActualSales2 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-02-01')
                 ->where('created_at', '<=', $tahun.'-03-01')
+                ->where('flag_batal', 'N')
                 ->get();
             
             $getActualSales3 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-03-01')
                 ->where('created_at', '<=', $tahun.'-04-01')
+                ->where('flag_batal', 'N')
                 ->get();
 
             $getActualSales4 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-04-01')
                 ->where('created_at', '<=', $tahun.'-05-01')
+                ->where('flag_batal', 'N')
                 ->get();
 
             $getActualSales5 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-05-01')
                 ->where('created_at', '<=', $tahun.'-06-01')
+                ->where('flag_batal', 'N')
                 ->get();
 
             $getActualSales6 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-06-01')
                 ->where('created_at', '<=', $tahun.'-07-01')
+                ->where('flag_batal', 'N')
                 ->get();
             
             $getActualSales7 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-07-01')
                 ->where('created_at', '<=', $tahun.'-08-01')
+                ->where('flag_batal', 'N')
                 ->get();
 
             $getActualSales8 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-08-01')
                 ->where('created_at', '<=', $tahun.'-09-01')
+                ->where('flag_batal', 'N')
                 ->get();
 
             $getActualSales9 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-09-01')
                 ->where('created_at', '<=', $tahun.'-10-01')
+                ->where('flag_batal', 'N')
                 ->get();
             
             $getActualSales10 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-10-01')
                 ->where('created_at', '<=', $tahun.'-11-01')
+                ->where('flag_batal', 'N')
                 ->get();
 
             $getActualSales11 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-11-01')
                 ->where('created_at', '<=', $tahun.'-12-01')
+                ->where('flag_batal', 'N')
                 ->get();
             
             $getActualSales12 = TransaksiInvoiceHeader::where('user_sales', $sales)
                 ->where('created_at', '>=', $tahun.'-12-01')
                 ->where('created_at', '<=', $next_tahun.'-01-01')
+                ->where('flag_batal', 'N')
                 ->get();
 
             foreach ($getActualSales1 as $invoice) {
@@ -280,18 +292,18 @@ class MonitoringController extends Controller
             $target_s_acl_dec = number_format($getTargetProdukSales->where('kode_produk', 'ACL')->where('tahun', $tahun)->where('bulan', 12)->value('nominal'), 0, ',', ',');
 
             //VIEW ACHIEVEMENT SALES BY PRODUK
-            $ach_s_jan = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->get();
-            $ach_s_feb = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->get();
-            $ach_s_mar = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-04-01')->get();
-            $ach_s_apr = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-05-01')->get();
-            $ach_s_may = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-06-01')->get();
-            $ach_s_jun = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-07-01')->get();
-            $ach_s_jul = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-08-01')->get();
-            $ach_s_aug = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-09-01')->get();
-            $ach_s_sep = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-10-01')->get();
-            $ach_s_oct = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-11-01')->get();
-            $ach_s_nov = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-12-01')->get();
-            $ach_s_dec = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $next_tahun.'-01-01')->get();
+            $ach_s_jan = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->where('flag_batal', 'N')->get();
+            $ach_s_feb = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->where('flag_batal', 'N')->get();
+            $ach_s_mar = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-03-01')->where('created_at', '<=', $tahun.'-04-01')->where('flag_batal', 'N')->get();
+            $ach_s_apr = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-04-01')->where('created_at', '<=', $tahun.'-05-01')->where('flag_batal', 'N')->get();
+            $ach_s_may = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-05-01')->where('created_at', '<=', $tahun.'-06-01')->where('flag_batal', 'N')->get();
+            $ach_s_jun = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-06-01')->where('created_at', '<=', $tahun.'-07-01')->where('flag_batal', 'N')->get();
+            $ach_s_jul = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-07-01')->where('created_at', '<=', $tahun.'-08-01')->where('flag_batal', 'N')->get();
+            $ach_s_aug = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-08-01')->where('created_at', '<=', $tahun.'-09-01')->where('flag_batal', 'N')->get();
+            $ach_s_sep = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-09-01')->where('created_at', '<=', $tahun.'-10-01')->where('flag_batal', 'N')->get();
+            $ach_s_oct = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-10-01')->where('created_at', '<=', $tahun.'-11-01')->where('flag_batal', 'N')->get();
+            $ach_s_nov = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-11-01')->where('created_at', '<=', $tahun.'-12-01')->where('flag_batal', 'N')->get();
+            $ach_s_dec = TransaksiInvoiceHeader::where('user_sales', $sales)->where('created_at', '>=', $tahun.'-12-01')->where('created_at', '<=', $next_tahun.'-01-01')->where('flag_batal', 'N')->get();
 
             //ACHIEVEMENT SALES ICHIDAI
             $achIchS01 = 0;
@@ -594,7 +606,6 @@ class MonitoringController extends Controller
                     })->sum('nominal_total');
             }
 
-
             //ACHIEVEMENT SALES AIR COOLANT
             $achAclS01 = 0;
             $achAclS02 = 0;
@@ -847,7 +858,10 @@ class MonitoringController extends Controller
 
         if(isset($targetSpv)){
 
-            $getTargetBulanan = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
+            $getTargetBulanan = TransaksiInvoiceDetails::whereHas('header', function ($query) {
+                    $query->where('flag_batal', 'N');
+                })
+                ->whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
                 ->get();
 
             $getTarget = TargetSpv::where('bulan', $bulan)
@@ -859,8 +873,10 @@ class MonitoringController extends Controller
                 $selisih            = $target - $getTarget->nominal;
                 $pencapaian_persen  = ($target / $getTarget->nominal)/ 100;
 
-
-            $getActual = TransaksiInvoiceDetails::all();
+            $getActual = TransaksiInvoiceDetails::whereHas('header', function ($query) {
+                    $query->where('flag_batal', 'N');
+                })
+                ->get();
 
             $getTargetActual = TargetSpv::where('spv', $spv)->get();
 
@@ -966,8 +982,10 @@ class MonitoringController extends Controller
                     $query->select('part_no')
                         ->from('master_part')
                         ->where('kode_produk', 'ICH');
-                    })
-                ->get();
+                })->whereHas('header', function ($query) {
+                    $query->where('flag_batal', 'N');
+                })->get();
+
 
             $jan_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->sum('nominal_total'), 0, ',', ',');
             $feb_ich = number_format($getActualIchidai->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->sum('nominal_total'), 0, ',', ',');
@@ -988,8 +1006,9 @@ class MonitoringController extends Controller
                     $query->select('part_no')
                         ->from('master_part')
                         ->where('kode_produk', 'BRI');
-                    })
-                ->get();
+                })->whereHas('header', function ($query) {
+                    $query->where('flag_batal', 'N');
+                })->get();
 
             $jan_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->sum('nominal_total'), 0, ',', ',');
             $feb_bri = number_format($getActualBrio->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->sum('nominal_total'), 0, ',', ',');
@@ -1009,8 +1028,9 @@ class MonitoringController extends Controller
                     $query->select('part_no')
                         ->from('master_part')
                         ->where('kode_produk', 'ACC');
-                    })
-                ->get();
+                })->whereHas('header', function ($query) {
+                    $query->where('flag_batal', 'N');
+                })->get();
 
             $jan_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->sum('nominal_total'), 0, ',', ',');
             $feb_acc = number_format($getActualAccu->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->sum('nominal_total'), 0, ',', ',');
@@ -1030,8 +1050,9 @@ class MonitoringController extends Controller
                     $query->select('part_no')
                         ->from('master_part')
                         ->where('kode_produk', 'ACL');
-                    })
-                ->get();
+                })->whereHas('header', function ($query) {
+                    $query->where('flag_batal', 'N');
+                })->get();
 
             $jan_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->sum('nominal_total'), 0, ',', ',');
             $feb_acl = number_format($getActualCoolant->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->sum('nominal_total'), 0, ',', ',');
@@ -1052,8 +1073,10 @@ class MonitoringController extends Controller
                     $query->select('part_no')
                         ->from('master_part')
                         ->where('kode_produk', 'PEN');
-                    })
-                ->get();
+                })
+                ->whereHas('header', function ($query) {
+                    $query->where('flag_batal', 'N');
+                })->get();
 
             $jan_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-01-01')->where('created_at', '<=', $tahun.'-02-01')->sum('nominal_total'), 0, ',', ',');
             $feb_pen = number_format($getActualPentil->where('created_at', '>=', $tahun.'-02-01')->where('created_at', '<=', $tahun.'-03-01')->sum('nominal_total'), 0, ',', ',');
@@ -1119,25 +1142,29 @@ class MonitoringController extends Controller
                 $query->select('part_no')
                     ->from('master_part')
                     ->where('id_grup', '1');
-                })
+            })
+            ->whereHas('header', function ($query) {
+                $query->where('flag_batal', 'N');
+            })
             ->get();
-
 
         $getPesananBrio = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
             ->whereIn('part_no', function ($query) {
                 $query->select('part_no')
                     ->from('master_part')
                     ->where('id_grup', '2');
-            })
-            ->get();
+            })->whereHas('header', function ($query) {
+                    $query->where('flag_batal', 'N');
+                })->get();
 
         $getPesananAccu = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
             ->whereIn('part_no', function ($query) {
                 $query->select('part_no')
                     ->from('master_part')
                     ->where('id_grup', '3');
-            })
-            ->get();
+            })->whereHas('header', function ($query) {
+                    $query->where('flag_batal', 'N');
+                })->get();
 
         return view('monitoring.pesanan-terjual', compact('monthName', 'getPesanan', 'getPesananIchidai', 'getPesananBrio', 'getPesananAccu'));
     }
