@@ -1166,7 +1166,7 @@ class MonitoringController extends Controller
                     $query->where('flag_batal', 'N');
                 })->get();
 
-        return view('monitoring.pesanan-terjual', compact('monthName', 'getPesanan', 'getPesananIchidai', 'getPesananBrio', 'getPesananAccu'));
+        return view('monitoring.pesanan-terjual', compact('monthName', 'getPesanan', 'getPesananIchidai', 'getPesananBrio', 'getPesananAccu', 'tahun'));
     }
 
 }

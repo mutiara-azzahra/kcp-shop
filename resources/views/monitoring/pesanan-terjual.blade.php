@@ -13,7 +13,7 @@
         </div>
         <div class="col-lg-12 pb-3">
             <div class="float-left">
-                <h6>{{ $monthName }}</h6>
+                <h6>{{ $monthName }} {{ $tahun }}</h6>
             </div>
         </div>
     </div>
@@ -50,14 +50,14 @@
                         
                         @foreach($getPesananIchidai->groupBy('part_no') as $i)
                         <tr>
-                            <td class="text-center">{{ $i->first()->part_no }}</td>
-                            <td class="text-center">{{ $i->sum('qty') }}</td>
-                            <td class="text-right">{{ number_format($i->sum('nominal_total'), 0, ',', '.') }}</td>
+                            <td class="text-left">{{ $i->first()->part_no }}</td>
+                            <td class="text-right">{{ number_format($i->sum('qty'), 0, ',', ',') }}</td>
+                            <td class="text-right">{{ number_format($i->sum('nominal_total'), 0, ',', ',') }}</td>
                         </tr>
                         @endforeach
                         <tr class="bg-warning">
                             <td colspan="2" class="text-center"><b>TOTAL</b></td>
-                            <td class="text-right"><b>Rp. {{ number_format($getPesananIchidai->sum('nominal_total'), 0, ',', '.') }}</b></td>
+                            <td class="text-right"><b>{{ number_format($getPesananIchidai->sum('nominal_total'), 0, ',', ',') }}</b></td>
                         </tr>
                         
                     </tbody>
@@ -88,14 +88,14 @@
                         
                         @foreach($getPesananBrio->groupBy('part_no') as $i)
                         <tr>
-                            <td class="text-center">{{ $i->first()->part_no }}</td>
-                            <td class="text-center">{{ $i->sum('qty') }}</td>
-                            <td class="text-right">{{ number_format($i->sum('nominal_total'), 0, ',', '.') }}</td>
+                            <td class="text-left">{{ $i->first()->part_no }}</td>
+                            <td class="text-right">{{ number_format($i->sum('qty'), 0, ',', ',') }}</td>
+                            <td class="text-right">{{ number_format($i->sum('nominal_total'), 0, ',', ',') }}</td>
                         </tr>
                         @endforeach
                         <tr class="bg-warning">
                             <td colspan="2" class="text-center"><b>TOTAL</b></td>
-                            <td class="text-right"><b>Rp. {{ number_format($getPesananBrio->sum('nominal_total'), 0, ',', '.') }}</b></td>
+                            <td class="text-right"><b>{{ number_format($getPesananBrio->sum('nominal_total'), 0, ',', ',') }}</b></td>
                         </tr>
                     </tbody>
                 </table>
@@ -126,14 +126,14 @@
                             
                             @foreach($getPesananAccu->groupBy('part_no') as $i)
                             <tr>
-                                <td class="text-center">{{ $i->first()->part_no }}</td>
-                                <td class="text-center">{{ $i->sum('qty') }}</td>
-                                <td class="text-right">{{ number_format($i->sum('nominal_total'), 0, ',', '.') }}</td>
+                                <td class="text-left">{{ $i->first()->part_no }}</td>
+                                <td class="text-right">{{ number_format($i->sum('qty'), 0, ',', ',') }}</td>
+                                <td class="text-right">{{ number_format($i->sum('nominal_total'), 0, ',', ',') }}</td>
                             </tr>
                             @endforeach
                             <tr class="bg-warning">
                                 <td colspan="2" class="text-center"><b>TOTAL</b></td>
-                                <td class="text-right"><b>Rp. {{ number_format($getPesananAccu->sum('nominal_total'), 0, ',', '.') }}</b></td>
+                                <td class="text-right"><b>{{ number_format($getPesananAccu->sum('nominal_total'), 0, ',', ',') }}</b></td>
                             </tr>
                             
                         </tbody>
