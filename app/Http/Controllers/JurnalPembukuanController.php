@@ -93,6 +93,10 @@ class JurnalPembukuanController extends Controller
         $value['updated_at'] = now();
 
         TransaksiAkuntansiJurnalDetails::create($value);
+
+        //TAMBAH PERKIRAAN
+        $saldo = MasterPerkiraan::where('id_perkiraan', $request->id_perkiraan)->value('saldo');
+        MasterPerkiraan::where('id_perkiraan', $request->id_perkiraan)->update(['saldo' => $saldo + $request->total]);
             
         return redirect()->route('jurnal-pembukuan.details', ['id' => $request->id_header])->with('success','Data jurnal baru berhasil ditambahkan!');
     }
