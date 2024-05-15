@@ -11,6 +11,11 @@
                 <a class="btn btn-success" href="{{ route('buku-besar.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
             </div>
         </div>
+        <div class="col-lg-12 pb-3">
+            <div class="float-left">
+                <h3>Periode {{ $tanggal_awal }} s/d {{ $tanggal_akhir }}</h3>
+            </div>
+        </div>
     </div>
     
     @if ($message = Session::get('success'))
@@ -28,43 +33,42 @@
             <div class="col-lg-12">  
                 <table class="table table-hover table-bordered table-sm bg-light" id="example1">
                     <thead>
-                        <tr style="background-color: #6082B6; color:white">
-                            <th class="text-center">Nama Produk</th>
-                            <th class="text-center">Kode Outlet</th>
-                            <th class="text-center">Nama Outlet</th>
-                            @php
-                            $uniqueMonths = [];
-
-                            foreach ($sumNominal as $i) {
-                                foreach ($i as $month => $invoices) {
-                                    $uniqueMonths[$month] = \Carbon\Carbon::parse($month)->format('M Y');
-                                }
-                            }
-
-                            ksort($uniqueMonths);
-
-                            @endphp
-                            @foreach ($uniqueMonths as $month => $formattedMonth)
-                                <th class="text-center">{{ $formattedMonth }}</th>
-                            @endforeach
+                        <tr style="background-color: #32CD32; color:black">
+                            <th class="text-center">Tanggal</th>
+                            <th class="text-center">Trx</th>
+                            <th class="text-center">Perkiraan</th>
+                            <th class="text-center">Keterangan</th>
+                            <th class="text-center">Debet</th>
+                            <th class="text-center">Kredit</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                    @foreach ($sumNominal as $kd_outlet => $details)
+                    @foreach ($jurnal_header as $i)
                         <tr>
-                            <td class="text-center">{{ $nama_produk }}</td>
-                            <td class="text-center">{{ $kd_outlet }}</td>
-                            <td class="text-left">{{ App\Models\MasterOutlet::where('kd_outlet', $kd_outlet)->value('nm_outlet') }}</td>                           
-
-                            @foreach ($uniqueMonths as $month => $monthLabel)
-                                <td class="text-right">
-                                    {{ $details->has($month) ? number_format($details[$month], 0, ',', ',') : 0 }}
-                                </td>
+                            <td class="text-center" style="background-color: #89CFF0; color:black">{{ $i->trx_date }}</td>
+                            <td class="text-center" style="background-color: #89CFF0; color:black">{{ $i->trx_from }}</td>
+                            <td class="text-left" style="background-color: #89CFF0; color:black" colspan="4">{{ $i->keterangan }}</td>
+                            
+                            @foreach ($i->details as $d)
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td class="text-center">{{ $d->perkiraan }}</td>
+                                <td class="text-left">{{ $d->details_perkiraan->nm_perkiraan }}</td>
+                                <td class="text-right">{{ number_format($d->debet, 0, ',', ',') }}</td>
+                                <td class="text-right">{{ number_format($d->kredit, 0, ',', ',') }}</td>
+                            </tr>
                             @endforeach
-
+                            
                         </tr>
                     @endforeach
+
+                    <tr>
+                        <td class="text-center" style="background-color:#e6e866; color:black" colspan="4"><b>TOTAL</b></td>
+                        <td class="text-right" style="background-color:#e6e866; color:black"><b>{{ number_format($sum_debet, 0, ',', ',') }}</b></td>
+                        <td class="text-right" style="background-color:#e6e866; color:black"><b>{{ number_format($sum_kredit, 0, ',', ',') }}</b></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -74,6 +78,5 @@
 @endsection
 
 @section('script')
-
 
 @endsection

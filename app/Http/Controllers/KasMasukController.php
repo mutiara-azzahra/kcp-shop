@@ -193,11 +193,11 @@ class KasMasukController extends Controller
         $jurnal_created = TransaksiAkuntansiJurnalDetails::create($value);
 
         //STORE NOMINAL PERKIRAAN KAS MASUK
-        $saldo_debit = MasterPerkiraan::where('id_perkiraan', 1.1101)->value('saldo');
-        $saldo_kredit = MasterPerkiraan::where('id_perkiraan', 2.1702)->value('saldo');
+        $saldo_debit = MasterPerkiraan::where('id_perkiraan', '1.1101')->value('saldo');
+        $saldo_kredit = MasterPerkiraan::where('id_perkiraan', '2.1702')->value('saldo');
 
-        MasterPerkiraan::where('id_perkiraan', 1.1101)->update(['saldo' => $saldo_debit + str_replace(',', '', $request->nominal)]);
-        MasterPerkiraan::where('id_perkiraan', 2.1702)->update(['saldo' => $saldo_kredit + str_replace(',', '', $request->nominal)]);
+        MasterPerkiraan::where('id_perkiraan', '1.1101')->update(['saldo' => $saldo_debit + str_replace(',', '', $request->nominal)]);
+        MasterPerkiraan::where('id_perkiraan', '2.1702')->update(['saldo' => $saldo_kredit + str_replace(',', '', $request->nominal)]);
 
         if ($created){
             return redirect()->route('kas-masuk.index')->with('success','Kas masuk berhasil ditambahkan');
