@@ -19,7 +19,6 @@ class MasterProvinsiController extends Controller
         return view('master-provinsi.create');
     }
 
-
     public function edit($kode_prp){
 
         $provinsi = MasterProvinsi::findOrFail($id);
@@ -36,6 +35,12 @@ class MasterProvinsiController extends Controller
         ]);
 
         try {
+
+            $request->merge([
+                'status'    => 'Y',
+                'crea_date' => now(),
+                'crea_by'   => Auth::user()->nama_user,
+            ]);
 
             MasterProvinsi::create($request->all());
 
