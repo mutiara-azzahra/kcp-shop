@@ -139,7 +139,7 @@ class InvoiceController extends Controller
             if(isset($stok_awal_barang)) {
                 $stok_awal = $stok_awal_barang;
             } else{
-                $stok_awal = 0;
+                $stok_awal = MasterStokGudang::where('part_no', $s->part_no)->value('stok');
             }
 
             $outlet = MasterOutlet::where('kd_outlet', $so_to_invoice->kd_outlet)->first();
