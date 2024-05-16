@@ -63,7 +63,8 @@ class SalesOrderController extends Controller
         $totalSum = 0;
         $totalSum += $surat_pesanan_id->details_sp->sum('nominal_total');
 
-        return view('sales-order.details', ['nosp' => $nosp] , compact('surat_pesanan_id', 'totalSum', 'approval_head_mkt', 'approval_spv', 'check_auth'));
+        return view('sales-order.details', ['nosp' => $nosp] , compact('surat_pesanan_id', 'totalSum', 'approval_head_mkt',
+            'approval_spv', 'check_auth'));
     }
 
     public function create(){

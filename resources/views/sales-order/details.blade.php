@@ -29,10 +29,10 @@
                 Sales Order
             </div>
             <div class="float-right">
-            @if($approval_head_mkt)
+            @if($approval_head_mkt = true)
                 <a class="btn btn-warning btn-md m-1" href="{{ route('sales-order.approve', $surat_pesanan_id->nosp) }}"><i class="fas fa-check"></i> Approve</a>
                 <a class="btn btn-danger btn-md m-1" href="{{ route('sales-order.reject', $surat_pesanan_id->nosp) }}"><i class="fas fa-ban"></i> Tolak</a>
-            @elseif($approval_spv)
+            @elseif($approval_spv = true)
                 <a class="btn btn-warning btn-md m-1" href="{{ route('sales-order.approve', $surat_pesanan_id->nosp) }}"><i class="fas fa-check"></i> Approve</a>
                 <a class="btn btn-danger btn-md m-1" href="{{ route('sales-order.reject', $surat_pesanan_id->nosp) }}"><i class="fas fa-ban"></i> Tolak</a>
             @endif

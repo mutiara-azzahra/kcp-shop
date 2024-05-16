@@ -114,46 +114,53 @@ class InvoiceController extends Controller
         foreach($so_to_invoice->details_so as $s){
 
             $stok_ready = MasterStokGudang::where('part_no', $s->part_no)->value('stok');
-            $stok_akhir = $stok_ready - $s->qty;
 
-            MasterStokGudang::where('part_no', $s->part_no)->update(['stok' => $stok_akhir]);
-            
-            $details['noinv']              = $header->noinv;
-            $details['area_inv']           = $s->area_so;
-            $details['kd_outlet']          = $so_to_invoice->kd_outlet;
-            $details['part_no']            = $s->part_no;
-            $details['nm_part']            = $s->nm_part;
-            $details['qty']                = $s->qty;
-            $details['hrg_pcs']            = $s->hrg_pcs;
-            $details['disc']               = $s->disc;
-            $details['nominal']            = $s->nominal;
-            $details['nominal_disc']       = $s->nominal_disc;
-            $details['nominal_disc_ppn']   = $so_to_invoice->nominal_total * 0.11;
-            $details['nominal_total']      = $s->nominal_total;
+            if($stok_ready = 0 || $stok_ready < $s->qty){
 
-            TransaksiInvoiceDetails::create($details);
+            } elseif ($stok_ready > 0 || $stok_ready = $s->qty){
 
-            //LIST BARANG KELUAR, KARTU STOK
-            $stok_awal_barang = FlowStokGudang::where('part_no', $s->part_no)->orderBy('created_at', 'desc')->value('stok_akhir');
-            
-            if(isset($stok_awal_barang)) {
-                $stok_awal = $stok_awal_barang;
-            } else{
-                $stok_awal = MasterStokGudang::where('part_no', $s->part_no)->value('stok');
+                $stok_akhir = $stok_ready - $s->qty;
+
+                MasterStokGudang::where('part_no', $s->part_no)->update(['stok' => $stok_akhir]);
+                
+                $details['noinv']              = $header->noinv;
+                $details['area_inv']           = $s->area_so;
+                $details['kd_outlet']          = $so_to_invoice->kd_outlet;
+                $details['part_no']            = $s->part_no;
+                $details['nm_part']            = $s->nm_part;
+                $details['qty']                = $s->qty;
+                $details['hrg_pcs']            = $s->hrg_pcs;
+                $details['disc']               = $s->disc;
+                $details['nominal']            = $s->nominal;
+                $details['nominal_disc']       = $s->nominal_disc;
+                $details['nominal_disc_ppn']   = $so_to_invoice->nominal_total * 0.11;
+                $details['nominal_total']      = $s->nominal_total;
+
+                TransaksiInvoiceDetails::create($details);
+
+                //LIST BARANG KELUAR, KARTU STOK
+                $stok_awal_barang = FlowStokGudang::where('part_no', $s->part_no)->orderBy('created_at', 'desc')->value('stok_akhir');
+                
+                if(isset($stok_awal_barang)) {
+                    $stok_awal = $stok_awal_barang;
+                } else{
+                    $stok_awal = MasterStokGudang::where('part_no', $s->part_no)->value('stok');
+                }
+
+                $outlet = MasterOutlet::where('kd_outlet', $so_to_invoice->kd_outlet)->first();
+
+                $value['part_no']              = $s->part_no;
+                $value['keterangan']           = $so_to_invoice->kd_outlet . '/' . $outlet->nm_outlet;
+                $value['referensi']            = $header->noinv;
+                $value['tanggal_barang_masuk'] = NOW();
+                $value['stok_awal']            = $stok_awal;
+                $value['stok_masuk']           = 0;
+                $value['stok_keluar']          = $s->qty;
+                $value['stok_akhir']           = $stok_awal + 0 - $s->qty;
+
+                FlowStokGudang::create($value);
+
             }
-
-            $outlet = MasterOutlet::where('kd_outlet', $so_to_invoice->kd_outlet)->first();
-
-            $value['part_no']              = $s->part_no;
-            $value['keterangan']           = $so_to_invoice->kd_outlet . '/' . $outlet->nm_outlet;
-            $value['referensi']            = $header->noinv;
-            $value['tanggal_barang_masuk'] = NOW();
-            $value['stok_awal']            = $stok_awal;
-            $value['stok_masuk']           = 0;
-            $value['stok_keluar']          = $s->qty;
-            $value['stok_akhir']           = $stok_awal + 0 - $s->qty;
-
-            FlowStokGudang::create($value);
 
         }
 
