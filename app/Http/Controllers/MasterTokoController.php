@@ -94,8 +94,8 @@ class MasterTokoController extends Controller
                 'jth_tempo'         => $request->jth_tempo,
                 'expedisi'          => $request->expedisi,
                 'nik'               => $request->nik,
-                'modi_date'         => NOW(),
-                'modi_by'           => Auth::user()->nama_user
+                'updated_at'         => NOW(),
+                'updated_by'           => Auth::user()->nama_user
             ]);
 
         if ($update){
@@ -113,8 +113,8 @@ class MasterTokoController extends Controller
 
             $outlet->update([
                 'status'        => 'Y',
-                'modi_date'     => now(),
-                'modi_by'       => Auth::user()->nama_user
+                'updated_at'     => now(),
+                'updated_by'       => Auth::user()->nama_user
             ]);
 
             return redirect()->route('master-toko.index')->with('success', 'Data master toko berhasil dinonaktifkan!');

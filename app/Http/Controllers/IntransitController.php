@@ -150,7 +150,7 @@ class IntransitController extends Controller
             if(isset($stok_awal_barang)) {
                 $stok_awal = $stok_awal_barang;
             } else{
-                $stok_awal = MasterStokGudang::where('part_no', $s->part_no)->value('stok');
+                $stok_awal = MasterStokGudang::where('part_no', $itemPartNo)->value('stok');
             }
 
             $value['part_no']              = $itemPartNo;
