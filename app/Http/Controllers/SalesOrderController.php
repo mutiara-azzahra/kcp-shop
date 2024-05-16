@@ -47,15 +47,16 @@ class SalesOrderController extends Controller
         foreach ($surat_pesanan_id->details_sp as $i){
             $getMaxDisk = MasterDiskonPart::where('part_no', $i->part_no)->value('diskon_maksimal');
 
-            $approval_head_mkt = false;
-            $approval_spv = false;
-    
             if ($i->disc > $getMaxDisk) {
-                $approval_head_mkt = auth()->user()->id_role == 5;
-                $approval_spv = false;
+                if ($check_auth == 5) {
+                    $approval_head_mkt = true;
+                    $approval_spv = false;
+                }
             } elseif ($i->disc <= $getMaxDisk) {
-                $approval_spv = auth()->user()->id_role == 24;
-                $approval_head_mkt = false;
+                if ($check_auth == 24) {
+                    $approval_head_mkt = false;
+                    $approval_spv = true;
+                }
             }
         }
 
