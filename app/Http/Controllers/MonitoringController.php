@@ -853,6 +853,7 @@ class MonitoringController extends Controller
         $bulan          = Carbon::parse($awal)->month;
         $tahun          = Carbon::parse($awal)->year;
         $monthName      = Carbon::parse($awal)->month($bulan)->format('F');
+        $next_tahun     = $tahun + 1;
 
         $targetSpv = TargetSpv::where('tahun', $tahun)->where('bulan', 12)->first();
 
@@ -1134,6 +1135,7 @@ class MonitoringController extends Controller
         $bulan          = Carbon::parse($awal)->month;
         $tahun          = Carbon::parse($awal)->year;
         $monthName      = Carbon::parse($awal)->month($bulan)->format('F');
+        $next_tahun     = $tahun + 1;
 
         $getPesanan = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])->get();
 
