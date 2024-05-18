@@ -166,9 +166,8 @@ class ReportLssController extends Controller
     
             $bulan              = $request->bulan;
             $tahun              = $request->tahun;
-
-            $date               = Carbon::create(null, $bulan, 1, 0, 0, 0);
-            $previousMonth      = $date->subMonth()->month;
+            $next_bulan         = $bulan+1;
+            $next_tahun         = $tahun+1;
 
             $previousYear       = $tahun - 1;
 
@@ -179,26 +178,31 @@ class ReportLssController extends Controller
                 $getProduk = MasterLevel4::where('status', 'A')->get();
         
                 foreach($getProduk as $i){
-        
-                    $getBeli = InvoiceNonHeader::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
-                    ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
-                    ->get();
 
                     if($bulan == 12){
-                        $getHpp = TransaksiInvoiceDetails::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
-                        ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun + 1, $bulan, 1)->endOfMonth()->format('d'))
-                        ->get();
+
+                        $getHpp = TransaksiInvoiceDetails::whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])
+                            ->get();
+
+                        $getBeli = InvoiceNonHeader::whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])
+                            ->get();
+
+                        $getModalTerjual = ModalPartTerjual::whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])
+                            ->get();
 
                     } else {
-                        $getHpp = TransaksiInvoiceDetails::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
-                        ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
-                        ->get();
+
+                        $getHpp = TransaksiInvoiceDetails::whereBetween('created_at', [$tahun.'-'.$next_bulan.'-01', $next_tahun.'-01-01'])
+                            ->get();
+
+                        $getBeli = InvoiceNonHeader::whereBetween('created_at', [$tahun.'-'.$next_bulan.'-01', $tahun.'-01-01'])
+                            ->get();
+                        
+                        $getModalTerjual = ModalPartTerjual::whereBetween('created_at', [$tahun.'-'.$next_bulan.'-01', $tahun.'-01-01'])
+                            ->get();
+
                     }
 
-                    $getModalTerjual = ModalPartTerjual::where('tanggal_invoice', '>=', $tahun.'-'.$bulan.'-01')
-                        ->where('tanggal_invoice', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->day)
-                        ->get();
-        
                     $part       = MasterPart::where('level_2', $i->id_level_2)->where('level_4', $i->level_4)->pluck('part_no')->toArray();
                     $flattened  = collect($part)->flatten()->toArray();
         
