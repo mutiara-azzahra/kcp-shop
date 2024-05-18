@@ -27,20 +27,20 @@
     <div class="card" style="padding: 10px;">
         <div class="card-body">
             <div class="col-lg-12">
-                <form action="{{ route('master-provinsi.update', $provinsi->kode_prp) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('master-provinsi.update') }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Kode Provinsi</strong>
-                            <input type="text" name="kode_prp" class="form-control" value="{{ $provinsi->kode_prp }}" readonly>
+                            <input type="text" name="kode_prp" class="form-control" value="{{ $provinsi->kode_prp }}">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Provinsi</strong>
-                            <input type="text" name="provinsi" class="form-control" value="{{ $provinsi->provinsi }}" readonly>
+                            <input type="text" name="provinsi" class="form-control" value="{{ $provinsi->provinsi }}">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -58,50 +58,5 @@
 @endsection
 
 @section('script')
-
-<script>
-    let dateDropdown = document.getElementById('date-dropdown');
-    let currentYear = new Date().getFullYear();
-    let earliestYear = 2022;
-
-    dateDropdown.innerHTML = '';
-
-    while (currentYear >= earliestYear) {
-        let dateOption = document.createElement('option');
-        dateOption.text = currentYear;
-        dateOption.value = currentYear;
-
-    
-        if (dateOption.value === "{{ $target_sales->tahun }}") {
-            dateOption.selected = true;
-        }
-
-        dateDropdown.add(dateOption);
-        currentYear -= 1;
-    }
-
-    var rupiah = document.getElementById("rupiah");
-
-    rupiah.addEventListener("keyup", function(e) {
-    rupiah.value = formatRupiah(this.value);
-    });
-
-    function formatRupiah(angka, prefix) {
-    var number_string = angka.replace(/[^,\d]/g, "").toString(),
-        split = number_string.split(","),
-        sisa = split[0].length % 3,
-        rupiah = split[0].substr(0, sisa),
-        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-    if (ribuan) {
-        separator = sisa ? "." : "";
-        rupiah += separator + ribuan.join(".");
-    }
-
-    rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-    return prefix == undefined ? rupiah : rupiah ? rupiah : "";
-    }
-
-</script>
 
 @endsection

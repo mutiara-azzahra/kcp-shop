@@ -21,9 +21,9 @@ class MasterProvinsiController extends Controller
 
     public function edit($kode_prp){
 
-        $provinsi = MasterProvinsi::findOrFail($id);
+        $provinsi = MasterProvinsi::findOrFail($kode_prp);
 
-        return view('master-provinsi.update', compact('provinsi'));
+        return view('master-provinsi.edit', compact('provinsi'));
     }
 
     public function store(Request $request)
@@ -54,8 +54,7 @@ class MasterProvinsiController extends Controller
         
     }
 
-
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
 
         $request->validate([
