@@ -184,13 +184,16 @@ class ReportLssController extends Controller
                     ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
                     ->get();
 
-                    // dd($getBeli);
-        
-                    
+                    if($bulan == 12){
+                        $getHpp = TransaksiInvoiceDetails::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
+                        ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun + 1, $bulan, 1)->endOfMonth()->format('d'))
+                        ->get();
 
-                    $getHpp = TransaksiInvoiceDetails::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
+                    } else {
+                        $getHpp = TransaksiInvoiceDetails::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
                         ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
                         ->get();
+                    }
 
                     $getModalTerjual = ModalPartTerjual::where('tanggal_invoice', '>=', $tahun.'-'.$bulan.'-01')
                         ->where('tanggal_invoice', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->day)

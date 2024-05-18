@@ -15,7 +15,7 @@ class ModalDbpController extends Controller
 {
     public function index(){
 
-    $getModalDbp = ModalPartTerjual::all();
+        $getModalDbp = ModalPartTerjual::all();
 
     return view('modal.index', compact('getModalDbp'));
 
@@ -24,15 +24,17 @@ class ModalDbpController extends Controller
     public function store(Request $request){
 
         $request->validate([
-            'bulan'         => 'required',
-            'tahun'         => 'required',
+            'tanggal_awal'  => 'required',
+            'tanggal_akhir' => 'required',
         ]);
 
-        $bulan = $request->bulan;
-        $tahun = $request->tahun;
+        $awal   = $request->tanggal_awal;
+        $akhir  = $request->tanggal_akhir;
 
-        $getTerjual = TransaksiInvoiceDetails::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
-            ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
+        $tanggal_awal   = Carbon::parse($awal);
+        $tanggal_akhir  = Carbon::parse($akhir)->addDays(1);
+
+        $getTerjual = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
             ->get();
 
         foreach($getTerjual as $i){
@@ -40,13 +42,14 @@ class ModalDbpController extends Controller
             $getDiskonDbp = MasterDiskonDbp::where('part_no', $i->part_no)->value('diskon_dbp');
 
             $value = [
-                'noinv'         => $i->noinv,
+                'noinv'           => $i->noinv,
                 'tanggal_invoice' => $i->created_at,
-                'part_no'       => $i->part_no,
-                'qty_terjual'   => $i->qty,
-                'modal'         => $i->hrg_pcs,
-                'nominal_modal' => $i->qty * $i->hrg_pcs * $getDiskonDbp / 100,
-                'status'        => 'A',
+                'part_no'         => $i->part_no,
+                'qty_terjual'     => $i->qty,
+                'modal'           => $i->hrg_pcs,
+                'nominal_modal'   => $i->qty * $i->hrg_pcs * (100 - $getDiskonDbp) / 100,
+                'status'          => 'A',
+                'created_by'      => Auth::user()->nama_user,
             ];
 
             $created = ModalPartTerjual::create($value);
