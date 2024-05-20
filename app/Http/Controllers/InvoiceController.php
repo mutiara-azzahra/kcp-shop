@@ -133,8 +133,10 @@ class InvoiceController extends Controller
                 $details['disc']               = $s->disc;
                 $details['nominal']            = $s->nominal;
                 $details['nominal_disc']       = $s->nominal_disc;
-                $details['nominal_disc_ppn']   = $so_to_invoice->nominal_total * 0.11;
+                $details['nominal_disc_ppn']   = $s->nominal_total * 0.11;
                 $details['nominal_total']      = $s->nominal_total;
+                $details['status']             = 'Y';
+                $details['created_by']         = Auth::user()->nama_user;
 
                 TransaksiInvoiceDetails::create($details);
 

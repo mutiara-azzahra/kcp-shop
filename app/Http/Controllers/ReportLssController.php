@@ -7,15 +7,14 @@ use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MasterPart;
+use App\Models\MasterLevel4;
+use App\Models\MasterProduk;
 use App\Models\InvoiceNonHeader;
 use App\Models\InvoiceNonDetails;
 use App\Models\TransaksiInvoiceDetails;
 use App\Models\ModalPartTerjual;
 use App\Models\LSS;
 use App\Models\LssStok;
-use App\Models\MasterLevel4;
-use App\Models\MasterProduk;
-
 
 class ReportLssController extends Controller
 {
@@ -25,23 +24,23 @@ class ReportLssController extends Controller
     }
 
     public function store(Request $request){
-
         //1 Stok, 2 Nilai
-
         if($request->laporan == 1){
 
             $request->validate([
-                'bulan'         => 'required',
-                'tahun'         => 'required',
+                'bulan' => 'required',
+                'tahun' => 'required',
             ]);
     
-            $bulan              = $request->bulan;
-            $tahun              = $request->tahun;
+            $bulan          = $request->bulan;
+            $tahun          = $request->tahun;
+            $next_bulan     = $bulan+1;
+            $next_tahun     = $tahun+1;
 
-            $date               = Carbon::create(null, $bulan, 1, 0, 0, 0);
-            $previousMonth      = $date->subMonth()->month;
+            $date           = Carbon::create(null, $bulan, 1, 0, 0, 0);
+            $previousMonth  = $date->subMonth()->month;
 
-            $previousYear       = $tahun - 1;
+            $previousYear   = $tahun - 1;
 
             $lss = LssStok::where('bulan', $bulan)->where('tahun', $tahun)->first();
 
@@ -57,6 +56,9 @@ class ReportLssController extends Controller
                     $getBeli = InvoiceNonHeader::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
                         ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
                         ->get();
+
+                    $getHpp = TransaksiInvoiceDetails::whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])
+                            ->get();
         
                     $getJual = TransaksiInvoiceDetails::where('created_at', '>=', $tahun.'-'.$bulan.'-01')
                         ->where('created_at', '<=', $tahun.'-'.$bulan.'-'.Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('d'))
@@ -174,7 +176,6 @@ class ReportLssController extends Controller
             $lss = LSS::where('bulan', $bulan)->where('tahun', $tahun)->first();
 
             if($lss == null){
-        
                 $getProduk = MasterLevel4::where('status', 'A')->get();
         
                 foreach($getProduk as $i){
@@ -289,12 +290,10 @@ class ReportLssController extends Controller
         
                 }
 
-            $data = LSS::where('bulan', $bulan)->where('tahun', $tahun)->get();
+                $data = LSS::where('bulan', $bulan)->where('tahun', $tahun)->get();
 
-            return view('report-lss.view', compact('data', 'bulan', 'tahun'));
-
+                return view('report-lss.view', compact('data', 'bulan', 'tahun'));
+            }
         }
-        }
-
     }
 }
