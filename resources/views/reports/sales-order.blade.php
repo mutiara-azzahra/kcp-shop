@@ -67,9 +67,9 @@
       }
       .th-header{
         text-align: center;
-        border-top: 1px solid #000; /* Add a top border with a black color */
-        border-bottom: 1px solid #000; /* Add a bottom border with a black color */
-        border-left: none; /* Remove the left border */
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+        border-left: none;
         border-right: none;
 
       }
@@ -77,7 +77,7 @@
           margin-bottom: 2px !important;
       }
       .table-bawah{
-        border-left: none; /* Remove left border */
+        border-left: none;
         border-right: none;
       }
      .judul{
@@ -108,8 +108,8 @@
         background-color: black;
         color: #fff;
         text-align: center;
-        line-height: 14px; /* Sesuaikan line-height dengan tinggi kotak */
-        border: none; /* Mengatur ketebalan garis dan warna garis */
+        line-height: 14px;
+        border: none;
     }
 
     </style>
@@ -164,7 +164,6 @@
                     </table>
                 </td>
             </tr>
-
             <tr style="line-height: 13px;">
                 <td class="nops">
                     <table class="atas">
@@ -180,7 +179,6 @@
                         </tr>
                     </table>
                 </td>
-
                 <td class="nops">
                     <table class="atas">
                         <tr>
@@ -218,7 +216,6 @@
                     @endforeach
                 </tbody>
             </table>
-
             <div class="kanan col-6">
                 <table class="atas">
                     <tr>
