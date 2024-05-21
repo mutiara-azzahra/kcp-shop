@@ -75,7 +75,7 @@
                             <td class="text-left">{{ $p->part_no }}</td>
                             <td class="text-right">{{ number_format($p->qty_terjual, 0, ',', ',') }}</td>
                             <td class="text-right">{{ number_format($p->modal, 0, ',', ',') }}</td>
-                            <td class="text-right">{{ number_format(($p->nominal_modal), 0, ',', ',') }}</td>
+                            <td class="text-right">{{ number_format(($p->nominal_modal), 2, ',', ',') }}</td>
                         </tr>
                         @endforeach
                     </tbody>
