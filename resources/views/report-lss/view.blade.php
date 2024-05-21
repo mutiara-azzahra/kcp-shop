@@ -27,7 +27,6 @@
             <p>{{ $message }}</p>
         </div>
     @endif
-
     
     <div class="card" style="padding: 2px;">
         <div class="card-body p-2">

@@ -10,6 +10,7 @@ use App\Models\MasterPartModal;
 use App\Models\TransaksiInvoiceDetails;
 use App\Models\ModalPartTerjual;
 use App\Models\MasterDiskonDbp;
+use App\Models\InvoiceNonHeader;
 
 class ModalDbpController extends Controller
 {
@@ -34,27 +35,29 @@ class ModalDbpController extends Controller
         $tanggal_awal   = Carbon::parse($awal);
         $tanggal_akhir  = Carbon::parse($akhir)->addDays(1);
 
-        $getTerjual = TransaksiInvoiceDetails::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
+        $getTerjual = InvoiceNonHeader::whereBetween('created_at', [$tanggal_awal, $tanggal_akhir])
             ->get();
 
-        foreach($getTerjual as $i){
+        foreach($getTerjual as $a){
+
+            foreach($a->details_pembelian as $i){
 
             $getDiskonDbp = MasterDiskonDbp::where('part_no', $i->part_no)->value('diskon_dbp');
             
-
             $value = [
-                'noinv'           => $i->noinv,
-                'tanggal_invoice' => $i->created_at,
+                'noinv'           => $i->invoice_non,
+                'tanggal_invoice' => $a->created_at,
                 'part_no'         => $i->part_no,
                 'qty_terjual'     => $i->qty,
-                'modal'           => $i->hrg_pcs,
-                'nominal_modal'   => $i->qty * $i->hrg_pcs * (100 - $getDiskonDbp) / 100,
+                'modal'           => $i->harga * (100 - $getDiskonDbp) / 100,
+                'nominal_modal'   => $i->qty * $i->harga * (100 - $getDiskonDbp) / 100,
                 'status'          => 'A',
                 'created_by'      => Auth::user()->nama_user,
             ];
 
             $created = ModalPartTerjual::create($value);
 
+            }
         }
 
         return redirect()->route('modal.index')->with('success','Data Modal baru berhasil ditambahkan!');
