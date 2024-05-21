@@ -50,22 +50,14 @@ class ReportLssController extends Controller
 
                     if($bulan == 12){
 
-                        $getBeli = InvoiceNonHeader::whereHas('header', function ($query) {
-                                $query->where('flag_batal', 'N');
-                            })->whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])->get();
-
-                        $getHpp = TransaksiInvoiceDetails::whereHas('header', function ($query) {
-                                $query->where('flag_batal', 'N');
-                            })->whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])->get();
-            
+                        $getBeli = InvoiceNonHeader::whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])->get();
+                        $getHpp  = TransaksiInvoiceDetails::where('status', 'Y')->whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])->get();
                         $getJual = ModalPartTerjual::whereBetween('tanggal_invoice', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])->get();
 
                     } else {
 
                         $getBeli = InvoiceNonHeader::whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $tahun.'-'.$next_bulan.'-01'])->get();
-
-                        $getHpp = TransaksiInvoiceDetails::where('status', 'Y')->whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $tahun.'-'.$next_bulan.'-01'])->get();
-            
+                        $getHpp  = TransaksiInvoiceDetails::where('status', 'Y')->whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $tahun.'-'.$next_bulan.'-01'])->get();
                         $getJual = ModalPartTerjual::whereBetween('tanggal_invoice', [$tahun.'-'.$bulan.'-01', $tahun.'-'.$next_bulan.'-01'])->get();
 
                     }
@@ -189,22 +181,14 @@ class ReportLssController extends Controller
 
                     if($bulan == 12){
 
-                        $getHpp = TransaksiInvoiceDetails::whereHas('header', function ($query) {
-                                $query->where('flag_batal', 'N');
-                            })->whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])->get();
-
-                        $getBeli = InvoiceNonHeader::whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])->get();
-
+                        $getHpp          = TransaksiInvoiceDetails::where('status', 'Y')->whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])->get();
+                        $getBeli         = InvoiceNonHeader::whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])->get();
                         $getModalTerjual = ModalPartTerjual::whereBetween('tanggal_invoice', [$tahun.'-'.$bulan.'-01', $next_tahun.'-01-01'])->get();
 
                     } else {
 
-                        $getHpp = TransaksiInvoiceDetails::whereHas('header', function ($query) {
-                                $query->where('flag_batal', 'N');
-                            })->whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $tahun.'-'.$next_bulan.'-01'])->get();
-
-                        $getBeli = InvoiceNonHeader::whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $tahun.'-'.$next_bulan.'-01'])->get();
-                        
+                        $getHpp          = TransaksiInvoiceDetails::where('status', 'Y')->whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $tahun.'-'.$next_bulan.'-01'])->get();
+                        $getBeli         = InvoiceNonHeader::whereBetween('created_at', [$tahun.'-'.$bulan.'-01', $tahun.'-'.$next_bulan.'-01'])->get();
                         $getModalTerjual = ModalPartTerjual::whereBetween('tanggal_invoice', [$tahun.'-'.$bulan.'-01', $tahun.'-'.$next_bulan.'-01'])->get();
 
                     }
