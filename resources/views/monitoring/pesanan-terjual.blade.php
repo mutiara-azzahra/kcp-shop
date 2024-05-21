@@ -35,7 +35,7 @@
         </div>
         <div class="card-body">
             <div class="col-lg-12">  
-            <table class="table table-hover table-bordered table-sm bg-light" id="example2">
+            <table class="table table-hover table-bordered table-sm bg-light" id="example1">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
                             <th class="text-center">Part No</th>
@@ -73,7 +73,7 @@
         </div>
         <div class="card-body">
             <div class="col-lg-12">  
-            <table class="table table-hover table-bordered table-sm bg-light" id="example3">
+            <table class="table table-hover table-bordered table-sm bg-light">
                     <thead>
                         <tr style="background-color: #6082B6; color:white">
                             <th class="text-center">Part No</th>
@@ -110,7 +110,7 @@
         </div>
         <div class="card-body">
             <div class="col-lg-12">  
-                <table class="table table-hover table-bordered table-sm bg-light" id="example4">
+                <table class="table table-hover table-bordered table-sm bg-light">
                         <thead>
                             <tr style="background-color: #6082B6; color:white">
                                 <th class="text-center">Part No</th>
