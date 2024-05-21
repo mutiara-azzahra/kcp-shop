@@ -276,7 +276,6 @@ class ReportLssController extends Controller
             
                         $created = LSS::create($value);
                     }
-        
                 }
 
                 $data = LSS::where('bulan', $bulan)->where('tahun', $tahun)->get();
