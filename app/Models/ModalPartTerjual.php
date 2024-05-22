@@ -14,6 +14,8 @@ class ModalPartTerjual extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'bulan', 
+        'tahun',
         'noinv', 
         'part_no',
         'tanggal_invoice',
