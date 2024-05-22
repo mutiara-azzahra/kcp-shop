@@ -57,7 +57,7 @@
                     <div class="col-lg-12 col-md-12">
                         <div class="form-group">
                             <strong>Kurang Plafond</strong>
-                            <input type="text" id="nominal" name="limit_plafond" class="form-control" value="" placeholder="">
+                            <input type="text" id="nominal" name="nominal_kurang" class="form-control" value="" placeholder="">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
