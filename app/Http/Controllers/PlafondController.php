@@ -55,11 +55,29 @@ class PlafondController extends Controller
     public function store_tambah(Request $request){
 
         $request -> validate([
-            'invoice_non'  => 'required', 
-            'customer_to'  => 'required',
-            'supplier'     => 'required',
-            'tanggal_nota' => 'required',
+            'limit_plafond'   => 'required', 
+            'nominal_plafond' => 'required',
+            'kd_outlet'       => 'required',
         ]);
+
+        str_replace(',', '', $request->limit);
+
+        $limit_plafond = str_replace(',', '', $request->limit_plafond);
+        $nominal_plafond = str_replace(',', '', $request->nominal_plafond);
+
+        $updated = MasterPlafond::where('kd_outlet', $request->kd_outlet)->update([
+            'nomin'         => $request->sales,
+            'bulan'         => $request->bulan,
+            'tahun'         => $request->tahun,
+            'nominal'       => $nominal,
+            'updated_at'    => $nominal
+        ]);
+
+         if ($updated){
+            return redirect()->route('master-plafond.index')->with('success','Master Plafond berhasil diubah!');
+        } else{
+            return redirect()->route('master-plafond.index')->with('danger','Master Plafond gagal diubah');
+        }  
 
     }
 }

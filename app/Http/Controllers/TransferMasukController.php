@@ -234,9 +234,9 @@ class TransferMasukController extends Controller
 
         KasMasukHeader::where('id_transfer', $request->id_transfer)->update([
             'tanggal_rincian_tagihan' => $request->tanggal_rincian_tagihan,
-            'nominal'       => str_replace(',', '', $request->nominal_kas),
-            'updated_at'    => NOW(),
-            'updated_by'     => NOW()
+            'nominal'                 => str_replace(',', '', $request->nominal_kas),
+            'updated_at'              => NOW(),
+            'updated_by'              => NOW()
         ]);
 
     return redirect()->route('transfer-masuk.details', ['id_transfer' => $request->id_transfer])

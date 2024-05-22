@@ -44,16 +44,15 @@
                     <div class="col-lg-12 col-md-12">
                         <div class="form-group">
                             <strong>Limit Plafond</strong>
-                            <input type="text" name="nominal_plafond" class="form-control" value="{{ $plafond->nominal_plafond }}" placeholder="" readonly>
+                            <input type="text" name="nominal_plafond" class="form-control" value="{{ number_format($plafond->nominal_plafond, 0, ',', ',') }}" placeholder="" readonly>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Sisa Plafond</strong><br>
-                            Rp. {{ $sisa_plafond }}<br>
+                            Rp. {{ number_format($sisa_plafond, 0, ',', ',') }}<br>
                         </div>
                     </div>
-
                     <div class="col-lg-12 col-md-12">
                         <div class="form-group">
                             <strong>Tambah Limit Plafond</strong>
@@ -62,7 +61,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                         <div class="float-right">
-                            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Simpan Data</button>                            
+                            <button type="submit" class="btn btn-warning"><i class="fas fa-save"></i> Simpan Data</button>                            
                         </div>
                     </div>
                 </div>
