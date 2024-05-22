@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\MasterOutlet;
 use App\Models\TransaksiPlafond;
 use App\Models\TransaksiInvoiceHeader;
 
@@ -15,6 +16,15 @@ class PlafondController extends Controller
         $plafond = TransaksiPlafond::all();
 
         return view('master-plafond.index', compact('plafond'));
+    }
+
+    public function create(){
+
+        $outlet_ada = TransaksiPlafond::where('status', 'A')->pluck('kd_outlet')->toArray();
+
+        $outlet = MasterOutlet::whereNotIn('kd_outlet', $outlet_ada)->where('status', 'Y')->get();
+
+        return view('master-plafond.create', compact('outlet'));
     }
 
     public function tambah($id){
