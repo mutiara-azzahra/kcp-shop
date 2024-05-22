@@ -2,10 +2,10 @@
  
 @section('content')
 <div class="container" style="padding: 10px;">
-    <div class="row mt-5">
+    <div class="row mt-2">
         <div class="col-lg-12 pb-3">
              <div class="float-left">
-                <h4><b>Tambah Master Part</b></h4>
+                <h4>Tambah Master Part</h4>
             </div>
             <div class="float-right">
                     <a class="btn btn-success" href="{{ route('master-plafond.index') }}"><i class="fas fa-arrow-left"></i> Kembali</a>
@@ -43,13 +43,13 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Nominal Target Per Bulan</strong>
-                            <input type="text" id="nominal" name="target_bulanan" class="form-control" placeholder="0">
+                            <input type="text" id="nominal" name="target_per_bulan" class="form-control" placeholder="0">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <strong>Nominal Plafond</strong><span style="color:red">*wajib diisi</span>
-                            <input type="text" id="nominal" name="nominal_plafond" class="form-control" placeholder="0">
+                            <input type="text" id="nominal1" name="nominal_plafond" class="form-control" placeholder="0">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -74,6 +74,19 @@
     }
 
     document.getElementById('nominal').addEventListener('input', function() {
+     
+        let valueWithoutCommas = this.value.replace(/,/g, '');
+        let formattedValue = formatNumberWithCommas(valueWithoutCommas);
+        
+        this.value = formattedValue;
+    });
+
+    //delimiter nominal
+    function formatNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    document.getElementById('nominal1').addEventListener('input', function() {
      
         let valueWithoutCommas = this.value.replace(/,/g, '');
         let formattedValue = formatNumberWithCommas(valueWithoutCommas);

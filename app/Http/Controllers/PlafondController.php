@@ -27,6 +27,43 @@ class PlafondController extends Controller
         return view('master-plafond.create', compact('outlet'));
     }
 
+    public function store(Request $request){
+
+        $request -> validate([
+            'kd_outlet'        => 'required',
+            'nominal_plafond'  => 'required',
+        ]);
+
+        $nominal_plafond  = str_replace(',', '', $request->nominal_plafond);
+
+        if($request->target_per_bulan != null){
+            $target_per_bulan = str_replace(',', '', $request->target_per_bulan);
+        } else {
+            $target_per_bulan = 0;
+        }
+        
+        $nama_outlet = MasterOutlet::where('kd_outlet', $request->kd_outlet)->value('nm_outlet');
+
+        $data = [
+            'kd_outlet'        => $request->kd_outlet,
+            'nm_outlet'        => $nama_outlet,
+            'target_per_bulan' => $target_per_bulan,
+            'nominal_plafond'  => $nominal_plafond,
+            'status'           => 'A',
+            'created_by'       => Auth::user()->nama_user,
+            'created_at'       => NOW(),
+        ];
+    
+        $created = TransaksiPlafond::create($data);
+
+         if ($created){
+            return redirect()->route('master-plafond.index')->with('success','Master Plafond berhasil ditambah!');
+        } else{
+            return redirect()->route('master-plafond.index')->with('danger','Master Plafond gagal ditambah');
+        }  
+
+    }
+
     public function tambah($id){
 
         $plafond = TransaksiPlafond::findOrFail($id);
