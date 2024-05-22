@@ -66,10 +66,15 @@ class ReportLssController extends Controller
                     $flattened  = collect($part)->flatten()->toArray();
 
                     $beli = 0;
+                    $jual = 0;
 
                     foreach($getBeli as $b){
                         $beli += $b->details_pembelian->whereIn('part_no', $flattened)->sum('qty');
                     }
+
+                    // foreach($getJual as $j){
+                    //     $jual += $j->whereIn('part_no', $flattened)->sum('qty');
+                    // }
 
                     $jualByPart = [];
 
@@ -199,12 +204,12 @@ class ReportLssController extends Controller
                     $beli = 0;
         
                     foreach($getBeli as $s){
-                        $beli += $s->details_pembelian->whereIn('part_no', $flattened)->value('total_amount');
+                        $beli += $s->details_pembelian->whereIn('part_no', $flattened)->sum('total_amount');
                     }
-        
-                    $hpp     = $getHpp->whereIn('part_no', $flattened)->sum('nominal_total')/1.11;
-                    $jual    = $getModalTerjual->whereIn('part_no', $flattened)->sum('nominal_modal')/1.11;
 
+                    $jual    = $getModalTerjual->whereIn('part_no', $flattened)->sum('nominal_modal');
+                    $hpp     = $getHpp->whereIn('part_no', $flattened)->sum('nominal_total');
+                    
                     if($bulan == 01){
 
                         $amount_last_month = LSS::where('bulan', $previousMonth)->where('tahun', $previousYear)->first();
@@ -230,8 +235,8 @@ class ReportLssController extends Controller
                             'awal_amount'           => $awal_amount,
                             'beli'                  => $beli,
                             'jual_rbp'              => $hpp,
-                            'jual_dbp'              => $jual,
-                            'akhir_amount'          => $awal_amount + $beli - $jual,
+                            'jual_dbp'              => $jual/1.11,
+                            'akhir_amount'          => $awal_amount + $beli - $jual/1.11,
                             'status'                => 'A',
                             'created_at'            => NOW(),
                             'created_by'            => Auth::user()->nama_user,
