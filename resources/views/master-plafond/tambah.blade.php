@@ -56,7 +56,7 @@
                     <div class="col-lg-12 col-md-12">
                         <div class="form-group">
                             <strong>Tambah Limit Plafond</strong>
-                            <input type="text" name="limit_plafond" class="form-control" value="" placeholder="0">
+                            <input type="text" id="nominal" name="limit_plafond" class="form-control" value="" placeholder="0">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -73,5 +73,20 @@
 @endsection
 
 @section('script')
+
+<script>
+    //delimiter nominal
+    function formatNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    document.getElementById('nominal').addEventListener('input', function() {
+     
+        let valueWithoutCommas = this.value.replace(/,/g, '');
+        let formattedValue = formatNumberWithCommas(valueWithoutCommas);
+        
+        this.value = formattedValue;
+    });
+</script>
 
 @endsection

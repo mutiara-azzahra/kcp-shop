@@ -26,7 +26,7 @@
     <div class="card" style="padding: 10px;">
         <div class="card-body">
             <div class="col-lg-12">
-                <form action="{{ route('master-plafond.store_tambah') }}" method="POST">
+                <form action="{{ route('master-plafond.store_kurang') }}" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
@@ -44,20 +44,20 @@
                     <div class="col-lg-12 col-md-12">
                         <div class="form-group">
                             <strong>Limit Plafond</strong>
-                            <input type="text" name="nominal_plafond" class="form-control" value="{{ $plafond->nominal_plafond }}" placeholder="" readonly>
+                            <input type="text" name="nominal_plafond" class="form-control" value="{{ number_format($plafond->nominal_plafond, 0, ',', ',')  }}" placeholder="" readonly>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Sisa Plafond</strong><br>
-                            Rp. {{ $sisa_plafond }}<br>
+                            Rp. {{ number_format($sisa_plafond, 0, ',', ',')  }}<br>
                         </div>
                     </div>
 
                     <div class="col-lg-12 col-md-12">
                         <div class="form-group">
                             <strong>Kurang Plafond</strong>
-                            <input type="text" name="limit_plafond" class="form-control" value="" placeholder="">
+                            <input type="text" id="nominal" name="limit_plafond" class="form-control" value="" placeholder="">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -74,5 +74,20 @@
 @endsection
 
 @section('script')
+
+<script>
+    //delimiter nominal
+    function formatNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    document.getElementById('nominal').addEventListener('input', function() {
+     
+        let valueWithoutCommas = this.value.replace(/,/g, '');
+        let formattedValue = formatNumberWithCommas(valueWithoutCommas);
+        
+        this.value = formattedValue;
+    });
+</script>
 
 @endsection

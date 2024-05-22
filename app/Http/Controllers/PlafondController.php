@@ -62,15 +62,40 @@ class PlafondController extends Controller
 
         str_replace(',', '', $request->limit);
 
-        $limit_plafond = str_replace(',', '', $request->limit_plafond);
+        $limit_plafond   = str_replace(',', '', $request->limit_plafond);
         $nominal_plafond = str_replace(',', '', $request->nominal_plafond);
 
         $updated = MasterPlafond::where('kd_outlet', $request->kd_outlet)->update([
-            'nomin'         => $request->sales,
-            'bulan'         => $request->bulan,
-            'tahun'         => $request->tahun,
-            'nominal'       => $nominal,
-            'updated_at'    => $nominal
+            'nominal_plafond' => $limit_plafond + $nominal_plafond,
+            'updated_at'      => now(),
+            'updated_by'      => Auth::user()->nama_user
+        ]);
+
+         if ($updated){
+            return redirect()->route('master-plafond.index')->with('success','Master Plafond berhasil diubah!');
+        } else{
+            return redirect()->route('master-plafond.index')->with('danger','Master Plafond gagal diubah');
+        }  
+
+    }
+
+    public function store_kurang(Request $request){
+
+        $request -> validate([
+            'limit_plafond'   => 'required', 
+            'nominal_plafond' => 'required',
+            'kd_outlet'       => 'required',
+        ]);
+
+        str_replace(',', '', $request->limit);
+
+        $limit_plafond   = str_replace(',', '', $request->limit_plafond);
+        $nominal_plafond = str_replace(',', '', $request->nominal_plafond);
+
+        $updated = MasterPlafond::where('kd_outlet', $request->kd_outlet)->update([
+            'nominal_plafond' => $limit_plafond - $nominal_plafond,
+            'updated_at'      => now(),
+            'updated_by'      => Auth::user()->nama_user
         ]);
 
          if ($updated){
