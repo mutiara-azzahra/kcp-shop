@@ -41,7 +41,7 @@ class ModalDbpController extends Controller
         if(isset($check)){
 
              return redirect()->route('modal.index')->with('warning','Data modal bulan '. $bulan.'-'. $tahun.' sudah ada.');
-             
+
         } else {
 
             $tanggal_awal   = Carbon::parse($awal);
